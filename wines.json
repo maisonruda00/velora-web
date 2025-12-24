@@ -1,0 +1,56 @@
+[
+  {
+    "id": "red_01",
+    "name": "Barolo 'Monfortino'",
+    "producer": "Giacomo Conterno",
+    "price": 1200,
+    "type": "red",
+    "profile": { "acid": 9, "tannin": 10, "body": 9, "sugar": 1 },
+    "tags": ["red_meat", "truffle", "game", "rich"]
+  },
+  {
+    "id": "red_02",
+    "name": "Napa Cabernet Sauvignon",
+    "producer": "Promontory",
+    "price": 800,
+    "type": "red",
+    "profile": { "acid": 6, "tannin": 9, "body": 10, "sugar": 2 },
+    "tags": ["steak", "lamb", "hard_cheese"]
+  },
+  {
+    "id": "white_01",
+    "name": "Chablis Grand Cru",
+    "producer": "Raveneau",
+    "price": 450,
+    "type": "white",
+    "profile": { "acid": 10, "tannin": 1, "body": 6, "sugar": 1 },
+    "tags": ["oysters", "white_fish", "goat_cheese", "raw"]
+  },
+  {
+    "id": "white_02",
+    "name": "Meursault 'Perrières'",
+    "producer": "Coche-Dury",
+    "price": 900,
+    "type": "white",
+    "profile": { "acid": 8, "tannin": 2, "body": 8, "sugar": 1 },
+    "tags": ["lobster", "cream_sauce", "chicken", "rich_fish"]
+  },
+  {
+    "id": "sparkling_01",
+    "name": "Dom Pérignon P2",
+    "producer": "Moët & Chandon",
+    "price": 450,
+    "type": "sparkling",
+    "profile": { "acid": 9, "tannin": 1, "body": 7, "sugar": 2 },
+    "tags": ["fried", "salty", "caviar", "appetizer"]
+  },
+  {
+    "id": "sweet_01",
+    "name": "Château d'Yquem",
+    "producer": "Lur Saluces",
+    "price": 600,
+    "type": "dessert",
+    "profile": { "acid": 8, "tannin": 1, "body": 10, "sugar": 10 },
+    "tags": ["foie_gras", "blue_cheese", "dessert"]
+  }
+]
