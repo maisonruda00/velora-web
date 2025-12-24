@@ -60,3 +60,15 @@ async def startup_event():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
+# --- ADD THIS TO MAIN.PY ---
+from pairing_service import get_recommendation
+
+class ConsultRequest(BaseModel):
+    food: str
+    budget: int
+
+@app.post("/consult")
+async def consult(request: ConsultRequest):
+    """The Brain Endpoint"""
+    result = get_recommendation(request.food, request.budget)
+    return result
