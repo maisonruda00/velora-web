@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Velora Concierge</title>
     
+    <!-- PWA Configuration -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Velora">
@@ -25,12 +26,17 @@
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+        
+        /* Fade Animation */
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body class="min-h-screen selection:bg-[#D4AF37] selection:text-black">
 
     <div id="wizard" class="max-w-md mx-auto min-h-screen relative p-6 border-x border-gray-900/50">
         
+        <!-- Step 0: Login (Velvet Rope) -->
         <div id="step-login" class="step-panel flex flex-col justify-center h-screen items-center px-8 bg-black">
             <h1 class="font-serif text-5xl gold-text italic tracking-wide mb-4">Velora</h1>
             <p class="text-xs uppercase tracking-[0.3em] text-gray-600 mb-16">Private Cellar</p>
@@ -48,22 +54,23 @@
             </div>
         </div>
         
-        <div id="step-context" class="step-panel hidden flex flex-col justify-center h-screen items-center">
-            <h1 class="font-serif text-4xl gold-text italic tracking-wide mb-4">Velora</h1>
-            <p class="text-xs uppercase tracking-[0.3em] text-gray-600 animate-pulse">Consulting Cellar...</p>
+        <!-- Step 1: Loading Screen (Wine Quotes) -->
+        <div id="step-context" class="step-panel hidden flex flex-col justify-center h-screen items-center text-center px-6">
+            <h1 class="font-serif text-4xl gold-text italic tracking-wide mb-8">Velora</h1>
+            <p id="loading-quote" class="text-sm font-serif text-gray-400 italic leading-relaxed min-h-[60px] max-w-sm fade-in">
+                "Wine is sunlight, held together by water."
+            </p>
+            <p class="text-[10px] uppercase tracking-[0.3em] text-gray-600 mt-8 animate-pulse">Consulting Cellar...</p>
         </div>
         
-        <div id="step-menu" class="step-panel hidden pt-12">
-            <h1 class="font-serif text-3xl text-white mb-2">Culinary Selection</h1>
+        <!-- Step 2: Menu Selection (Categorized) -->
+        <div id="step-menu" class="step-panel hidden pt-12 pb-32">
+            <h1 class="font-serif text-3xl text-white mb-2">The Menu</h1>
             <p class="text-gray-500 text-sm mb-8">Select dishes for the table.</p>
             
-            <div class="mb-8 relative group">
-                 <input type="text" id="specialInput" placeholder="Add Today's Special..." 
-                        class="bg-transparent w-full border-b border-gray-800 py-3 text-lg text-white focus:outline-none focus:border-[#D4AF37] transition-colors placeholder-gray-700">
-                 <button onclick="addSpecial()" class="absolute right-0 top-3 text-gray-600 group-hover:text-[#D4AF37] transition-colors text-xl font-light">+</button>
+            <div id="menuGrid" class="space-y-8 mb-16">
+                <!-- Populated by JS -->
             </div>
-
-            <div id="menuGrid" class="space-y-4"></div>
             
             <div class="fixed bottom-0 left-0 w-full bg-gradient-to-t from-black via-black to-transparent p-6 text-center pointer-events-none">
                  <button onclick="nextStep('step-constraints')" class="pointer-events-auto bg-[#D4AF37] text-black px-12 py-4 rounded-sm font-serif font-bold uppercase tracking-widest text-xs hover:bg-white transition-colors shadow-lg shadow-[#D4AF37]/20">
@@ -72,117 +79,88 @@
             </div>
         </div>
 
+        <!-- Step 3: Budget Constraints -->
         <div id="step-constraints" class="step-panel hidden pt-12">
             <h1 class="font-serif text-3xl text-white mb-12">Acquisition</h1>
             
-            <div class="mb-16">
-                <label class="block text-xs uppercase tracking-widest text-gray-500 mb-6">Service Size</label>
-                <div class="flex items-center justify-between border-b border-gray-800 pb-4">
-                    <span class="text-gray-500 font-serif">Bottles</span>
-                    <div class="flex items-center space-x-8">
-                        <button onclick="updateBottles(-1)" class="text-3xl font-thin text-gray-600 hover:text-white transition-colors">−</button>
-                        <span id="bottleCount" class="text-4xl font-serif gold-text">2</span>
-                        <button onclick="updateBottles(1)" class="text-3xl font-thin text-gray-600 hover:text-white transition-colors">+</button>
-                    </div>
-                </div>
-            </div>
-
             <div class="mb-12">
                 <label class="block text-xs uppercase tracking-widest text-gray-500 mb-6">Total Budget</label>
                 <div class="text-5xl font-serif text-white mb-6">$<span id="budgetDisplay">1000</span></div>
-                <input type="range" id="budgetRange" min="200" max="10000" step="100" value="1000" oninput="updateBudget()"
+                <input type="range" id="budgetRange" min="200" max="5000" step="100" value="1000" oninput="updateBudget()"
                        class="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-[#D4AF37]">
                 <div class="flex justify-between text-[10px] uppercase tracking-widest text-gray-600 mt-4">
-                    <span>Standard</span>
-                    <span>Rare</span>
+                    <span>Premier</span>
+                    <span>Grand Cru</span>
                     <span>Iconic</span>
                 </div>
             </div>
 
-            <button onclick="consultSommelier()" class="w-full bg-[#D4AF37] text-black py-4 font-serif font-bold uppercase tracking-widest text-xs hover:bg-white transition-colors mt-8">
+            <button onclick="consultSommelier()" id="generateBtn" class="w-full bg-[#D4AF37] text-black py-4 font-serif font-bold uppercase tracking-widest text-xs hover:bg-white transition-colors mt-8">
                 Generate Progression
             </button>
         </div>
 
+        <!-- Step 4: Results -->
         <div id="step-results" class="step-panel hidden pt-8">
             <div class="flex justify-between items-end mb-8 border-b border-gray-900 pb-4">
-                <h1 class="font-serif text-2xl text-white">Progression</h1>
+                <h1 class="font-serif text-2xl text-white">Recommendation</h1>
                 <span class="text-[#D4AF37] text-sm font-serif italic" id="totalCostDisplay">$0</span>
             </div>
             
             <div id="resultsGrid" class="space-y-12">
-                </div>
-            
-            <button onclick="nextStep('step-handover')" class="w-full mt-12 mb-8 py-4 border border-[#D4AF37] text-[#D4AF37] uppercase tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-colors">
-                View Handover Protocol
-            </button>
-        </div>
-
-        <div id="step-handover" class="step-panel hidden pt-8 bg-[#f4f4f4] text-black min-h-screen absolute top-0 left-0 w-full z-50">
-            <div class="p-6">
-                <div class="text-center mb-10 pt-4">
-                    <h1 class="font-serif text-3xl mb-2 tracking-wide text-black">Consultation Summary</h1>
-                    <div class="w-12 h-px bg-black mx-auto mt-4"></div>
-                </div>
-
-                <div class="mb-12">
-                    <h2 class="font-serif text-xl font-bold mb-6">Table Preference: Harmonized Progression</h2>
-                    
-                    <div id="handover-content" class="space-y-6 pl-4 border-l-2 border-gray-300">
-                        </div>
-                </div>
-
-                <div class="prose prose-sm max-w-none text-gray-600 italic leading-relaxed mb-12">
-                    <h3 class="font-serif text-lg text-black not-italic mb-3">Structural Direction</h3>
-                    <p class="mb-6">
-                        "Our preference is for freshness, texture, and precision. We seek natural acidity to maintain lift across courses, favoring elegance over power. The intention is to allow the wines to support the dishes quietly."
-                    </p>
-                    
-                    <h3 class="font-serif text-lg text-black not-italic mb-3">Flexibility</h3>
-                    <p>
-                        "If these selections are unavailable, we would be grateful for a wine with a similar structural profile—particularly in terms of acidity, weight, and tannin management. We trust your judgment on the list."
-                    </p>
-                </div>
-
-                <div class="space-y-3">
-                    <button onclick="showAbout()" class="w-full py-4 border border-black text-black uppercase tracking-widest text-xs hover:bg-black hover:text-white transition-colors">
-                        Read Philosophy
-                    </button>
-                    <button onclick="location.reload()" class="w-full py-4 bg-black text-white uppercase tracking-widest text-xs hover:bg-gray-800 transition-colors">
-                        Close Consultation
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div id="step-about" class="step-panel hidden pt-12 px-6 bg-[#0a0a0a] text-gray-300 min-h-screen absolute top-0 left-0 w-full z-50">
-            <h1 class="font-serif text-4xl text-[#D4AF37] mb-12 italic">Velora</h1>
-            
-            <div class="space-y-10 font-serif leading-relaxed text-lg text-gray-400">
-                <div>
-                    <h2 class="text-white text-xl mb-3">Precision, Not Opinion</h2>
-                    <p>Velora exists to quiet the noise around wine. Rather than trends or bias, we focus on what is measurable: structure, chemistry, and balance.</p>
-                </div>
-                
-                <div>
-                    <h2 class="text-white text-xl mb-3">The Science of Harmony</h2>
-                    <p>Every dish carries weight, acidity, fat, and texture. Velora studies these interactions to identify combinations that resolve cleanly on the palate.</p>
-                </div>
-                
-                <div>
-                    <h2 class="text-white text-xl mb-3">Cellar Logic</h2>
-                    <p>Great wine lists are systems. Velora reads a cellar the way a conductor reads a score—understanding how bottles relate, progress, and where restraint is more powerful than ambition.</p>
-                </div>
+                <!-- Populated by JS -->
             </div>
             
-            <button onclick="nextStep('step-handover')" class="mt-16 text-[#D4AF37] border-b border-[#D4AF37] pb-1 text-sm uppercase tracking-widest hover:text-white hover:border-white transition-colors">
-                ← Back to Consultation
+            <button onclick="location.reload()" class="w-full mt-12 mb-8 py-4 border border-[#D4AF37] text-[#D4AF37] uppercase tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-colors">
+                Close Consultation
             </button>
         </div>
 
     </div>
 
     <script>
+        // =================================================================
+        // DATA - Categorized Menu (Gemini's improvement)
+        // =================================================================
+        const MENU_CATEGORIES = {
+            "Antipasti": [
+                "Carpaccio Piemontese",
+                "Burrata & Heirloom Tomato",
+                "Caesar Salad",
+                "Oysters on the Half Shell"
+            ],
+            "Primi": [
+                "Spicy Rigatoni Vodka",
+                "Truffle Gnocchi",
+                "Lobster Ravioli",
+                "Pappardelle Bolognese"
+            ],
+            "Secondi": [
+                "Veal Parmesan",
+                "Dover Sole",
+                "Ribeye Steak",
+                "Rack of Lamb",
+                "Duck Breast"
+            ],
+            "Dolce": [
+                "Tiramisu",
+                "Lemon Cheesecake",
+                "Chocolate Fondant"
+            ]
+        };
+
+        // Wine Quotes for Loading Screen (Gemini's improvement)
+        const WINE_QUOTES = [
+            "\"Wine is sunlight, held together by water.\" — Galileo",
+            "\"A meal without wine is like a day without sunshine.\" — Brillat-Savarin",
+            "\"Age is just a number. It's totally irrelevant unless, of course, you happen to be a bottle of wine.\" — Joan Collins",
+            "\"Accept what life offers you and try to drink from every cup. All wines should be tasted.\" — Paulo Coelho",
+            "\"Wine is the most healthful and most hygienic of beverages.\" — Louis Pasteur"
+        ];
+
+        let state = { selectedDishes: [], budget: 1000 };
+        let quoteInterval;
+
         // =================================================================
         // GPS LOCATION LOGIC
         // =================================================================
@@ -207,8 +185,6 @@
                         maximumAge: 0
                     }
                 );
-            } else {
-                console.warn("📍 Geolocation not supported by this browser");
             }
         }
         
@@ -224,7 +200,6 @@
                 return;
             }
             
-            // Show loading state
             const btn = document.querySelector('#step-login button');
             const originalText = btn.innerHTML;
             btn.innerHTML = "<span class='animate-pulse'>Verifying...</span>";
@@ -239,20 +214,14 @@
             .then(res => res.json())
             .then(data => {
                 if (data.status === "success" || data.success === true) {
-                    // Success - store session
                     localStorage.setItem('velora_token', code);
                     localStorage.setItem('velora_user_id', data.user_id || 'unknown');
                     localStorage.setItem('velora_login_time', new Date().toISOString());
                     
-                    // Transition to app
-                    nextStep('step-context');
-                    checkLocation(); // Start GPS
-                    
-                    // FIX: Trigger the menu load!
-                    setTimeout(() => initMenu(), 100);
-                    
+                    initMenu();
+                    nextStep('step-menu');
+                    checkLocation();
                 } else {
-                    // API returned failure
                     showLoginError("Invalid Access Code. Invitation Required.");
                     btn.innerHTML = originalText;
                     btn.disabled = false;
@@ -260,25 +229,18 @@
                 }
             })
             .catch((error) => {
-                // Fallback for offline demo
                 console.warn('API unavailable, using offline validation:', error);
                 
                 const validCodes = ['MEMBER_2025', 'GENESIS_KEY', 'GENESIS'];
                 
                 if (validCodes.includes(code)) {
-                    // Success - store session
                     localStorage.setItem('velora_token', code);
                     localStorage.setItem('velora_login_time', new Date().toISOString());
                     
-                    // Transition to app
-                    nextStep('step-context');
-                    checkLocation(); // Start GPS
-                    
-                    // FIX: Trigger the menu load!
-                    setTimeout(() => initMenu(), 100);
-                    
+                    initMenu();
+                    nextStep('step-menu');
+                    checkLocation();
                 } else {
-                    // Failure
                     showLoginError("Invalid Access Code. Invitation Required.");
                     btn.innerHTML = originalText;
                     btn.disabled = false;
@@ -298,32 +260,6 @@
             }, 3000);
         }
         
-        function logout() {
-            localStorage.removeItem('velora_token');
-            localStorage.removeItem('velora_login_time');
-            location.reload();
-        }
-        
-        // Check if already logged in on page load
-        function checkSession() {
-            const token = localStorage.getItem('velora_token');
-            
-            if (token) {
-                // User has valid session - skip login
-                console.log("✅ Valid session found");
-                document.getElementById('step-login').classList.add('hidden');
-                document.getElementById('step-context').classList.remove('hidden');
-                checkLocation(); // Start GPS
-                
-                // Start the menu flow
-                setTimeout(() => initMenu(), 100);
-            } else {
-                // No session - show login
-                console.log("🔒 No session - showing login");
-                document.getElementById('step-login').classList.remove('hidden');
-            }
-        }
-        
         // Allow Enter key to submit login
         document.addEventListener('DOMContentLoaded', function() {
             const accessInput = document.getElementById('accessCode');
@@ -337,72 +273,88 @@
         });
         
         // =================================================================
-        // ORIGINAL APP LOGIC
+        // LOADING SCREEN WITH WINE QUOTES (Gemini's improvement)
         // =================================================================
         
-        // Mock Menu Data (Carbone-style)
-        const MOCK_MENU = [
-            { name: "Spicy Rigatoni Vodka", price: 34 },
-            { name: "Mario's Meatballs", price: 28 },
-            { name: "Caesar Salad", price: 26 },
-            { name: "Veal Parmesan", price: 68 },
-            { name: "Dover Sole", price: 85 },
-            { name: "Carpaccio Piemontese", price: 32 },
-            { name: "Ribeye Steak", price: 95 }
-        ];
+        function startQuoteCycle() {
+            let i = 0;
+            const el = document.getElementById('loading-quote');
+            el.innerText = WINE_QUOTES[0];
+            
+            quoteInterval = setInterval(() => {
+                i = (i + 1) % WINE_QUOTES.length;
+                el.classList.remove('fade-in');
+                setTimeout(() => {
+                    el.innerText = WINE_QUOTES[i];
+                    el.classList.add('fade-in');
+                }, 100);
+            }, 4000);
+        }
 
-        let state = { selectedDishes: [], numBottles: 2, budget: 1000, sequence: [] };
-
-        // --- NAVIGATION ---
+        function stopQuoteCycle() {
+            if (quoteInterval) {
+                clearInterval(quoteInterval);
+            }
+        }
+        
+        // =================================================================
+        // NAVIGATION
+        // =================================================================
+        
         function nextStep(stepId) {
             document.querySelectorAll('.step-panel').forEach(p => p.classList.add('hidden'));
             document.getElementById(stepId).classList.remove('hidden');
             window.scrollTo(0,0);
         }
 
-        // --- MENU LOGIC ---
+        // =================================================================
+        // MENU LOGIC (Gemini's categorized approach)
+        // =================================================================
+        
         function initMenu() {
             const grid = document.getElementById('menuGrid');
-            grid.innerHTML = MOCK_MENU.map((dish, i) => `
-                <div class="dish-card flex justify-between items-center p-4 border border-gray-800 hover:border-gray-600 cursor-pointer transition-all" 
-                     onclick="toggleDish(this, '${dish.name}')">
-                    <span class="font-serif text-lg text-gray-300">${dish.name}</span>
-                    <div class="w-4 h-4 border border-gray-600 rounded-full indicator"></div>
-                </div>
-            `).join('');
-            setTimeout(() => nextStep('step-menu'), 1500); // Simulate loading
+            let html = '';
+            
+            for (const [category, dishes] of Object.entries(MENU_CATEGORIES)) {
+                html += `
+                    <div class="mb-6">
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-[#D4AF37] mb-4 border-b border-gray-800 pb-2">
+                            ${category}
+                        </h3>
+                `;
+                
+                dishes.forEach(dish => {
+                    html += `
+                        <div class="flex justify-between items-center py-3 cursor-pointer group transition-all" 
+                             onclick="toggleDish(this, '${dish}')">
+                            <span class="font-serif text-lg text-gray-400 group-hover:text-white transition-colors">
+                                ${dish}
+                            </span>
+                            <div class="w-3 h-3 border border-gray-600 rounded-full indicator transition-all"></div>
+                        </div>
+                    `;
+                });
+                
+                html += `</div>`;
+            }
+            
+            grid.innerHTML = html;
         }
 
         function toggleDish(el, name) {
+            const indicator = el.querySelector('.indicator');
+            
             if (state.selectedDishes.includes(name)) {
                 state.selectedDishes = state.selectedDishes.filter(d => d !== name);
-                el.classList.remove('border-[#D4AF37]', 'bg-gray-900');
-                el.querySelector('.indicator').classList.remove('bg-[#D4AF37]', 'border-transparent');
+                indicator.classList.remove('bg-[#D4AF37]', 'border-transparent');
+                indicator.classList.add('border-gray-600');
             } else {
                 state.selectedDishes.push(name);
-                el.classList.add('border-[#D4AF37]', 'bg-gray-900');
-                el.querySelector('.indicator').classList.add('bg-[#D4AF37]', 'border-transparent');
-            }
-        }
-        
-        function addSpecial() {
-            const input = document.getElementById('specialInput');
-            if(input.value) {
-                state.selectedDishes.push(input.value);
-                input.value = '';
-                alert("Special added to progression.");
+                indicator.classList.remove('border-gray-600');
+                indicator.classList.add('bg-[#D4AF37]', 'border-transparent');
             }
         }
 
-        // --- CONSTRAINTS LOGIC ---
-        function updateBottles(delta) {
-            const newCount = state.numBottles + delta;
-            if (newCount >= 1 && newCount <= 5) {
-                state.numBottles = newCount;
-                document.getElementById('bottleCount').innerText = newCount;
-            }
-        }
-        
         function updateBudget() {
             const value = document.getElementById('budgetRange').value;
             document.getElementById('budgetDisplay').innerText = value;
@@ -411,21 +363,31 @@
 
         // =================================================================
         // 🧠 THE BRAIN - REAL API CALL TO PAIRING ENGINE
+        // Claude's sophisticated algorithm with Gemini's UX improvements
         // =================================================================
+        
         async function consultSommelier() {
-            const btn = document.querySelector('#step-constraints button');
+            const btn = document.getElementById('generateBtn');
             const originalText = btn.innerHTML;
-            btn.innerHTML = "<span class='animate-pulse'>Analyzing Chemistry...</span>";
+            btn.innerHTML = "<span class='animate-pulse'>Accessing Cellar...</span>";
             btn.disabled = true;
+            
+            // Show loading screen with cycling quotes
+            nextStep('step-context');
+            startQuoteCycle();
             
             // Get selected dishes
             const dishes = state.selectedDishes;
-            const mainDish = dishes[0] || "Ribeye Steak";  // Use first dish
+            const mainDish = dishes[0] || "Ribeye Steak";
             const budget = state.budget;
             
             try {
+                // 15-second timeout (Gemini's improvement, extended slightly)
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000);
+                
                 // CALL REAL BACKEND API
-                const response = await fetch('/consult', {
+                const response = await fetch('https://velora.vin/consult', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -433,38 +395,42 @@
                     body: JSON.stringify({
                         dish: mainDish,
                         budget: budget
-                    })
+                    }),
+                    signal: controller.signal
                 });
                 
+                clearTimeout(timeoutId);
+                
                 if (!response.ok) {
-                    const errText = await response.text();
-                    console.error('Server error:', errText);
-                    throw new Error(`Server responded with ${response.status}`);
+                    throw new Error(`Server error: ${response.status}`);
                 }
                 
                 const data = await response.json();
                 
+                stopQuoteCycle();
+                
                 if (data.success) {
-                    // Use REAL recommendation from backend
-                    state.sequence = [{
-                        order: 1,
-                        wine: data.recommendation.wine_name,
-                        producer: data.recommendation.producer,
-                        note: data.reasoning.why,  // Real sommelier note
-                        price: data.recommendation.price
-                    }];
-                    
-                    // Render and show results
-                    renderResults();
-                    renderHandover();
+                    // Use REAL recommendation from pairing engine
+                    renderResults(data);
                     nextStep('step-results');
                 } else {
-                    alert('No recommendations found. Try adjusting your budget or dish selection.');
+                    alert('The cellar is currently restricted for this selection. Please adjust your budget or dish.');
+                    nextStep('step-constraints');
                 }
                 
             } catch (error) {
-                console.error('Pairing API error:', error);
-                alert('Connection error: ' + error.message);
+                stopQuoteCycle();
+                
+                if (error.name === 'AbortError') {
+                    console.error('Request timeout after 15 seconds');
+                    alert('Connection timeout. The cellar took too long to respond. Please try again.');
+                } else {
+                    console.error('Pairing API error:', error);
+                    alert('Unable to connect to the cellar. Please check your connection and try again.');
+                }
+                
+                nextStep('step-constraints');
+                
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
@@ -474,6 +440,66 @@
         // =================================================================
         // RESULTS RENDERING
         // =================================================================
-        function renderResults() {
+        
+        function renderResults(data) {
             const grid = document.getElementById('resultsGrid');
-            let total =
+            const wine = data.recommendation;
+            const reasoning = data.reasoning;
+            
+            // Display total cost
+            document.getElementById('totalCostDisplay').innerText = `$${wine.price}`;
+            
+            // Render wine recommendation with chemistry reasoning
+            grid.innerHTML = `
+                <div class="relative pl-8 border-l-2 border-[#D4AF37]">
+                    <div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-[#D4AF37]"></div>
+                    
+                    <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-2">Selection</p>
+                    
+                    <h3 class="font-serif text-2xl text-white mb-1">${wine.wine_name}</h3>
+                    <p class="text-sm text-gray-400 mb-4">${wine.producer}</p>
+                    
+                    <div class="mb-4">
+                        <p class="text-xs uppercase tracking-widest text-gray-600 mb-2">Chemistry</p>
+                        ${reasoning.chemistry.map(c => `
+                            <p class="text-gray-400 text-sm mb-1">• ${c}</p>
+                        `).join('')}
+                    </div>
+                    
+                    <p class="text-gray-300 italic text-sm leading-relaxed border-l-2 border-[#D4AF37]/30 pl-4 mb-4">
+                        "${reasoning.why}"
+                    </p>
+                    
+                    <div class="flex justify-between items-center pt-4 border-t border-gray-800">
+                        <span class="text-xs uppercase tracking-widest text-gray-500">${wine.type}</span>
+                        <p class="text-right text-[#D4AF37] font-serif text-xl">$${wine.price}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // =================================================================
+        // INITIALIZATION
+        // =================================================================
+        
+        // Check for existing session on page load
+        function checkSession() {
+            const token = localStorage.getItem('velora_token');
+            
+            if (token) {
+                console.log("✅ Valid session found");
+                document.getElementById('step-login').classList.add('hidden');
+                initMenu();
+                nextStep('step-menu');
+                checkLocation();
+            } else {
+                console.log("🔒 No session - showing login");
+                document.getElementById('step-login').classList.remove('hidden');
+            }
+        }
+        
+        // Auto-check session on page load
+        checkSession();
+    </script>
+</body>
+</html>
