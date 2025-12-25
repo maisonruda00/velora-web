@@ -435,6 +435,23 @@ pairing_engine = PairingEngine()
 
 
 # =================================================================
+# MODULE-LEVEL API (for main.py imports)
+# =================================================================
+def get_recommendation(dish_name: str, budget: int = 10000) -> Dict:
+    """
+    Module-level wrapper for main.py imports.
+    
+    Args:
+        dish_name: Name/description of the dish
+        budget: Maximum price
+    
+    Returns:
+        Dictionary with recommendation and reasoning
+    """
+    return pairing_engine.get_recommendation(dish_name, budget)
+
+
+# =================================================================
 # TESTING
 # =================================================================
 if __name__ == "__main__":
