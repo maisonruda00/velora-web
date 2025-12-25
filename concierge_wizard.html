@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Velora Concierge</title>
     
-    <!-- PWA Configuration -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Velora">
@@ -32,7 +31,6 @@
 
     <div id="wizard" class="max-w-md mx-auto min-h-screen relative p-6 border-x border-gray-900/50">
         
-        <!-- Step 0: Login (Velvet Rope) -->
         <div id="step-login" class="step-panel flex flex-col justify-center h-screen items-center px-8 bg-black">
             <h1 class="font-serif text-5xl gold-text italic tracking-wide mb-4">Velora</h1>
             <p class="text-xs uppercase tracking-[0.3em] text-gray-600 mb-16">Private Cellar</p>
@@ -50,13 +48,11 @@
             </div>
         </div>
         
-        <!-- Step 1: Context/Loading -->
         <div id="step-context" class="step-panel hidden flex flex-col justify-center h-screen items-center">
             <h1 class="font-serif text-4xl gold-text italic tracking-wide mb-4">Velora</h1>
             <p class="text-xs uppercase tracking-[0.3em] text-gray-600 animate-pulse">Consulting Cellar...</p>
         </div>
         
-        <!-- Step 2: Menu Selection -->
         <div id="step-menu" class="step-panel hidden pt-12">
             <h1 class="font-serif text-3xl text-white mb-2">Culinary Selection</h1>
             <p class="text-gray-500 text-sm mb-8">Select dishes for the table.</p>
@@ -76,7 +72,6 @@
             </div>
         </div>
 
-        <!-- Step 3: Constraints (Bottles + Budget) -->
         <div id="step-constraints" class="step-panel hidden pt-12">
             <h1 class="font-serif text-3xl text-white mb-12">Acquisition</h1>
             
@@ -109,7 +104,6 @@
             </button>
         </div>
 
-        <!-- Step 4: Results -->
         <div id="step-results" class="step-panel hidden pt-8">
             <div class="flex justify-between items-end mb-8 border-b border-gray-900 pb-4">
                 <h1 class="font-serif text-2xl text-white">Progression</h1>
@@ -117,15 +111,13 @@
             </div>
             
             <div id="resultsGrid" class="space-y-12">
-                <!-- Populated by JS -->
-            </div>
+                </div>
             
             <button onclick="nextStep('step-handover')" class="w-full mt-12 mb-8 py-4 border border-[#D4AF37] text-[#D4AF37] uppercase tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-colors">
                 View Handover Protocol
             </button>
         </div>
 
-        <!-- Step 5: Handover Protocol (European Service) -->
         <div id="step-handover" class="step-panel hidden pt-8 bg-[#f4f4f4] text-black min-h-screen absolute top-0 left-0 w-full z-50">
             <div class="p-6">
                 <div class="text-center mb-10 pt-4">
@@ -137,8 +129,7 @@
                     <h2 class="font-serif text-xl font-bold mb-6">Table Preference: Harmonized Progression</h2>
                     
                     <div id="handover-content" class="space-y-6 pl-4 border-l-2 border-gray-300">
-                        <!-- Populated by JS -->
-                    </div>
+                        </div>
                 </div>
 
                 <div class="prose prose-sm max-w-none text-gray-600 italic leading-relaxed mb-12">
@@ -164,7 +155,6 @@
             </div>
         </div>
 
-        <!-- Step 6: About/Philosophy -->
         <div id="step-about" class="step-panel hidden pt-12 px-6 bg-[#0a0a0a] text-gray-300 min-h-screen absolute top-0 left-0 w-full z-50">
             <h1 class="font-serif text-4xl text-[#D4AF37] mb-12 italic">Velora</h1>
             
@@ -206,15 +196,10 @@
                             lat: position.coords.latitude,
                             lng: position.coords.longitude
                         };
-                        
                         console.log("📍 Location acquired:", userLocation);
-                        
-                        // Future enhancement: Calculate distance to known restaurants
-                        // If within 100m of a known restaurant, auto-select it
                     },
                     (error) => {
                         console.warn("📍 GPS denied or unavailable:", error.message);
-                        // Continue without GPS - user can manually select
                     },
                     {
                         enableHighAccuracy: true,
@@ -262,6 +247,10 @@
                     // Transition to app
                     nextStep('step-context');
                     checkLocation(); // Start GPS
+                    
+                    // FIX: Trigger the menu load!
+                    setTimeout(() => initMenu(), 100);
+                    
                 } else {
                     // API returned failure
                     showLoginError("Invalid Access Code. Invitation Required.");
@@ -271,7 +260,7 @@
                 }
             })
             .catch((error) => {
-                // Fallback for offline demo or when API is unavailable
+                // Fallback for offline demo
                 console.warn('API unavailable, using offline validation:', error);
                 
                 const validCodes = ['MEMBER_2025', 'GENESIS_KEY', 'GENESIS'];
@@ -284,6 +273,10 @@
                     // Transition to app
                     nextStep('step-context');
                     checkLocation(); // Start GPS
+                    
+                    // FIX: Trigger the menu load!
+                    setTimeout(() => initMenu(), 100);
+                    
                 } else {
                     // Failure
                     showLoginError("Invalid Access Code. Invitation Required.");
@@ -354,7 +347,8 @@
             { name: "Caesar Salad", price: 26 },
             { name: "Veal Parmesan", price: 68 },
             { name: "Dover Sole", price: 85 },
-            { name: "Carpaccio Piemontese", price: 32 }
+            { name: "Carpaccio Piemontese", price: 32 },
+            { name: "Ribeye Steak", price: 95 }
         ];
 
         let state = { selectedDishes: [], numBottles: 2, budget: 1000, sequence: [] };
@@ -426,12 +420,12 @@
             
             // Get selected dishes
             const dishes = state.selectedDishes;
-            const mainDish = dishes[0] || "Ribeye Steak";  // Use first dish or default
+            const mainDish = dishes[0] || "Ribeye Steak";  // Use first dish
             const budget = state.budget;
             
             try {
                 // CALL REAL BACKEND API
-                const response = await fetch('https://velora.vin/consult', {
+                const response = await fetch('/consult', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -443,18 +437,20 @@
                 });
                 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    const errText = await response.text();
+                    console.error('Server error:', errText);
+                    throw new Error(`Server responded with ${response.status}`);
                 }
                 
                 const data = await response.json();
                 
                 if (data.success) {
-                    // Use REAL recommendation from pairing engine
+                    // Use REAL recommendation from backend
                     state.sequence = [{
                         order: 1,
                         wine: data.recommendation.wine_name,
                         producer: data.recommendation.producer,
-                        note: data.reasoning.why,  // Real chemistry-based sommelier note
+                        note: data.reasoning.why,  // Real sommelier note
                         price: data.recommendation.price
                     }];
                     
@@ -468,7 +464,7 @@
                 
             } catch (error) {
                 console.error('Pairing API error:', error);
-                alert('Unable to connect to pairing service. Please check your connection and try again.');
+                alert('Connection error: ' + error.message);
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
@@ -480,39 +476,4 @@
         // =================================================================
         function renderResults() {
             const grid = document.getElementById('resultsGrid');
-            let total = 0;
-            grid.innerHTML = state.sequence.map((b, i) => {
-                total += b.price;
-                return `
-                <div class="relative pl-8 border-l border-gray-800">
-                    <div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-[#D4AF37]"></div>
-                    <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-2">Bottle ${i+1}</p>
-                    <h3 class="font-serif text-2xl text-white mb-1">${b.wine}</h3>
-                    <p class="text-sm text-gray-400 mb-4">${b.producer}</p>
-                    <p class="text-gray-300 italic text-sm leading-relaxed border-l-2 border-[#D4AF37] pl-4 mb-4">"${b.note}"</p>
-                    <p class="text-right text-[#D4AF37] font-serif">$${b.price.toFixed(0)}</p>
-                </div>`;
-            }).join('');
-            document.getElementById('totalCostDisplay').innerText = `$${total.toFixed(0)}`;
-        }
-
-        function renderHandover() {
-            const container = document.getElementById('handover-content');
-            container.innerHTML = state.sequence.map((b, i) => `
-                <div>
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
-                        ${i === 0 ? 'To Start' : i === state.sequence.length - 1 ? 'To Finish' : 'To Follow'}
-                    </p>
-                    <p class="text-xl font-serif font-bold text-black">${b.wine}</p>
-                    <p class="text-xs text-gray-600 uppercase tracking-wide">${b.producer}</p>
-                </div>
-            `).join('');
-        }
-
-        function showAbout() { nextStep('step-about'); }
-
-        // Initialize app - check session first
-        checkSession();
-    </script>
-</body>
-</html>
+            let total =
