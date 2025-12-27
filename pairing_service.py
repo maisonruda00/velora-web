@@ -1,493 +1,568 @@
 """
-VELORA PAIRING SERVICE - PRODUCTION VERSION
-Uses the FULL 14,651-wine database from MASTER_WINE_DATABASE_V23_READY_FOR_LAUNCH.csv
-
-From Gemini (Lead Architect) + Claude (System Engineer)
-Chemistry-based wine pairing with complete molecular scoring.
+VELORA PAIRING SERVICE - V2.0 INTEGRATED (GEMINI FIX)
+✅ Combines existing functional logic with V2.0 progression
+✅ Uses load_wines(), score_wine() - NO PairingEngine class
+✅ Table/group pairing logic properly integrated
 """
 import csv
 import os
-from typing import List, Dict, Tuple, Optional
+import statistics
+from typing import List, Dict, Tuple
+from functools import lru_cache
 
+# Import Luxury Modules
+try:
+    from sommelier_narrator import narrator
+    from conversation_starter import generate_conversation_starters
+    LUXURY_MODE = True
+except ImportError:
+    LUXURY_MODE = False
+    print("⚠️ Running without luxury features (sommelier_narrator/conversation_starter not found)")
 
 # =================================================================
-# WINE DATABASE LOADER
+# CORE WINE DATABASE LOADER
 # =================================================================
+
+_wine_cache = None
 
 def load_wines() -> List[Dict]:
     """
-    Loads the FULL 14,651-wine database from CSV.
-    
-    Returns:
-        List of wine dictionaries with normalized properties
+    Load wine database from CSV.
+    Uses caching to avoid reloading.
     """
-    csv_path = os.path.join(os.path.dirname(__file__), 'MASTER_WINE_DATABASE_V23_READY_FOR_LAUNCH.csv')
+    global _wine_cache
+    if _wine_cache:
+        return _wine_cache
     
-    if not os.path.exists(csv_path):
-        print(f"⚠️ Database not found at {csv_path}")
-        return []
+    script_dir = os.path.dirname(os.path.abspath(__file__))
     
-    wines = []
+    # Try multiple paths
+    paths = [
+        os.path.join(script_dir, 'MASTER_WINE_DATABASE_V23_READY_FOR_LAUNCH.csv'),
+        'MASTER_WINE_DATABASE_V23_READY_FOR_LAUNCH.csv',
+        os.path.join(script_dir, 'MASTER_WINE_DATABASE.csv'),
+        'MASTER_WINE_DATABASE.csv'
+    ]
     
-    try:
-        with open(csv_path, 'r', encoding='utf-8-sig') as f:
-            reader = csv.DictReader(f)
-            
-            for row in reader:
-                try:
-                    # Normalize and clean data
-                    wine = {
-                        'id': len(wines) + 1,
-                        'name': row.get('wine_name', 'Unknown').strip(),
-                        'producer': row.get('producer', 'Unknown').strip(),
-                        'vintage': row.get('vintage', '').strip(),
-                        'price': parse_float(row.get('price', '0'), default=0),
-                        'type': normalize_type(row.get('section', 'Red')),
+    for path in paths:
+        if os.path.exists(path):
+            try:
+                wines = []
+                with open(path, 'r', encoding='utf-8-sig') as f:
+                    reader = csv.DictReader(f)
+                    for row in reader:
+                        # Determine wine type from section
+                        section = row.get('section', '').lower()
+                        w_type = 'Red'
+                        if 'white' in section:
+                            w_type = 'White'
+                        elif 'sparkling' in section or 'champagne' in section:
+                            w_type = 'Sparkling'
+                        elif 'dessert' in section or 'sweet' in section:
+                            w_type = 'Dessert'
+                        elif 'rose' in section or 'rosé' in section:
+                            w_type = 'Rosé'
                         
-                        # Molecular properties (normalized to 0-10 scale)
-                        'acid': parse_float(row.get('acidity', '5'), default=5),
-                        'tannin': parse_float(row.get('tannin', '5'), default=5),
-                        'body': parse_float(row.get('body', '5'), default=5),
-                        'sugar': estimate_sugar(row.get('section', ''), row.get('wine_name', '')),
-                        
-                        # Pairing data
-                        'tags': parse_tags(row.get('pairing_tags', '')),
-                        'why': row.get('insider_note', 'Selected for its molecular compatibility.').strip(),
-                        
-                        # Metadata
-                        'restaurant': row.get('restaurant_id', '').strip(),
-                        'bottle_size': row.get('bottle_size', '750ml').strip()
-                    }
-                    
-                    wines.append(wine)
-                    
-                except Exception as e:
-                    # Skip malformed rows but continue
-                    continue
-        
-        print(f"✅ Loaded {len(wines)} wines from database")
-        return wines
-        
-    except Exception as e:
-        print(f"❌ Error loading database: {e}")
-        return []
-
-
-def parse_float(value: str, default: float = 0.0) -> float:
-    """Safely parse float from string."""
-    if not value or value.strip() == '':
-        return default
-    try:
-        return float(value.strip())
-    except (ValueError, AttributeError):
-        return default
-
-
-def parse_tags(tags_str: str) -> List[str]:
-    """Parse comma-separated tags into list."""
-    if not tags_str:
-        return []
+                        wines.append({
+                            'id': len(wines),
+                            'name': row.get('wine_name', '').strip(),
+                            'producer': row.get('producer', '').strip(),
+                            'price': float(row.get('price', 0) or 0),
+                            'type': w_type,
+                            'vintage': row.get('vintage', '').strip(),
+                            'acid': float(row.get('acidity', 5) or 5),
+                            'tannin': float(row.get('tannin', 5) or 5),
+                            'body': float(row.get('body', 5) or 5),
+                            'sugar': float(row.get('sweetness', 1) or 1),
+                            'tags': row.get('pairing_tags', '').lower(),
+                            'why': row.get('insider_note', '').strip()
+                        })
+                
+                _wine_cache = wines
+                print(f"✅ Loaded {len(wines)} wines from {path}")
+                return wines
+                
+            except Exception as e:
+                print(f"❌ CSV load error from {path}: {e}")
+                continue
     
-    # Clean and lowercase tags
-    tags = [tag.strip().lower().replace(' ', '_') for tag in tags_str.split(',')]
-    return [tag for tag in tags if tag]  # Remove empty strings
+    print("❌ No wine database found")
+    return []
 
+# =================================================================
+# DISH ANALYSIS
+# =================================================================
 
-def normalize_type(section: str) -> str:
-    """Normalize wine type from section field."""
-    section_lower = section.lower()
+def analyze_dish(food_input: str) -> Dict:
+    """
+    Analyze dish characteristics for pairing.
+    Returns profile dict with key properties.
+    """
+    f = food_input.lower()
     
-    if 'white' in section_lower or 'chardonnay' in section_lower:
-        return 'White'
-    elif 'red' in section_lower or 'burgundy' in section_lower or 'bordeaux' in section_lower:
-        return 'Red'
-    elif 'sparkling' in section_lower or 'champagne' in section_lower:
-        return 'Sparkling'
-    elif 'dessert' in section_lower or 'sweet' in section_lower or 'port' in section_lower:
-        return 'Dessert'
+    profile = {
+        'fat_level': 5,
+        'protein_level': 5,
+        'sweetness_level': 1,
+        'acidity_level': 3,
+        'umami_level': 3,
+        'is_dessert': False,
+        'is_delicate': False,
+        'has_seafood': False,
+        'has_red_meat': False,
+        'has_spice': False
+    }
+    
+    # Dessert detection
+    if any(w in f for w in ['cake', 'chocolate', 'dessert', 'ice cream', 'tart', 'pie']):
+        profile.update({
+            'is_dessert': True,
+            'sweetness_level': 9
+        })
+    
+    # Red meat detection
+    elif any(w in f for w in ['steak', 'beef', 'lamb', 'ribeye', 'wagyu', 'veal']):
+        profile.update({
+            'has_red_meat': True,
+            'protein_level': 9,
+            'fat_level': 8
+        })
+    
+    # Seafood detection
+    elif any(w in f for w in ['fish', 'oyster', 'scallop', 'lobster', 'crab', 'shrimp', 'salmon', 'tuna', 'bass', 'halibut']):
+        profile.update({
+            'has_seafood': True,
+            'is_delicate': True,
+            'protein_level': 7,
+            'fat_level': 3
+        })
+    
+    # Poultry
+    elif any(w in f for w in ['chicken', 'duck', 'turkey']):
+        profile.update({
+            'protein_level': 7,
+            'fat_level': 6
+        })
+    
+    # Rich/fatty foods
+    if any(w in f for w in ['cream', 'butter', 'cheese', 'carbonara', 'alfredo']):
+        profile['fat_level'] = min(10, profile['fat_level'] + 3)
+    
+    # Spicy foods
+    if any(w in f for w in ['spicy', 'hot', 'chili', 'jalapeño']):
+        profile['has_spice'] = True
+    
+    # Acidic foods
+    if any(w in f for w in ['tomato', 'lemon', 'vinegar', 'citrus']):
+        profile['acidity_level'] = 7
+    
+    return profile
+
+# =================================================================
+# WINE SCORING
+# =================================================================
+
+def score_wine(wine: Dict, dish_profile: Dict) -> float:
+    """
+    Score how well a wine pairs with a dish profile.
+    Returns score 0-100.
+    """
+    score = 0.0
+    
+    fat = dish_profile['fat_level']
+    protein = dish_profile['protein_level']
+    is_dessert = dish_profile['is_dessert']
+    has_seafood = dish_profile['has_seafood']
+    has_red_meat = dish_profile['has_red_meat']
+    has_spice = dish_profile['has_spice']
+    
+    # Rule 1: Fat needs Acid (most important for rich dishes)
+    if fat >= 7:
+        if wine['acid'] >= 7:
+            score += 30
+        elif wine['acid'] >= 5:
+            score += 15
+        else:
+            score -= 10
+    
+    # Rule 2: Protein needs Tannin (especially red meat)
+    if protein >= 7:
+        if wine['type'] == 'Red' and wine['tannin'] >= 7:
+            score += 30
+        elif wine['type'] == 'Red' and wine['tannin'] >= 5:
+            score += 15
+    
+    # Rule 3: Sweetness matching
+    if is_dessert:
+        if wine['sugar'] >= 6:
+            score += 40  # Sweet wine with dessert
+        else:
+            score -= 30  # Dry wine with dessert
     else:
-        # Default to Red if unclear
-        return 'Red'
-
-
-def estimate_sugar(section: str, wine_name: str) -> float:
-    """
-    Estimate sugar content based on wine type.
+        # Savory food
+        if wine['sugar'] >= 6:
+            score -= 20  # Sweet wine with savory food
+        else:
+            score += 10  # Dry wine with savory food
     
-    Returns:
-        Sugar level 0-10 (0 = bone dry, 10 = very sweet)
-    """
-    section_lower = section.lower()
-    name_lower = wine_name.lower()
+    # Rule 4: Seafood preferences
+    if has_seafood:
+        if wine['type'] in ['White', 'Sparkling']:
+            score += 25
+        elif wine['type'] == 'Red':
+            score -= 20  # Red wine with delicate fish
     
-    # Dessert wines
-    if any(word in section_lower or word in name_lower for word in ['dessert', 'port', 'sauternes', 'tokaji']):
-        return 8.0
+    # Rule 5: Red meat preferences
+    if has_red_meat:
+        if wine['type'] == 'Red':
+            score += 20
+        elif wine['type'] == 'White':
+            score -= 10
     
-    # Off-dry wines
-    if any(word in section_lower or word in name_lower for word in ['riesling', 'moscato', 'vouvray']):
-        # Check for dry indicators
-        if 'brut' in name_lower or 'sec' in name_lower:
-            return 1.0
-        return 3.0  # Assume off-dry Riesling
+    # Rule 6: Spicy food
+    if has_spice:
+        if wine['sugar'] >= 3:
+            score += 15  # Slight sweetness helps with spice
+        if wine['tannin'] <= 4:
+            score += 10  # Low tannin better with spice
     
-    # Sparkling
-    if 'sparkling' in section_lower or 'champagne' in section_lower:
-        return 1.0  # Most Champagne is brut (dry)
-    
-    # Default: dry table wine
-    return 1.0
-
+    # Ensure non-negative
+    return max(0, score)
 
 # =================================================================
-# FOOD CHEMISTRY ANALYZER
+# SINGLE DISH RECOMMENDATION (V1.0 Compatible)
 # =================================================================
 
-class FoodAnalyzer:
+def get_recommendation(food_input: str, budget: int = 1000) -> Dict:
     """
-    Analyzes dish input to determine structural needs.
-    
-    The Golden Rules:
-    - High Protein → Needs High Tannin
-    - High Fat → Needs High Acid
-    - Spicy/Heat → Needs Low Alcohol + Some Sugar
-    - Sweet Dish → Needs Equal/Greater Sweetness
-    - Delicate/Light → Needs Low Tannin
-    - Rich/Heavy → Needs Structure
+    Get wine recommendation for a single dish.
+    V1.0 compatible endpoint.
     """
+    wines = load_wines()
     
-    PROTEIN_KEYWORDS = [
-        'steak', 'beef', 'ribeye', 'sirloin', 'filet', 'meat', 'lamb', 
-        'venison', 'game', 'duck', 'pork', 'veal', 'burger', 'brisket',
-        'wagyu', 'prime rib', 'tenderloin'
-    ]
-    
-    FAT_KEYWORDS = [
-        'fatty', 'rich', 'cream', 'butter', 'cheese', 'foie gras', 
-        'fried', 'crispy', 'duck', 'pork belly', 'bacon', 'oil',
-        'lobster', 'bisque'
-    ]
-    
-    SPICY_KEYWORDS = [
-        'spicy', 'hot', 'chili', 'pepper', 'curry', 'thai', 'szechuan',
-        'jalapeño', 'habanero', 'wasabi', 'horseradish', 'vodka sauce'
-    ]
-    
-    SWEET_KEYWORDS = [
-        'dessert', 'chocolate', 'cake', 'sweet', 'caramel', 'honey',
-        'fruit', 'tart', 'pie', 'pastry', 'sugar', 'cheesecake'
-    ]
-    
-    DELICATE_KEYWORDS = [
-        'oyster', 'shellfish', 'delicate', 'light', 'salad', 'vegetable',
-        'fish', 'sole', 'halibut', 'sea bass', 'scallop', 'ceviche',
-        'dover sole', 'turbot'
-    ]
-    
-    ACIDIC_KEYWORDS = [
-        'tomato', 'citrus', 'lemon', 'vinegar', 'pickled', 'ceviche',
-        'acidic', 'tart', 'sour', 'marinara', 'pomodoro'
-    ]
-    
-    EARTHY_KEYWORDS = [
-        'mushroom', 'truffle', 'earthy', 'forest', 'umami', 'aged cheese',
-        'porcini', 'morel', 'girolles'
-    ]
-    
-    def analyze(self, dish_name: str) -> Dict:
-        """
-        Analyzes dish to determine chemical needs.
-        
-        Args:
-            dish_name: Name/description of the dish
-        
-        Returns:
-            Dictionary of structural requirements
-        """
-        dish_lower = dish_name.lower()
-        
-        # Detect food properties
-        has_protein = any(kw in dish_lower for kw in self.PROTEIN_KEYWORDS)
-        has_fat = any(kw in dish_lower for kw in self.FAT_KEYWORDS)
-        has_spice = any(kw in dish_lower for kw in self.SPICY_KEYWORDS)
-        has_sweet = any(kw in dish_lower for kw in self.SWEET_KEYWORDS)
-        is_delicate = any(kw in dish_lower for kw in self.DELICATE_KEYWORDS)
-        has_acid = any(kw in dish_lower for kw in self.ACIDIC_KEYWORDS)
-        is_earthy = any(kw in dish_lower for kw in self.EARTHY_KEYWORDS)
-        
-        # Determine structural needs
-        needs = {
-            'min_tannin': 0,
-            'max_tannin': 10,
-            'min_acid': 0,
-            'max_acid': 10,
-            'min_body': 0,
-            'max_body': 10,
-            'min_sugar': 0,
-            'max_sugar': 10,
-            'tags': [],
-            'reasoning': []
-        }
-        
-        # Rule 1: High Protein → Needs High Tannin
-        if has_protein:
-            needs['min_tannin'] = 6
-            needs['reasoning'].append("High protein requires tannin to bind")
-            needs['tags'].extend(['beef', 'lamb', 'red_meat', 'steak'])
-        
-        # Rule 2: High Fat → Needs High Acid
-        if has_fat:
-            needs['min_acid'] = 6
-            needs['reasoning'].append("Fat requires acid to cut richness")
-        
-        # Rule 3: Spicy → Low Alcohol, Some Sugar
-        if has_spice:
-            needs['max_tannin'] = 4  # Tannin amplifies heat
-            needs['min_sugar'] = 2
-            needs['reasoning'].append("Spice requires low tannin and residual sugar")
-            needs['tags'].extend(['spicy', 'asian'])
-        
-        # Rule 4: Sweet → Needs Equal/Greater Sweetness
-        if has_sweet:
-            needs['min_sugar'] = 6
-            needs['max_tannin'] = 3  # Dry tannins taste bitter with sugar
-            needs['reasoning'].append("Sweetness requires equal or greater wine sweetness")
-            needs['tags'].extend(['dessert', 'chocolate', 'sweet'])
-        
-        # Rule 5: Delicate → Low Tannin, Lighter Body
-        if is_delicate:
-            needs['max_tannin'] = 3
-            needs['max_body'] = 6
-            needs['reasoning'].append("Delicate flavors require gentle wine structure")
-            needs['tags'].extend(['seafood', 'oysters', 'shellfish'])
-        
-        # Rule 6: Acidic Food → Match Acid or Go Higher
-        if has_acid:
-            needs['min_acid'] = 7
-            needs['reasoning'].append("Acidic food requires matching wine acidity")
-            needs['tags'].extend(['tomato', 'citrus', 'acidic_sauce'])
-        
-        # Rule 7: Earthy/Umami → Match Complexity
-        if is_earthy:
-            needs['min_body'] = 6
-            needs['reasoning'].append("Earthy flavors pair with complex, aged wines")
-            needs['tags'].extend(['mushroom', 'truffle', 'earthy'])
-        
-        # Default: If nothing detected, suggest versatile medium wines
-        if not any([has_protein, has_fat, has_spice, has_sweet, is_delicate, has_acid, is_earthy]):
-            needs['min_acid'] = 5
-            needs['max_tannin'] = 6
-            needs['reasoning'].append("Versatile pairing for balanced dish")
-        
-        return needs
-
-
-# =================================================================
-# PAIRING ENGINE
-# =================================================================
-
-class PairingEngine:
-    """
-    Scores and ranks wines based on food chemistry compatibility.
-    Uses the FULL 14,651-wine database.
-    """
-    
-    def __init__(self):
-        self.wines = load_wines()
-        self.analyzer = FoodAnalyzer()
-        print(f"🧠 Pairing engine initialized with {len(self.wines)} wines")
-    
-    def score_wine(self, wine: Dict, needs: Dict) -> Tuple[float, str]:
-        """
-        Scores a wine's compatibility with food needs.
-        
-        Args:
-            wine: Wine dictionary
-            needs: Food chemistry requirements
-        
-        Returns:
-            Tuple of (score, reasoning)
-        """
-        score = 100.0  # Start at perfect
-        reasons = []
-        
-        # Check tannin compatibility
-        if wine['tannin'] < needs['min_tannin']:
-            penalty = (needs['min_tannin'] - wine['tannin']) * 10
-            score -= penalty
-            reasons.append(f"insufficient tannin (-{penalty:.0f})")
-        elif wine['tannin'] > needs['max_tannin']:
-            penalty = (wine['tannin'] - needs['max_tannin']) * 10
-            score -= penalty
-            reasons.append(f"excessive tannin (-{penalty:.0f})")
-        
-        # Check acidity compatibility
-        if wine['acid'] < needs['min_acid']:
-            penalty = (needs['min_acid'] - wine['acid']) * 8
-            score -= penalty
-            reasons.append(f"insufficient acidity (-{penalty:.0f})")
-        elif wine['acid'] > needs['max_acid']:
-            penalty = (wine['acid'] - needs['max_acid']) * 5
-            score -= penalty
-        
-        # Check body compatibility
-        if wine['body'] < needs['min_body']:
-            penalty = (needs['min_body'] - wine['body']) * 6
-            score -= penalty
-            reasons.append(f"too light (-{penalty:.0f})")
-        elif wine['body'] > needs['max_body']:
-            penalty = (wine['body'] - needs['max_body']) * 6
-            score -= penalty
-            reasons.append(f"too heavy (-{penalty:.0f})")
-        
-        # Check sweetness compatibility
-        if wine['sugar'] < needs['min_sugar']:
-            penalty = (needs['min_sugar'] - wine['sugar']) * 12
-            score -= penalty
-            reasons.append(f"insufficient sweetness (-{penalty:.0f})")
-        
-        # Bonus for tag matches
-        wine_tags = set(wine.get('tags', []))
-        need_tags = set(needs.get('tags', []))
-        tag_matches = wine_tags & need_tags
-        
-        if tag_matches:
-            bonus = len(tag_matches) * 15
-            score += bonus
-            reasons.append(f"tag matches: {', '.join(tag_matches)} (+{bonus})")
-        
-        # Ensure score doesn't go below 0
-        score = max(0, score)
-        
-        return score, '; '.join(reasons) if reasons else 'perfect compatibility'
-    
-    def get_recommendation(self, dish_name: str, budget: int = 10000) -> Dict:
-        """
-        Gets best wine recommendation for a dish from FULL database.
-        
-        Args:
-            dish_name: Name/description of the dish
-            budget: Maximum price
-        
-        Returns:
-            Dictionary with recommendation and reasoning
-        """
-        # Analyze food chemistry
-        needs = self.analyzer.analyze(dish_name)
-        
-        # Filter wines by budget (allow 20% over budget for flexibility)
-        affordable_wines = [w for w in self.wines if w['price'] <= budget * 1.2]
-        
-        if not affordable_wines:
-            return {
-                "success": False,
-                "message": f"No wines found under ${budget}. Lowest price in cellar: ${min(w['price'] for w in self.wines):.0f}"
-            }
-        
-        # Score all wines
-        scored_wines = []
-        for wine in affordable_wines:
-            score, reason = self.score_wine(wine, needs)
-            scored_wines.append({
-                'wine': wine,
-                'score': score,
-                'reason': reason
-            })
-        
-        # Sort by score (highest first)
-        scored_wines.sort(key=lambda x: x['score'], reverse=True)
-        
-        # Get best match
-        best = scored_wines[0]
-        
+    if not wines:
         return {
-            "success": True,
-            "dish": dish_name,
-            "wine": {
-                "wine_name": best['wine']['name'],
-                "producer": best['wine']['producer'],
-                "type": best['wine']['type'],
-                "price": best['wine']['price'],
-                "score": round(best['score'], 1),
-                "vintage": best['wine']['vintage']
-            },
-            "reasoning": {
-                "chemistry": needs['reasoning'],
-                "why": best['wine']['why'],
-                "compatibility": best['reason']
-            },
-            "alternatives": [
-                {
-                    "name": alt['wine']['name'],
-                    "producer": alt['wine']['producer'],
-                    "price": alt['wine']['price'],
-                    "score": round(alt['score'], 1)
-                }
-                for alt in scored_wines[1:4]  # Top 3 alternatives
-            ]
+            "success": False,
+            "error": "Wine database not available"
         }
-
+    
+    dish_profile = analyze_dish(food_input)
+    
+    # Score all affordable wines
+    candidates = []
+    for wine in wines:
+        if wine['price'] <= budget * 1.1:  # Allow 10% over budget
+            wine_score = score_wine(wine, dish_profile)
+            if wine_score > 0:
+                candidates.append({
+                    'wine': wine,
+                    'score': wine_score
+                })
+    
+    # Sort by score
+    candidates.sort(key=lambda x: x['score'], reverse=True)
+    
+    if not candidates:
+        return {
+            "success": False,
+            "message": "No suitable wines found within budget"
+        }
+    
+    best = candidates[0]['wine']
+    
+    # Generate luxury content
+    luxury = {}
+    if LUXURY_MODE:
+        try:
+            story = narrator.generate_pairing_story(
+                wine_name=best['name'],
+                wine_type=best['type'],
+                dish_name=food_input,
+                wine_properties={
+                    'acidity': best['acid'],
+                    'tannin': best['tannin'],
+                    'body': best['body']
+                }
+            )
+            
+            starters = generate_conversation_starters(
+                wine_name=best['name'],
+                producer=best['producer'],
+                wine_type=best['type'],
+                price=best['price']
+            )
+            
+            luxury = {
+                'pairing_note': story,
+                'conversation_starters': starters
+            }
+        except Exception as e:
+            print(f"⚠️ Luxury content generation failed: {e}")
+            luxury = {
+                'pairing_note': f"This {best['type']} wine pairs excellently with {food_input}.",
+                'conversation_starters': []
+            }
+    
+    return {
+        "success": True,
+        "wine": {
+            "wine_name": best['name'],
+            "producer": best['producer'],
+            "price": best['price'],
+            "type": best['type'],
+            "score": candidates[0]['score']
+        },
+        "luxury": luxury,
+        "reasoning": {
+            "why": best['why']
+        }
+    }
 
 # =================================================================
-# SINGLETON INSTANCE
+# V2.0: TABLE/GROUP PROGRESSION LOGIC
 # =================================================================
-pairing_engine = PairingEngine()
 
-
-# =================================================================
-# MODULE-LEVEL API (for main.py imports)
-# =================================================================
-def get_recommendation(dish_name: str, budget: int = 10000) -> Dict:
+def classify_dish_type(dish_name: str) -> Dict:
     """
-    Module-level wrapper for main.py imports.
+    Classify dish for grouping into courses.
+    Returns type, wine preference, and weight (1-10).
+    """
+    d = dish_name.lower()
+    
+    # Light/delicate foods
+    if any(x in d for x in ['oyster', 'ceviche', 'carpaccio', 'salad', 'vegetable', 'soup']):
+        return {'type': 'light', 'pref': 'white', 'weight': 2}
+    
+    # Seafood (generally light-medium)
+    if any(x in d for x in ['fish', 'tuna', 'salmon', 'scallop', 'lobster', 'crab', 'halibut', 'bass']):
+        return {'type': 'seafood', 'pref': 'white', 'weight': 4}
+    
+    # Poultry (medium)
+    if any(x in d for x in ['chicken', 'turkey', 'veal']):
+        return {'type': 'poultry', 'pref': 'versatile', 'weight': 6}
+    
+    # Rich poultry/game
+    if any(x in d for x in ['duck', 'quail', 'venison']):
+        return {'type': 'game', 'pref': 'red', 'weight': 7}
+    
+    # Red meat (heavy)
+    if any(x in d for x in ['steak', 'beef', 'lamb', 'ribeye', 'wagyu', 'short rib']):
+        return {'type': 'red_meat', 'pref': 'red', 'weight': 9}
+    
+    # Pasta (depends on sauce)
+    if 'pasta' in d or 'risotto' in d:
+        if any(x in d for x in ['cream', 'carbonara', 'alfredo']):
+            return {'type': 'rich_pasta', 'pref': 'white', 'weight': 5}
+        elif any(x in d for x in ['ragu', 'bolognese', 'meat']):
+            return {'type': 'meat_pasta', 'pref': 'red', 'weight': 7}
+        else:
+            return {'type': 'pasta', 'pref': 'versatile', 'weight': 5}
+    
+    # Default: medium weight, versatile
+    return {'type': 'medium', 'pref': 'versatile', 'weight': 5}
+
+def group_dishes(dishes: List[str], bottle_count: int) -> List[List[Dict]]:
+    """
+    Group dishes into courses based on weight and wine compatibility.
+    Returns list of dish groups (one group per bottle).
+    """
+    # Classify all dishes
+    classified = [{'name': d, **classify_dish_type(d)} for d in dishes]
+    
+    if bottle_count == 1:
+        # All dishes in one group
+        return [classified]
+    
+    elif bottle_count == 2:
+        # Split into light vs heavy
+        light = [d for d in classified if d['weight'] <= 5]
+        heavy = [d for d in classified if d['weight'] > 5]
+        
+        # Handle edge cases
+        if not light and not heavy:
+            return [classified]
+        elif not light:
+            # All heavy: split in half
+            mid = len(heavy) // 2
+            return [heavy[:mid], heavy[mid:]]
+        elif not heavy:
+            # All light: split in half
+            mid = len(light) // 2
+            return [light[:mid], light[mid:]]
+        else:
+            # Normal case: light first, heavy second
+            return [light, heavy]
+    
+    elif bottle_count == 3:
+        # Sort by weight and split into thirds
+        sorted_dishes = sorted(classified, key=lambda x: x['weight'])
+        
+        third = max(1, len(sorted_dishes) // 3)
+        
+        group1 = sorted_dishes[:third]
+        group2 = sorted_dishes[third:third*2]
+        group3 = sorted_dishes[third*2:]
+        
+        return [group1, group2, group3]
+    
+    else:
+        # Fallback
+        return [classified]
+
+def score_wine_for_group(wine: Dict, dish_group: List[Dict]) -> float:
+    """
+    Score wine for MULTIPLE dishes (table pairing).
+    Returns average compatibility score.
+    """
+    if not dish_group:
+        return 0.0
+    
+    scores = []
+    for dish in dish_group:
+        profile = analyze_dish(dish['name'])
+        dish_score = score_wine(wine, profile)
+        scores.append(dish_score)
+    
+    # Calculate average
+    avg_score = statistics.mean(scores)
+    
+    # Penalty if wine fails badly with any dish
+    min_score = min(scores)
+    if min_score < 20:
+        avg_score -= 20  # Significant penalty for poor compatibility
+    
+    return max(0, avg_score)
+
+def generate_progression(dishes: List[str], bottle_count: int, budget: int) -> Dict:
+    """
+    Generate wine progression for table/group dining.
     
     Args:
-        dish_name: Name/description of the dish
-        budget: Maximum price
+        dishes: List of dish names
+        bottle_count: Number of bottles (1-3)
+        budget: Total budget for all bottles
     
     Returns:
-        Dictionary with recommendation and reasoning
+        Progression dict with courses and wine recommendations
     """
-    return pairing_engine.get_recommendation(dish_name, budget)
-
-
-# =================================================================
-# TESTING
-# =================================================================
-if __name__ == "__main__":
-    print("="*80)
-    print("TESTING PAIRING ENGINE WITH FULL 14,651-WINE DATABASE")
-    print("="*80)
+    wines = load_wines()
     
-    test_dishes = [
-        ("Ribeye Steak", 500),
-        ("Oysters on the Half Shell", 300),
-        ("Spicy Thai Curry", 150),
-        ("Chocolate Fondant", 400),
-        ("Truffle Risotto", 600)
-    ]
+    if not wines:
+        return {
+            "success": False,
+            "error": "Wine database not available"
+        }
     
-    for dish, budget in test_dishes:
-        print(f"\n{'='*80}")
-        print(f"Dish: {dish} | Budget: ${budget}")
-        print('='*80)
+    # Group dishes intelligently
+    groups = group_dishes(dishes, bottle_count)
+    
+    # Budget per bottle
+    budget_per_bottle = budget // bottle_count
+    
+    progression = []
+    used_ids = set()
+    
+    for i, group in enumerate(groups):
+        candidates = []
+        dish_names = [d['name'] for d in group]
         
-        result = pairing_engine.get_recommendation(dish, budget=budget)
+        # Score all affordable wines for this group
+        for wine in wines:
+            if wine['id'] in used_ids:
+                continue
+            if wine['price'] > budget_per_bottle * 1.2:  # Allow 20% over
+                continue
+            
+            group_score = score_wine_for_group(wine, group)
+            
+            if group_score > 0:
+                candidates.append({
+                    'wine': wine,
+                    'score': group_score
+                })
         
-        if result['success']:
-            print(f"\n✅ Recommended: {result['wine']['wine_name']}")
-            print(f"   Producer: {result['wine']['producer']}")
-            print(f"   Vintage: {result['wine']['vintage']}")
-            print(f"   Type: {result['wine']['type']}")
-            print(f"   Price: ${result['wine']['price']}")
-            print(f"   Score: {result['wine']['score']}/100")
-            print(f"\n💡 Chemistry:")
-            for reason in result['reasoning']['chemistry']:
-                print(f"   • {reason}")
-            print(f"\n📖 Why: {result['reasoning']['why']}")
-        else:
-            print(f"❌ {result['message']}")
+        # Sort by score
+        candidates.sort(key=lambda x: x['score'], reverse=True)
+        
+        if not candidates:
+            # No wines found for this group
+            continue
+        
+        # Select best wine
+        best = candidates[0]['wine']
+        used_ids.add(best['id'])
+        
+        # Generate luxury content
+        luxury = {}
+        if LUXURY_MODE:
+            try:
+                combined_dishes = " + ".join(dish_names)
+                
+                note = narrator.generate_pairing_story(
+                    wine_name=best['name'],
+                    wine_type=best['type'],
+                    dish_name=combined_dishes,
+                    wine_properties={
+                        'acidity': best['acid'],
+                        'tannin': best['tannin'],
+                        'body': best['body']
+                    }
+                )
+                
+                starters = generate_conversation_starters(
+                    wine_name=best['name'],
+                    producer=best['producer'],
+                    wine_type=best['type'],
+                    price=best['price']
+                )
+                
+                luxury = {
+                    'pairing_note': note,
+                    'conversation_starters': starters
+                }
+            except Exception as e:
+                print(f"⚠️ Luxury content error for course {i+1}: {e}")
+                luxury = {
+                    'pairing_note': f"This {best['type']} wine complements all dishes in this course.",
+                    'conversation_starters': []
+                }
+        
+        # Determine course name
+        course_name = "Opening Course" if i == 0 else "Main Course"
+        if i == len(groups) - 1:
+            course_name = "Grand Finale"
+        
+        # Build course entry
+        progression.append({
+            "course_number": i + 1,
+            "course_name": course_name,
+            "dishes": dish_names,
+            "dish_count": len(dish_names),
+            "primary": {
+                "wine_name": best['name'],
+                "producer": best['producer'],
+                "price": best['price'],
+                "type": best['type'],
+                "compatibility_score": round(candidates[0]['score'], 1)
+            },
+            "luxury": luxury,
+            "alternatives": [
+                {
+                    "wine_name": x['wine']['name'],
+                    "producer": x['wine']['producer'],
+                    "price": x['wine']['price'],
+                    "type": x['wine']['type'],
+                    "compatibility_score": round(x['score'], 1)
+                }
+                for x in candidates[1:3]  # Top 2 alternatives
+            ]
+        })
     
-    print("\n" + "="*80)
-    print(f"✅ PAIRING ENGINE TEST COMPLETE - {len(pairing_engine.wines)} wines active")
-    print("="*80)
+    return {
+        "success": True,
+        "bottle_count": bottle_count,
+        "total_budget": budget,
+        "budget_per_bottle": budget_per_bottle,
+        "progression": progression,
+        "pairing_philosophy": f"Table pairing for {len(dishes)} dishes across {bottle_count} bottle(s)"
+    }
