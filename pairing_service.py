@@ -1,14 +1,14 @@
 """
-VELORA PAIRING SERVICE - V3.2 FINAL MERGE
-✅ FIX: Added total_cost and budget_utilization (Claude's Finding)
-✅ LOGIC: Uses divmod grouping to prevent "1 Bottle" bug (Gemini's Fix)
-✅ BUDGET: Uses tiered fallback to prevent "Zero Results" (Gemini's Fix)
+VELORA PAIRING SERVICE - V3.2 PRODUCTION (Gemini Merge + Claude Fixes)
+✅ Grouping Logic: divmod distribution (prevents 1-bottle bug)
+✅ Budget Strategy: Tiered fallback (prevents zero results)
+✅ Cost Tracking: total_cost + budget_utilization (Claude's fix)
+✅ Quality Checks: Filters bad data
+✅ Cuisine Awareness: Riesling boost for Asian food
 """
 import csv
 import os
-import statistics
-import math
-from typing import List, Dict, Tuple
+from typing import List, Dict
 from functools import lru_cache
 
 # Import Luxury Modules
@@ -20,13 +20,15 @@ except ImportError:
     LUXURY_MODE = False
 
 # =================================================================
-# 1. DATABASE LOADER
+# DATABASE LOADER
 # =================================================================
 _wine_cache = None
 
 def load_wines() -> List[Dict]:
+    """Load wine database with quality filtering"""
     global _wine_cache
-    if _wine_cache: return _wine_cache
+    if _wine_cache:
+        return _wine_cache
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
     paths = [
@@ -41,12 +43,26 @@ def load_wines() -> List[Dict]:
                 with open(path, 'r', encoding='utf-8-sig') as f:
                     reader = csv.DictReader(f)
                     for row in reader:
-                        if not row.get('price') or not row.get('wine_name'): continue
+                        # Quality check: skip invalid entries
+                        if not row.get('price') or not row.get('wine_name'):
+                            continue
+                        
+                        wine_name = row.get('wine_name', '').strip()
+                        if not wine_name or wine_name.lower() == 'unknown':
+                            continue
+                        
+                        try:
+                            price = float(row.get('price', 0))
+                            if price <= 0:
+                                continue
+                        except:
+                            continue
+                        
                         wines.append({
-                            'id': len(wines), 
-                            'name': row.get('wine_name', '').strip(),
+                            'id': len(wines),
+                            'name': wine_name,
                             'producer': row.get('producer', '').strip(),
-                            'price': float(row.get('price', 0)),
+                            'price': price,
                             'type': row.get('section', 'Red'),
                             'acid': float(row.get('acidity', 5) or 5),
                             'tannin': float(row.get('tannin', 5) or 5),
@@ -54,45 +70,100 @@ def load_wines() -> List[Dict]:
                             'sugar': float(row.get('sweetness', 1) or 1),
                             'why': row.get('insider_note', '')
                         })
+                
                 _wine_cache = wines
+                print(f"✅ Loaded {len(wines)} wines")
                 return wines
-            except Exception: pass
+            except Exception as e:
+                print(f"❌ Error loading wines: {e}")
+                continue
+    
+    print(f"❌ No wine database found")
     return []
 
 # =================================================================
-# 2. ANALYSIS LOGIC
+# DISH ANALYSIS
 # =================================================================
 def analyze_dish(food_input: str) -> Dict:
+    """Analyze dish characteristics for pairing"""
     f = food_input.lower()
-    is_asian = any(x in f for x in ['soy', 'ginger', 'curry', 'thai', 'spicy'])
+    
+    # Cuisine detection
+    is_asian = any(x in f for x in ['soy', 'ginger', 'curry', 'thai', 'chinese', 
+                                     'indian', 'korean', 'japanese', 'szechuan',
+                                     'peking', 'tandoori', 'kimchi'])
+    
     return {
-        'fat_level': 8 if any(x in f for x in ['steak', 'rib', 'pork', 'foie']) else 5, 
-        'protein_level': 8 if any(x in f for x in ['steak', 'beef', 'lamb']) else 5, 
-        'is_dessert': any(x in f for x in ['cake', 'chocolate', 'ice cream']), 
-        'has_seafood': any(x in f for x in ['fish', 'oyster', 'scallop', 'crab']),
-        'is_spicy': 'spicy' in f,
+        'fat_level': 8 if any(x in f for x in ['steak', 'rib', 'pork', 'foie gras', 'butter']) else 5,
+        'protein_level': 8 if any(x in f for x in ['steak', 'beef', 'lamb', 'wagyu']) else 5,
+        'is_dessert': any(x in f for x in ['cake', 'chocolate', 'ice cream', 'tart', 'dessert']),
+        'has_seafood': any(x in f for x in ['fish', 'oyster', 'scallop', 'crab', 'lobster', 'octopus']),
+        'is_spicy': any(x in f for x in ['spicy', 'chili', 'hot', 'vindaloo']),
         'is_asian': is_asian,
         'name': food_input
     }
 
 def score_wine(wine: Dict, dish_profile: Dict) -> float:
-    score = 50
-    if dish_profile['has_seafood'] and 'White' in wine['type']: score += 30
-    if dish_profile['protein_level'] > 7 and 'Red' in wine['type']: score += 30
-    if dish_profile['is_asian'] and wine['sugar'] > 2 and wine['type'] == 'White': score += 25 # Riesling boost
-    if dish_profile['is_spicy'] and wine['tannin'] > 6: score -= 30 # Avoid high tannin with spice
-    return score
+    """Score wine for dish compatibility"""
+    score = 50  # Base score
+    
+    # Seafood pairing
+    if dish_profile['has_seafood']:
+        if 'White' in wine['type']:
+            score += 30
+        elif 'Red' in wine['type'] and wine['tannin'] > 6:
+            score -= 20  # Tannin clashes with seafood
+    
+    # Red meat pairing
+    if dish_profile['protein_level'] > 7:
+        if 'Red' in wine['type']:
+            score += 30
+            if wine['tannin'] >= 7:
+                score += 10  # High tannin good for fatty meat
+    
+    # Asian cuisine boost for Riesling
+    if dish_profile['is_asian']:
+        if 'Riesling' in wine['type'] or 'riesling' in wine['name'].lower():
+            score += 25
+        elif wine['type'] == 'White' and wine['sugar'] > 2:
+            score += 20  # Off-dry whites
+        elif 'Red' in wine['type'] and wine['tannin'] > 6:
+            score -= 30  # Heavy reds clash with Asian
+    
+    # Spicy food
+    if dish_profile['is_spicy']:
+        if wine['sugar'] > 2:
+            score += 20  # Off-dry helps with spice
+        if wine['tannin'] > 6:
+            score -= 30  # Tannin amplifies spice
+    
+    # Dessert
+    if dish_profile['is_dessert']:
+        if 'Dessert' in wine['type'] or wine['sugar'] >= 5:
+            score += 40
+        elif 'Sparkling' in wine['type']:
+            score += 15
+    
+    return max(score, 0)
 
-def group_dishes(dishes: List[str], bottle_count: int):
+# =================================================================
+# GROUPING LOGIC (Gemini's proven math)
+# =================================================================
+def group_dishes(dishes: List[str], bottle_count: int) -> List[List[Dict]]:
     """
-    CRITICAL LOGIC: Distribute dishes evenly across bottles.
-    Prevents the "1 Bottle" bug by forcing a split.
+    CRITICAL: Distribute dishes evenly across bottles using divmod
+    Prevents 1-bottle bug by forcing proper distribution
     """
-    if not dishes: return []
-    if len(dishes) < bottle_count:
-        return [[{'name': d} for d in dishes] for _ in range(bottle_count)]
-
+    if not dishes:
+        return []
+    
     classified = [{'name': d} for d in dishes]
+    
+    # Edge case: more bottles than dishes
+    if len(dishes) < bottle_count:
+        return [[classified[i % len(classified)]] for i in range(bottle_count)]
+    
+    # divmod distribution
     groups = []
     k, m = divmod(len(classified), bottle_count)
     
@@ -100,100 +171,183 @@ def group_dishes(dishes: List[str], bottle_count: int):
         start = i * k + min(i, m)
         end = (i + 1) * k + min(i + 1, m)
         groups.append(classified[start:end])
+    
     return groups
 
-def score_group(wine, dish_group):
-    if not dish_group: return 0
+def score_group(wine: Dict, dish_group: List[Dict]) -> float:
+    """Score wine for a group of dishes"""
+    if not dish_group:
+        return 0
+    
+    # Score based on dominant dish (first in group)
     return score_wine(wine, analyze_dish(dish_group[0]['name']))
 
 # =================================================================
-# 3. PROGRESSION ENGINE (With Cost Fixes)
+# MAIN PROGRESSION ENGINE
 # =================================================================
 def generate_progression(dishes: List[str], bottle_count: int, budget: int):
+    """
+    Generate wine progression for multiple dishes
+    V3.2: Complete merge of all fixes
+    """
     wines = load_wines()
-    if not wines: return {"success": False, "error": "Database error"}
+    if not wines:
+        return {"success": False, "error": "Wine database not available"}
     
+    if not dishes:
+        return {"success": False, "error": "No dishes provided"}
+    
+    if budget <= 0:
+        return {"success": False, "error": "Budget must be greater than $0"}
+    
+    if bottle_count <= 0:
+        return {"success": False, "error": "Bottle count must be at least 1"}
+    
+    # Group dishes
     groups = group_dishes(dishes, bottle_count)
     budget_per_bottle = budget // bottle_count
     
     progression = []
     used_ids = set()
-    used_producers = set()
+    used_producers = set()  # Diversity constraint
     
-    # Tiered Budget Strategy (V3.1)
-    budget_tiers = [1.05, 1.15, 1.50, float('inf')]
+    # TIERED BUDGET STRATEGY (Gemini's fix)
+    budget_tiers = [1.05, 1.15, 1.50, float('inf')]  # 5%, 15%, 50%, any
     
     for i, group in enumerate(groups):
         candidates = []
         dish_names = [d['name'] for d in group]
         dish_string = " + ".join(dish_names)
         
+        # Try progressively relaxed budgets
         for tier_mult in budget_tiers:
             max_price = budget_per_bottle * tier_mult
             
             for wine in wines:
-                if wine['id'] in used_ids: continue
-                if wine['producer'] in used_producers: continue
-                if wine['price'] > max_price: continue
+                if wine['id'] in used_ids:
+                    continue
+                if wine['price'] > max_price:
+                    continue
                 
-                score = score_group(wine, group)
+                # Score wine for this group
+                pairing_score = score_group(wine, group)
+                if pairing_score <= 0:
+                    continue
                 
-                # Value Bonus (V3.0)
+                # Value optimization
                 value_bonus = 500 / (wine['price'] + 1)
-                final_score = score + (value_bonus * 0.1)
+                final_score = pairing_score + (value_bonus * 0.1)
+                
+                # Diversity penalty (avoid duplicate producers)
+                if wine['producer'] in used_producers:
+                    final_score *= 0.7
                 
                 candidates.append({'wine': wine, 'score': final_score})
             
-            if candidates: break
-            
-        candidates.sort(key=lambda x: x['score'], reverse=True)
-        if not candidates: continue
+            if candidates:
+                break  # Found wines at this tier
         
+        # Sort by score
+        candidates.sort(key=lambda x: x['score'], reverse=True)
+        
+        if not candidates:
+            # Should never happen with inf tier, but just in case
+            continue
+        
+        # Select best wine
         best = candidates[0]['wine']
         used_ids.add(best['id'])
         used_producers.add(best['producer'])
         
-        # Luxury Content
+        # Generate luxury content
         luxury = {}
         if LUXURY_MODE:
             try:
-                note = narrator.generate_pairing_story(best['name'], best['type'], dish_string, {'acidity': best['acid'], 'body': best['body']})
-                starters = generate_conversation_starters(best['name'], best['producer'], best['type'], None, best['price'])
-                luxury = {'pairing_note': note, 'conversation_starters': starters}
-            except:
-                luxury = {'pairing_note': "A harmonious pairing.", 'conversation_starters': []}
-
-        # Alternatives
+                note = narrator.generate_pairing_story(
+                    wine_name=best['name'],
+                    wine_type=best['type'],
+                    dish_name=dish_string,
+                    wine_properties={
+                        'acidity': best['acid'],
+                        'body': best['body'],
+                        'tannin': best['tannin']
+                    }
+                )
+                starters = generate_conversation_starters(
+                    best['name'],
+                    best['producer'],
+                    best['type'],
+                    None,
+                    best['price']
+                )
+                luxury = {
+                    'pairing_note': note,
+                    'conversation_starters': starters
+                }
+            except Exception as e:
+                print(f"⚠️ AI content failed: {e}")
+                luxury = {
+                    'pairing_note': "A harmonious pairing.",
+                    'conversation_starters': []
+                }
+        else:
+            luxury = {
+                'pairing_note': "A harmonious pairing.",
+                'conversation_starters': []
+            }
+        
+        # Generate alternatives
         alternatives_data = []
-        for cand in candidates[1:3]:
+        for cand in candidates[1:3]:  # Next 2 best
             alt = cand['wine']
             alt_lux = {}
+            
             if LUXURY_MODE:
                 try:
-                    alt_note = narrator.generate_pairing_story(alt['name'], alt['type'], dish_string, {'acidity': alt['acid'], 'body': alt['body']})
-                    alt_starters = generate_conversation_starters(alt['name'], alt['producer'], alt['type'], None, alt['price'])
-                    alt_lux = {'pairing_note': alt_note, 'conversation_starters': alt_starters}
-                except: pass
+                    alt_note = narrator.generate_pairing_story(
+                        alt['name'],
+                        alt['type'],
+                        dish_string,
+                        {'acidity': alt['acid'], 'body': alt['body']}
+                    )
+                    alt_starters = generate_conversation_starters(
+                        alt['name'],
+                        alt['producer'],
+                        alt['type'],
+                        None,
+                        alt['price']
+                    )
+                    alt_lux = {
+                        'pairing_note': alt_note,
+                        'conversation_starters': alt_starters
+                    }
+                except:
+                    pass
             
             alternatives_data.append({
-                "wine_name": alt['name'], "producer": alt['producer'], "price": alt['price'],
+                "wine_name": alt['name'],
+                "producer": alt['producer'],
+                "price": alt['price'],
+                "type": alt['type'],
                 "pairing_note": alt_lux.get('pairing_note', ''),
                 "conversation_starters": alt_lux.get('conversation_starters', [])
             })
-
+        
         progression.append({
             "course_number": i + 1,
             "course_name": f"Course {i+1}",
             "dishes": dish_names,
             "primary": {
-                "wine_name": best['name'], "producer": best['producer'], 
-                "price": best['price'], "type": best['type']
+                "wine_name": best['name'],
+                "producer": best['producer'],
+                "price": best['price'],
+                "type": best['type']
             },
             "luxury": luxury,
             "alternatives": alternatives_data
         })
     
-    # CRITICAL FIX: Calculate totals (Claude's Contribution)
+    # CRITICAL FIX: Calculate total cost (Claude's contribution)
     total_cost = sum(c['primary']['price'] for c in progression)
     budget_utilization = round((total_cost / budget * 100), 1) if budget > 0 else 0
     
@@ -201,5 +355,34 @@ def generate_progression(dishes: List[str], bottle_count: int, budget: int):
         "success": True,
         "progression": progression,
         "total_cost": total_cost,
-        "budget_utilization": budget_utilization
+        "budget_utilization": budget_utilization,
+        "bottle_count": bottle_count,
+        "total_budget": budget
+    }
+
+# =================================================================
+# LEGACY SUPPORT (for old /consult endpoint)
+# =================================================================
+def get_recommendation(food_input: str, budget: int = 1000):
+    """Single dish recommendation (legacy endpoint)"""
+    result = generate_progression(
+        dishes=[food_input],
+        bottle_count=1,
+        budget=budget
+    )
+    
+    if not result.get('success'):
+        return result
+    
+    # Convert to old format
+    course = result['progression'][0]
+    return {
+        "success": True,
+        "wine": course['primary']['wine_name'],
+        "producer": course['primary']['producer'],
+        "price": course['primary']['price'],
+        "type": course['primary']['type'],
+        "pairing_note": course['luxury']['pairing_note'],
+        "conversation_starters": course['luxury']['conversation_starters'],
+        "alternatives": course['alternatives']
     }
