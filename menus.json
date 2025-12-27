@@ -1,0 +1,92 @@
+{
+  "carbone": {
+    "id": "carbone",
+    "name": "Carbone",
+    "location": "New York, NY",
+    "cuisine": "Italian-American",
+    "price_range": "$$$$",
+    "menus": {
+      "lunch": {
+        "Antipasti": [
+          {"id": "c1", "name": "Caesar Salad", "price": 26, "description": "Classic romaine, parmesan"},
+          {"id": "c2", "name": "Carpaccio Piemontese", "price": 32, "description": "Truffle, walnut, mushroom"}
+        ],
+        "Primi": [
+          {"id": "c3", "name": "Spicy Rigatoni Vodka", "price": 34, "description": "Onions, cream, chili"},
+          {"id": "c4", "name": "Tortellini al Ragu", "price": 36, "description": "Bolognese style"}
+        ]
+      },
+      "dinner": {
+        "Antipasti": [
+          {"id": "c1", "name": "Caesar Salad", "price": 26, "description": "Classic romaine, parmesan"},
+          {"id": "c5", "name": "Oysters", "price": 45, "description": "Daily selection"},
+          {"id": "c8", "name": "Lobster Fra Diavolo", "price": 52, "description": "Spicy tomato, fresh herbs"}
+        ],
+        "Primi": [
+          {"id": "c3", "name": "Spicy Rigatoni Vodka", "price": 38, "description": "Onions, cream, chili"},
+          {"id": "c9", "name": "Spaghetti Carbonara", "price": 42, "description": "Guanciale, egg yolk"}
+        ],
+        "Secondi": [
+          {"id": "c6", "name": "Veal Parmesan", "price": 58, "description": "Bone-in veal chop"},
+          {"id": "c7", "name": "Dover Sole", "price": 85, "description": "Lemon, butter, capers"},
+          {"id": "c10", "name": "Wagyu Ribeye", "price": 198, "description": "18oz A5 Japanese wagyu"}
+        ]
+      }
+    }
+  },
+  "lebernard": {
+    "id": "lebernard",
+    "name": "Le Bernardin",
+    "location": "New York, NY",
+    "cuisine": "French Seafood",
+    "price_range": "$$$$",
+    "menus": {
+      "lunch": {
+        "Entrees": [
+          {"id": "l1", "name": "Tuna Carpaccio", "price": 42, "description": "Yellowfin, citrus, olive oil"},
+          {"id": "l2", "name": "King Crab Salad", "price": 58, "description": "Alaskan king crab, avocado"}
+        ],
+        "Plats": [
+          {"id": "l3", "name": "Halibut", "price": 62, "description": "Pan-roasted, chanterelles"},
+          {"id": "l4", "name": "Black Bass", "price": 58, "description": "Crispy skin, fennel, saffron"}
+        ]
+      },
+      "dinner": {
+        "Entrees": [
+          {"id": "l1", "name": "Tuna Carpaccio", "price": 48, "description": "Yellowfin, citrus, olive oil"},
+          {"id": "l5", "name": "Caviar Service", "price": 185, "description": "Osetra caviar, accompaniments"}
+        ],
+        "Plats": [
+          {"id": "l3", "name": "Halibut", "price": 72, "description": "Pan-roasted, chanterelles"},
+          {"id": "l6", "name": "Lobster", "price": 82, "description": "Poached Maine lobster, butter"},
+          {"id": "l7", "name": "Dover Sole", "price": 92, "description": "Whole Dover sole, lemon"}
+        ]
+      }
+    }
+  },
+  "frenchlaundry": {
+    "id": "frenchlaundry",
+    "name": "The French Laundry",
+    "location": "Yountville, CA",
+    "cuisine": "French-American",
+    "price_range": "$$$$",
+    "menus": {
+      "lunch": {
+        "Tasting": [
+          {"id": "f1", "name": "Oysters and Pearls", "price": 125, "description": "Tapioca, oysters, caviar"},
+          {"id": "f2", "name": "Foie Gras Torchon", "price": 0, "description": "Sauternes gelée"},
+          {"id": "f3", "name": "Duck Breast", "price": 0, "description": "Pekin duck, black truffle"}
+        ]
+      },
+      "dinner": {
+        "Tasting": [
+          {"id": "f1", "name": "Oysters and Pearls", "price": 350, "description": "Tapioca, oysters, caviar"},
+          {"id": "f2", "name": "Foie Gras Torchon", "price": 0, "description": "Sauternes gelée"},
+          {"id": "f4", "name": "Lobster Mitts", "price": 0, "description": "Maine lobster, vanilla"},
+          {"id": "f3", "name": "Duck Breast", "price": 0, "description": "Pekin duck, black truffle"},
+          {"id": "f5", "name": "Wagyu Beef", "price": 0, "description": "Mishima Ranch, bordelaise"}
+        ]
+      }
+    }
+  }
+}
