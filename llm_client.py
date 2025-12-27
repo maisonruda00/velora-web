@@ -146,6 +146,126 @@ Output only the sentence. No preamble, no quotes, no markdown."""
         ]
         return random.choice(templates)
     
+    def generate_conversation_starters(self, wine_name: str, producer: str, 
+                                      wine_type: str, region: str = None, 
+                                      price: float = 0) -> list:
+        """
+        Generate 2-3 wine-specific conversation starters using AI.
+        
+        Returns: List of interesting, wine-specific facts (not generic)
+        """
+        self.request_count += 1
+        
+        # Build context
+        context_parts = [f"Wine: {wine_name}", f"Producer: {producer}", f"Type: {wine_type}"]
+        if region:
+            context_parts.append(f"Region: {region}")
+        if price > 0:
+            context_parts.append(f"Price: ${price:.0f}")
+        context = ", ".join(context_parts)
+        
+        # THE CURATOR PROMPT FOR CONVERSATION STARTERS
+        prompt = f"""Act as "The Curator," a world-renowned wine expert.
+
+Task: Generate 2-3 fascinating, wine-specific conversation starters about this wine.
+
+Wine Details:
+{context}
+
+Guidelines:
+1. Make each fact SPECIFIC to this wine, producer, or region (not generic wine facts)
+2. Include surprising details (vineyard history, aging potential, terroir quirks, production methods)
+3. Use evocative language: "This vineyard sits on ancient volcanic soil," "The cellars date to 1248"
+4. AVOID generic facts like "White wines pair well with fish" or "Tannins preserve wine"
+5. Each starter should be 15-25 words
+6. British spelling (flavour, colour)
+
+Output format: Return ONLY a JSON array of 2-3 strings, no preamble, no markdown.
+Example: ["fact 1 here", "fact 2 here", "fact 3 here"]"""
+        
+        # TIER 1: Try Gemini first
+        if self.gemini_model:
+            try:
+                response = self.gemini_model.generate_content(prompt)
+                if response.text:
+                    import json
+                    # Clean response (remove markdown if present)
+                    text = response.text.strip()
+                    if text.startswith("```"):
+                        # Extract JSON from markdown code block
+                        text = text.split("```")[1]
+                        if text.startswith("json"):
+                            text = text[4:]
+                    text = text.strip()
+                    
+                    starters = json.loads(text)
+                    if isinstance(starters, list) and len(starters) >= 2:
+                        logger.info(f"[{self.request_count}] ✅ Generated conversation starters with Gemini")
+                        return starters[:3]
+            except Exception as e:
+                logger.warning(f"[{self.request_count}] ⚠️ Gemini conversation starters failed: {e}")
+        
+        # TIER 2: Fall back to Claude
+        if self.claude_client:
+            try:
+                import json
+                message = self.claude_client.messages.create(
+                    model="claude-sonnet-4-20250514",
+                    max_tokens=150,
+                    messages=[{"role": "user", "content": prompt}]
+                )
+                text = message.content[0].text.strip()
+                # Clean response
+                if text.startswith("```"):
+                    text = text.split("```")[1]
+                    if text.startswith("json"):
+                        text = text[4:]
+                text = text.strip()
+                
+                starters = json.loads(text)
+                if isinstance(starters, list) and len(starters) >= 2:
+                    logger.info(f"[{self.request_count}] ✅ Generated conversation starters with Claude")
+                    return starters[:3]
+            except Exception as e:
+                logger.error(f"[{self.request_count}] ❌ Claude conversation starters failed: {e}")
+        
+        # TIER 3: Fallback to wine-specific templates
+        logger.warning(f"[{self.request_count}] ⚠️ All AIs unavailable for conversation starters")
+        return self._fallback_conversation_starters(wine_name, producer, wine_type, price)
+    
+    def _fallback_conversation_starters(self, wine_name: str, producer: str, 
+                                       wine_type: str, price: float) -> list:
+        """
+        Wine-specific fallback starters (not generic facts).
+        """
+        starters = []
+        
+        # Wine-specific (not generic)
+        if "Grand Cru" in wine_name:
+            starters.append(f"Grand Cru vineyards represent less than 2% of {wine_type.lower()} production—among Burgundy's most prized sites.")
+        elif "Chablis" in wine_name:
+            starters.append("Chablis sits on ancient seabed—the wines literally taste of fossilized oyster shells.")
+        elif "Barolo" in wine_name or "Barbaresco" in wine_name:
+            starters.append("Nebbiolo is one of few grapes that can age 50+ years while gaining complexity.")
+        elif "Champagne" in wine_name:
+            starters.append("True Champagne rests a minimum 15 months, but prestige cuvées often age 5-10 years before release.")
+        else:
+            starters.append(f"{producer} is known for precision winemaking that emphasizes terroir over manipulation.")
+        
+        # Price context
+        if price > 500:
+            starters.append(f"At ${price:.0f}, this reflects both scarcity and proven ageability—an investment-grade wine.")
+        elif price > 200 and len(starters) < 2:
+            starters.append("This pricing reflects decades of vineyard management—old vines, low yields, meticulous selection.")
+        
+        # Type-specific (only if we need a 3rd)
+        if wine_type == "White" and len(starters) < 3:
+            starters.append("Minerality in white wine comes from vineyard soil—limestone creates razor-sharp acidity.")
+        elif wine_type == "Red" and len(starters) < 3:
+            starters.append("Tannins from grape skins and oak aging bind with food proteins—why red wine loves steak.")
+        
+        return starters[:3]
+    
     # =================================================================
     # LEGACY COMPATIBILITY
     # For any old code that might use the old name
