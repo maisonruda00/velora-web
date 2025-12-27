@@ -3,503 +3,992 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velora Concierge</title>
-    
-    <!-- PWA Configuration -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Velora">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3175/3175199.png">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Velora - Your Digital Wine Concierge</title>
     <style>
-        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #e5e5e5; }
-        .font-serif { font-family: 'Playfair Display', serif; }
-        .gold-text { color: #D4AF37; }
-        .gold-border { border: 1px solid #D4AF37; }
-        .step-panel.hidden { display: none; }
-        
-        /* Luxury Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
-        
-        /* Fade Animation */
-        .fade-in { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #1a0f1c 0%, #0a0a0a 100%);
+            color: #d4af37;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a0a0a0;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Step Navigation */
+        .step-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            padding: 0.5rem 1.5rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            opacity: 0.5;
+        }
+
+        .step.active {
+            opacity: 1;
+            background: rgba(212, 175, 55, 0.2);
+            border-color: #d4af37;
+        }
+
+        /* Screens */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Restaurant Selection */
+        .restaurant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .restaurant-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            padding: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .restaurant-card:hover {
+            border-color: #d4af37;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .restaurant-card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .restaurant-info {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        /* Menu Display */
+        .menu-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .menu-toggle {
+            padding: 0.75rem 2rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 25px;
+            color: #d4af37;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .menu-toggle.active {
+            background: rgba(212, 175, 55, 0.3);
+            border-color: #d4af37;
+        }
+
+        .menu-sections {
+            margin-top: 2rem;
+        }
+
+        .menu-section {
+            margin-bottom: 3rem;
+        }
+
+        .menu-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .dishes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .dish-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dish-card:hover {
+            border-color: rgba(212, 175, 55, 0.5);
+        }
+
+        .dish-card.selected {
+            border: 3px solid #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+            transform: scale(1.02);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .dish-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #d4af37;
+        }
+
+        .dish-description {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .dish-price {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        /* Service Preferences */
+        .preferences-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .preference-group {
+            margin-bottom: 2.5rem;
+        }
+
+        .preference-group label {
+            display: block;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .slider-container {
+            position: relative;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(212, 175, 55, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #d4af37;
+            cursor: pointer;
+        }
+
+        .slider-value {
+            display: block;
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 0.5rem;
+            color: #d4af37;
+        }
+
+        .bottle-selector {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .bottle-option {
+            padding: 1rem 2rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .bottle-option.selected {
+            background: rgba(212, 175, 55, 0.3);
+            border-color: #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Progression Timeline */
+        .progression-timeline {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .course-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #d4af37;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .course-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .course-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #d4af37, #c9a961);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1a0f1c;
+        }
+
+        .course-header h3 {
+            font-size: 1.5rem;
+        }
+
+        .course-dishes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .dish-tag {
+            background: rgba(212, 175, 55, 0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .primary-wine {
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .primary-wine h4 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .producer {
+            color: #a0a0a0;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            font-size: 1.3rem;
+            color: #d4af37;
+            margin-bottom: 1.5rem;
+        }
+
+        .pairing-note {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 3px solid #d4af37;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+            line-height: 1.6;
+            color: #d4af37;
+        }
+
+        .conversation-starters {
+            margin-top: 1.5rem;
+        }
+
+        .starter {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .alternatives {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .alternatives h5 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #a0a0a0;
+        }
+
+        .alt-wine {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 5px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #d4af37, #c9a961);
+            color: #1a0f1c;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(212, 175, 55, 0.2);
+            border-top: 4px solid #d4af37;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Selected Count Badge */
+        .selected-count {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, #d4af37, #c9a961);
+            color: #1a0f1c;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
+            z-index: 1000;
+        }
+
+        /* Error Message */
+        .error-message {
+            background: rgba(255, 100, 100, 0.1);
+            border: 2px solid rgba(255, 100, 100, 0.5);
+            color: #ff6464;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        /* Time Indicator */
+        .time-indicator {
+            text-align: center;
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
-<body class="min-h-screen selection:bg-[#D4AF37] selection:text-black">
+<body>
+    <div class="container">
+        <h1>Velora</h1>
+        <p class="subtitle">Your Digital Wine Concierge</p>
 
-    <div id="wizard" class="max-w-md mx-auto min-h-screen relative p-6 border-x border-gray-900/50">
-        
-        <!-- Step 0: Login (Velvet Rope) -->
-        <div id="step-login" class="step-panel flex flex-col justify-center h-screen items-center px-8 bg-black">
-            <h1 class="font-serif text-5xl gold-text italic tracking-wide mb-4">Velora</h1>
-            <p class="text-xs uppercase tracking-[0.3em] text-gray-600 mb-16">Private Cellar</p>
-            
-            <div class="w-full max-w-xs space-y-8">
-                <input type="password" id="accessCode" placeholder="ENTER ACCESS KEY" 
-                       autocomplete="off"
-                       class="w-full bg-transparent border-b border-[#D4AF37] text-center text-white py-4 text-xl tracking-[0.2em] focus:outline-none placeholder-gray-800 uppercase">
-                
-                <button onclick="attemptLogin()" class="w-full py-4 border border-[#D4AF37] text-[#D4AF37] uppercase tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-colors">
-                    Enter Cellar
-                </button>
-                
-                <p class="text-center text-xs text-gray-700 mt-8">Invitation Only</p>
+        <!-- Step Navigation -->
+        <div class="step-nav">
+            <div class="step active" id="step1-nav">Restaurant</div>
+            <div class="step" id="step2-nav">Menu</div>
+            <div class="step" id="step3-nav">Preferences</div>
+            <div class="step" id="step4-nav">Recommendations</div>
+        </div>
+
+        <!-- SCREEN 1: Restaurant Selection -->
+        <div class="screen active" id="screen-restaurant">
+            <div class="restaurant-grid" id="restaurant-list">
+                <!-- Populated by JavaScript -->
             </div>
         </div>
-        
-        <!-- Step 1: Loading Screen (Wine Quotes) -->
-        <div id="step-context" class="step-panel hidden flex flex-col justify-center h-screen items-center text-center px-6">
-            <h1 class="font-serif text-4xl gold-text italic tracking-wide mb-8">Velora</h1>
-            <p id="loading-quote" class="text-sm font-serif text-gray-400 italic leading-relaxed min-h-[60px] max-w-sm fade-in">
-                "Wine is sunlight, held together by water."
-            </p>
-            <p class="text-[10px] uppercase tracking-[0.3em] text-gray-600 mt-8 animate-pulse">Consulting Cellar...</p>
-        </div>
-        
-        <!-- Step 2: Menu Selection (Categorized) -->
-        <div id="step-menu" class="step-panel hidden pt-12 pb-32">
-            <h1 class="font-serif text-3xl text-white mb-2">The Menu</h1>
-            <p class="text-gray-500 text-sm mb-8">Select dishes for the table.</p>
+
+        <!-- SCREEN 2: Menu Selection -->
+        <div class="screen" id="screen-menu">
+            <div class="time-indicator" id="time-indicator"></div>
             
-            <div id="menuGrid" class="space-y-8 mb-16">
-                <!-- Populated by JS -->
+            <div class="menu-controls">
+                <button class="menu-toggle active" id="lunch-toggle">Lunch Service</button>
+                <button class="menu-toggle" id="dinner-toggle">Dinner Service</button>
             </div>
-            
-            <div class="fixed bottom-0 left-0 w-full bg-gradient-to-t from-black via-black to-transparent p-6 text-center pointer-events-none">
-                 <button onclick="nextStep('step-constraints')" class="pointer-events-auto bg-[#D4AF37] text-black px-12 py-4 rounded-sm font-serif font-bold uppercase tracking-widest text-xs hover:bg-white transition-colors shadow-lg shadow-[#D4AF37]/20">
-                    Proceed to Cellar
+
+            <div class="menu-sections" id="menu-display">
+                <!-- Populated by JavaScript -->
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-secondary" onclick="goToScreen('restaurant')">← Back</button>
+                <button class="btn" onclick="goToScreen('preferences')" id="proceed-to-preferences">
+                    Continue to Preferences
                 </button>
             </div>
         </div>
 
-        <!-- Step 3: Budget Constraints -->
-        <div id="step-constraints" class="step-panel hidden pt-12">
-            <h1 class="font-serif text-3xl text-white mb-12">Acquisition</h1>
-            
-            <div class="mb-12">
-                <label class="block text-xs uppercase tracking-widest text-gray-500 mb-6">Total Budget</label>
-                <div class="text-5xl font-serif text-white mb-6">$<span id="budgetDisplay">1000</span></div>
-                <input type="range" id="budgetRange" min="200" max="5000" step="100" value="1000" oninput="updateBudget()"
-                       class="w-full h-1 bg-gray-800 rounded-lg appearance-none cursor-pointer accent-[#D4AF37]">
-                <div class="flex justify-between text-[10px] uppercase tracking-widest text-gray-600 mt-4">
-                    <span>Premier</span>
-                    <span>Grand Cru</span>
-                    <span>Iconic</span>
+        <!-- SCREEN 3: Service Preferences -->
+        <div class="screen" id="screen-preferences">
+            <div class="preferences-container">
+                <div class="preference-group">
+                    <label>Budget (Total for all bottles)</label>
+                    <div class="slider-container">
+                        <input type="range" id="budget-slider" min="200" max="10000" value="1000" step="50">
+                        <span class="slider-value" id="budget-value">$1,000</span>
+                    </div>
+                </div>
+
+                <div class="preference-group">
+                    <label>Number of Bottles</label>
+                    <div class="bottle-selector">
+                        <div class="bottle-option selected" data-bottles="1">1 Bottle</div>
+                        <div class="bottle-option" data-bottles="2">2 Bottles</div>
+                        <div class="bottle-option" data-bottles="3">3 Bottles</div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="goToScreen('menu')">← Back</button>
+                    <button class="btn" onclick="getRecommendations()" id="get-recommendations-btn">
+                        Get Wine Recommendations
+                    </button>
                 </div>
             </div>
-
-            <button onclick="consultSommelier()" id="generateBtn" class="w-full bg-[#D4AF37] text-black py-4 font-serif font-bold uppercase tracking-widest text-xs hover:bg-white transition-colors mt-8">
-                Generate Progression
-            </button>
         </div>
 
-        <!-- Step 4: Results -->
-        <div id="step-results" class="step-panel hidden pt-8">
-            <div class="flex justify-between items-end mb-8 border-b border-gray-900 pb-4">
-                <h1 class="font-serif text-2xl text-white">Recommendation</h1>
-                <span class="text-[#D4AF37] text-sm font-serif italic" id="totalCostDisplay">$0</span>
+        <!-- SCREEN 4: Wine Progression -->
+        <div class="screen" id="screen-progression">
+            <div class="loading" id="loading-state">
+                <div class="spinner"></div>
+                <p>Curating your wine journey...</p>
             </div>
+
+            <div id="error-container"></div>
             
-            <div id="resultsGrid" class="space-y-12">
-                <!-- Populated by JS -->
+            <div class="progression-timeline" id="progression-timeline">
+                <!-- Populated by JavaScript -->
             </div>
-            
-            <button onclick="location.reload()" class="w-full mt-12 mb-8 py-4 border border-[#D4AF37] text-[#D4AF37] uppercase tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-colors">
-                Close Consultation
-            </button>
+
+            <div class="button-group" id="progression-actions" style="display: none;">
+                <button class="btn btn-secondary" onclick="resetFlow()">Start Over</button>
+            </div>
         </div>
 
+        <!-- Selected Dishes Badge -->
+        <div class="selected-count" id="selected-count" style="display: none;">
+            <span id="count-text">0 dishes selected</span>
+        </div>
     </div>
 
     <script>
         // =================================================================
-        // DATA - Categorized Menu (Gemini's improvement)
+        // STATE MANAGEMENT
         // =================================================================
-        const MENU_CATEGORIES = {
-            "Antipasti": [
-                "Carpaccio Piemontese",
-                "Burrata & Heirloom Tomato",
-                "Caesar Salad",
-                "Oysters on the Half Shell"
-            ],
-            "Primi": [
-                "Spicy Rigatoni Vodka",
-                "Truffle Gnocchi",
-                "Lobster Ravioli",
-                "Pappardelle Bolognese"
-            ],
-            "Secondi": [
-                "Veal Parmesan",
-                "Dover Sole",
-                "Ribeye Steak",
-                "Rack of Lamb",
-                "Duck Breast"
-            ],
-            "Dolce": [
-                "Tiramisu",
-                "Lemon Cheesecake",
-                "Chocolate Fondant"
-            ]
+        
+        let state = {
+            currentScreen: 'restaurant',
+            selectedRestaurant: null,
+            currentMealTime: 'lunch',
+            selectedDishes: new Map(),
+            budget: 1000,
+            bottleCount: 1
         };
 
-        // Wine Quotes for Loading Screen (Gemini's improvement)
-        const WINE_QUOTES = [
-            "\"Wine is sunlight, held together by water.\" — Galileo",
-            "\"A meal without wine is like a day without sunshine.\" — Brillat-Savarin",
-            "\"Age is just a number. It's totally irrelevant unless, of course, you happen to be a bottle of wine.\" — Joan Collins",
-            "\"Accept what life offers you and try to drink from every cup. All wines should be tasted.\" — Paulo Coelho",
-            "\"Wine is the most healthful and most hygienic of beverages.\" — Louis Pasteur"
-        ];
+        // =================================================================
+        // TIME DETECTION
+        // =================================================================
 
-        let state = { selectedDishes: [], budget: 1000 };
-        let quoteInterval;
-
-        // =================================================================
-        // GPS LOCATION LOGIC
-        // =================================================================
-        let userLocation = null;
-        
-        function checkLocation() {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        userLocation = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-                        console.log("📍 Location acquired:", userLocation);
-                    },
-                    (error) => {
-                        console.warn("📍 GPS denied or unavailable:", error.message);
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 5000,
-                        maximumAge: 0
-                    }
-                );
-            }
-        }
-        
-        // =================================================================
-        // AUTH & SESSION LOGIC (VELVET ROPE)
-        // =================================================================
-        
-        function attemptLogin() {
-            const code = document.getElementById('accessCode').value.trim().toUpperCase();
-            
-            if (!code) {
-                showLoginError("Please enter an access key");
-                return;
-            }
-            
-            const btn = document.querySelector('#step-login button');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = "<span class='animate-pulse'>Verifying...</span>";
-            btn.disabled = true;
-            
-            // Call backend API
-            fetch('/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({code: code})
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === "success" || data.success === true) {
-                    localStorage.setItem('velora_token', code);
-                    localStorage.setItem('velora_user_id', data.user_id || 'unknown');
-                    localStorage.setItem('velora_login_time', new Date().toISOString());
-                    
-                    initMenu();
-                    nextStep('step-menu');
-                    checkLocation();
-                } else {
-                    showLoginError("Invalid Access Code. Invitation Required.");
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                    document.getElementById('accessCode').value = '';
-                }
-            })
-            .catch((error) => {
-                console.warn('API unavailable, using offline validation:', error);
-                
-                const validCodes = ['MEMBER_2025', 'GENESIS_KEY', 'GENESIS'];
-                
-                if (validCodes.includes(code)) {
-                    localStorage.setItem('velora_token', code);
-                    localStorage.setItem('velora_login_time', new Date().toISOString());
-                    
-                    initMenu();
-                    nextStep('step-menu');
-                    checkLocation();
-                } else {
-                    showLoginError("Invalid Access Code. Invitation Required.");
-                    btn.innerHTML = originalText;
-                    btn.disabled = false;
-                    document.getElementById('accessCode').value = '';
-                }
-            });
-        }
-        
-        function showLoginError(message) {
-            const input = document.getElementById('accessCode');
-            input.classList.add('border-red-500');
-            input.placeholder = message;
-            
-            setTimeout(() => {
-                input.classList.remove('border-red-500');
-                input.placeholder = "ENTER ACCESS KEY";
-            }, 3000);
-        }
-        
-        // Allow Enter key to submit login
-        document.addEventListener('DOMContentLoaded', function() {
-            const accessInput = document.getElementById('accessCode');
-            if (accessInput) {
-                accessInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        attemptLogin();
-                    }
-                });
-            }
-        });
-        
-        // =================================================================
-        // LOADING SCREEN WITH WINE QUOTES (Gemini's improvement)
-        // =================================================================
-        
-        function startQuoteCycle() {
-            let i = 0;
-            const el = document.getElementById('loading-quote');
-            el.innerText = WINE_QUOTES[0];
-            
-            quoteInterval = setInterval(() => {
-                i = (i + 1) % WINE_QUOTES.length;
-                el.classList.remove('fade-in');
-                setTimeout(() => {
-                    el.innerText = WINE_QUOTES[i];
-                    el.classList.add('fade-in');
-                }, 100);
-            }, 4000);
-        }
-
-        function stopQuoteCycle() {
-            if (quoteInterval) {
-                clearInterval(quoteInterval);
-            }
-        }
-        
-        // =================================================================
-        // NAVIGATION
-        // =================================================================
-        
-        function nextStep(stepId) {
-            document.querySelectorAll('.step-panel').forEach(p => p.classList.add('hidden'));
-            document.getElementById(stepId).classList.remove('hidden');
-            window.scrollTo(0,0);
-        }
-
-        // =================================================================
-        // MENU LOGIC (Gemini's categorized approach)
-        // =================================================================
-        
-        function initMenu() {
-            const grid = document.getElementById('menuGrid');
-            let html = '';
-            
-            for (const [category, dishes] of Object.entries(MENU_CATEGORIES)) {
-                html += `
-                    <div class="mb-6">
-                        <h3 class="text-xs font-bold uppercase tracking-widest text-[#D4AF37] mb-4 border-b border-gray-800 pb-2">
-                            ${category}
-                        </h3>
-                `;
-                
-                dishes.forEach(dish => {
-                    html += `
-                        <div class="flex justify-between items-center py-3 cursor-pointer group transition-all" 
-                             onclick="toggleDish(this, '${dish}')">
-                            <span class="font-serif text-lg text-gray-400 group-hover:text-white transition-colors">
-                                ${dish}
-                            </span>
-                            <div class="w-3 h-3 border border-gray-600 rounded-full indicator transition-all"></div>
-                        </div>
-                    `;
-                });
-                
-                html += `</div>`;
-            }
-            
-            grid.innerHTML = html;
-        }
-
-        function toggleDish(el, name) {
-            const indicator = el.querySelector('.indicator');
-            
-            if (state.selectedDishes.includes(name)) {
-                state.selectedDishes = state.selectedDishes.filter(d => d !== name);
-                indicator.classList.remove('bg-[#D4AF37]', 'border-transparent');
-                indicator.classList.add('border-gray-600');
+        function detectMealTime() {
+            const hour = new Date().getHours();
+            // Lunch: 11 AM - 3 PM (11-14 in 24h)
+            // Dinner: 3 PM onwards (15-23 in 24h)
+            if (hour >= 11 && hour < 15) {
+                return 'lunch';
             } else {
-                state.selectedDishes.push(name);
-                indicator.classList.remove('border-gray-600');
-                indicator.classList.add('bg-[#D4AF37]', 'border-transparent');
+                return 'dinner';
             }
-        }
-
-        function updateBudget() {
-            const value = document.getElementById('budgetRange').value;
-            document.getElementById('budgetDisplay').innerText = value;
-            state.budget = parseInt(value);
-        }
-
-        // =================================================================
-        // 🧠 THE BRAIN - REAL API CALL TO PAIRING ENGINE
-        // Claude's sophisticated algorithm with Gemini's UX improvements
-        // =================================================================
-        
-        async function consultSommelier() {
-            const btn = document.getElementById('generateBtn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = "<span class='animate-pulse'>Accessing Cellar...</span>";
-            btn.disabled = true;
-            
-            // Show loading screen with cycling quotes
-            nextStep('step-context');
-            startQuoteCycle();
-            
-            // Get selected dishes
-            const dishes = state.selectedDishes;
-            const mainDish = dishes[0] || "Ribeye Steak";
-            const budget = state.budget;
-            
-            try {
-                // 15-second timeout (Gemini's improvement, extended slightly)
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 15000);
-                
-                // CALL REAL BACKEND API
-                const response = await fetch('https://velora.vin/consult', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        dish: mainDish,
-                        budget: budget
-                    }),
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-                
-                if (!response.ok) {
-                    throw new Error(`Server error: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                stopQuoteCycle();
-                
-                if (data.success) {
-                    // Use REAL recommendation from pairing engine
-                    renderResults(data);
-                    nextStep('step-results');
-                } else {
-                    alert('The cellar is currently restricted for this selection. Please adjust your budget or dish.');
-                    nextStep('step-constraints');
-                }
-                
-            } catch (error) {
-                stopQuoteCycle();
-                
-                if (error.name === 'AbortError') {
-                    console.error('Request timeout after 15 seconds');
-                    alert('Connection timeout. The cellar took too long to respond. Please try again.');
-                } else {
-                    console.error('Pairing API error:', error);
-                    alert('Unable to connect to the cellar. Please check your connection and try again.');
-                }
-                
-                nextStep('step-constraints');
-                
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
-        }
-
-        // =================================================================
-        // RESULTS RENDERING
-        // =================================================================
-        
-        function renderResults(data) {
-            const grid = document.getElementById('resultsGrid');
-            const wine = data.recommendation;
-            const reasoning = data.reasoning;
-            
-            // Display total cost
-            document.getElementById('totalCostDisplay').innerText = `$${wine.price}`;
-            
-            // Render wine recommendation with chemistry reasoning
-            grid.innerHTML = `
-                <div class="relative pl-8 border-l-2 border-[#D4AF37]">
-                    <div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-[#D4AF37]"></div>
-                    
-                    <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-2">Selection</p>
-                    
-                    <h3 class="font-serif text-2xl text-white mb-1">${wine.wine_name}</h3>
-                    <p class="text-sm text-gray-400 mb-4">${wine.producer}</p>
-                    
-                    <div class="mb-4">
-                        <p class="text-xs uppercase tracking-widest text-gray-600 mb-2">Chemistry</p>
-                        ${reasoning.chemistry.map(c => `
-                            <p class="text-gray-400 text-sm mb-1">• ${c}</p>
-                        `).join('')}
-                    </div>
-                    
-                    <p class="text-gray-300 italic text-sm leading-relaxed border-l-2 border-[#D4AF37]/30 pl-4 mb-4">
-                        "${reasoning.why}"
-                    </p>
-                    
-                    <div class="flex justify-between items-center pt-4 border-t border-gray-800">
-                        <span class="text-xs uppercase tracking-widest text-gray-500">${wine.type}</span>
-                        <p class="text-right text-[#D4AF37] font-serif text-xl">$${wine.price}</p>
-                    </div>
-                </div>
-            `;
         }
 
         // =================================================================
         // INITIALIZATION
         // =================================================================
-        
-        // Check for existing session on page load
-        function checkSession() {
-            const token = localStorage.getItem('velora_token');
+
+        async function init() {
+            // Set initial meal time
+            state.currentMealTime = detectMealTime();
             
-            if (token) {
-                console.log("✅ Valid session found");
-                document.getElementById('step-login').classList.add('hidden');
-                initMenu();
-                nextStep('step-menu');
-                checkLocation();
-            } else {
-                console.log("🔒 No session - showing login");
-                document.getElementById('step-login').classList.remove('hidden');
+            // Load restaurants
+            await loadRestaurants();
+            
+            // Setup event listeners
+            setupEventListeners();
+        }
+
+        function setupEventListeners() {
+            // Budget slider
+            document.getElementById('budget-slider').addEventListener('input', (e) => {
+                state.budget = parseInt(e.target.value);
+                document.getElementById('budget-value').textContent = `$${state.budget.toLocaleString()}`;
+            });
+
+            // Bottle count selector
+            document.querySelectorAll('.bottle-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.bottle-option').forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                    state.bottleCount = parseInt(option.dataset.bottles);
+                });
+            });
+
+            // Menu toggles
+            document.getElementById('lunch-toggle').addEventListener('click', () => switchMealTime('lunch'));
+            document.getElementById('dinner-toggle').addEventListener('click', () => switchMealTime('dinner'));
+        }
+
+        // =================================================================
+        // RESTAURANT LOADING
+        // =================================================================
+
+        async function loadRestaurants() {
+            try {
+                const response = await fetch('/restaurants');
+                const data = await response.json();
+                
+                if (!data.restaurants) {
+                    throw new Error('No restaurants available');
+                }
+
+                displayRestaurants(data.restaurants);
+            } catch (error) {
+                console.error('Failed to load restaurants:', error);
+                document.getElementById('restaurant-list').innerHTML = `
+                    <div class="error-message">
+                        Unable to load restaurants. Please refresh the page.
+                    </div>
+                `;
             }
         }
-        
-        // Auto-check session on page load
-        checkSession();
+
+        function displayRestaurants(restaurants) {
+            const container = document.getElementById('restaurant-list');
+            container.innerHTML = restaurants.map(restaurant => `
+                <div class="restaurant-card" onclick="selectRestaurant('${restaurant.id}', '${restaurant.name}')">
+                    <h2>${restaurant.name}</h2>
+                    <div class="restaurant-info">
+                        <p>${restaurant.location}</p>
+                        <p>${restaurant.cuisine} • ${restaurant.price_range}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // =================================================================
+        // RESTAURANT SELECTION
+        // =================================================================
+
+        async function selectRestaurant(restaurantId, restaurantName) {
+            state.selectedRestaurant = restaurantId;
+            
+            try {
+                const response = await fetch(`/restaurant/${restaurantId}/menu`);
+                const data = await response.json();
+                
+                if (!data.menus) {
+                    throw new Error('Menu not available');
+                }
+
+                state.menuData = data.menus;
+                goToScreen('menu');
+                displayMenu(state.currentMealTime);
+                updateTimeIndicator();
+            } catch (error) {
+                console.error('Failed to load menu:', error);
+                alert('Unable to load menu. Please try again.');
+            }
+        }
+
+        // =================================================================
+        // MENU DISPLAY
+        // =================================================================
+
+        function switchMealTime(mealTime) {
+            state.currentMealTime = mealTime;
+            
+            // Update toggles
+            document.getElementById('lunch-toggle').classList.toggle('active', mealTime === 'lunch');
+            document.getElementById('dinner-toggle').classList.toggle('active', mealTime === 'dinner');
+            
+            // Display menu
+            displayMenu(mealTime);
+        }
+
+        function updateTimeIndicator() {
+            const hour = new Date().getHours();
+            const autoSelected = detectMealTime();
+            const indicator = document.getElementById('time-indicator');
+            
+            if (autoSelected === 'lunch') {
+                indicator.textContent = `🕐 Lunch Service (Auto-selected based on current time: ${hour}:00)`;
+            } else {
+                indicator.textContent = `🍷 Dinner Service (Auto-selected based on current time: ${hour}:00)`;
+            }
+        }
+
+        function displayMenu(mealTime) {
+            const menuData = state.menuData[mealTime];
+            if (!menuData) {
+                console.error('Menu not found for', mealTime);
+                return;
+            }
+
+            const container = document.getElementById('menu-display');
+            container.innerHTML = '';
+
+            // Display each menu section
+            for (const [sectionName, dishes] of Object.entries(menuData)) {
+                const section = createMenuSection(sectionName, dishes);
+                container.appendChild(section);
+            }
+        }
+
+        function createMenuSection(sectionName, dishes) {
+            const section = document.createElement('div');
+            section.className = 'menu-section';
+            
+            section.innerHTML = `
+                <h3>${sectionName}</h3>
+                <div class="dishes-grid">
+                    ${dishes.map(dish => createDishCard(dish)).join('')}
+                </div>
+            `;
+            
+            return section;
+        }
+
+        function createDishCard(dish) {
+            const isSelected = state.selectedDishes.has(dish.id);
+            return `
+                <div class="dish-card ${isSelected ? 'selected' : ''}" 
+                     onclick="toggleDishSelection('${dish.id}', ${JSON.stringify(dish).replace(/"/g, '&quot;')})">
+                    <h4>${dish.name}</h4>
+                    <p class="dish-description">${dish.description}</p>
+                    <p class="dish-price">$${dish.price}</p>
+                </div>
+            `;
+        }
+
+        // =================================================================
+        // DISH SELECTION
+        // =================================================================
+
+        function toggleDishSelection(dishId, dishDataJson) {
+            // Parse dish data (handle HTML entities)
+            const dishData = typeof dishDataJson === 'string' ? 
+                JSON.parse(dishDataJson.replace(/&quot;/g, '"')) : dishDataJson;
+            
+            // Toggle selection
+            if (state.selectedDishes.has(dishId)) {
+                state.selectedDishes.delete(dishId);
+            } else {
+                state.selectedDishes.set(dishId, dishData);
+            }
+            
+            // Update UI
+            displayMenu(state.currentMealTime);
+            updateSelectedCount();
+        }
+
+        function updateSelectedCount() {
+            const count = state.selectedDishes.size;
+            const badge = document.getElementById('selected-count');
+            const text = document.getElementById('count-text');
+            
+            if (count > 0) {
+                badge.style.display = 'block';
+                text.textContent = `${count} dish${count === 1 ? '' : 'es'} selected`;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        // =================================================================
+        // WINE RECOMMENDATIONS
+        // =================================================================
+
+        async function getRecommendations() {
+            if (state.selectedDishes.size === 0) {
+                alert('Please select at least one dish before continuing.');
+                return;
+            }
+
+            // Move to progression screen
+            goToScreen('progression');
+            document.getElementById('loading-state').style.display = 'block';
+            document.getElementById('error-container').innerHTML = '';
+            document.getElementById('progression-timeline').innerHTML = '';
+
+            try {
+                // Prepare dish list
+                const dishes = Array.from(state.selectedDishes.values()).map(d => d.name);
+                
+                const response = await fetch('/consult/progression', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        dishes: dishes,
+                        bottle_count: state.bottleCount,
+                        budget: state.budget
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || error.error || 'Failed to get recommendations');
+                }
+
+                const data = await response.json();
+                
+                if (!data.success) {
+                    throw new Error(data.error || 'Recommendation failed');
+                }
+
+                // Hide loading, show progression
+                document.getElementById('loading-state').style.display = 'none';
+                displayProgression(data);
+                document.getElementById('progression-actions').style.display = 'flex';
+
+            } catch (error) {
+                console.error('Recommendation error:', error);
+                document.getElementById('loading-state').style.display = 'none';
+                document.getElementById('error-container').innerHTML = `
+                    <div class="error-message">
+                        <h3>Unable to Generate Recommendations</h3>
+                        <p>${error.message}</p>
+                        <p>Please try again or adjust your selections.</p>
+                    </div>
+                `;
+                document.getElementById('progression-actions').style.display = 'flex';
+            }
+        }
+
+        // =================================================================
+        // PROGRESSION DISPLAY
+        // =================================================================
+
+        function displayProgression(data) {
+            const container = document.getElementById('progression-timeline');
+            container.innerHTML = '';
+
+            if (!data.progression || data.progression.length === 0) {
+                container.innerHTML = '<p class="error-message">No recommendations available.</p>';
+                return;
+            }
+
+            data.progression.forEach((course, index) => {
+                const courseCard = createCourseCard(course, index);
+                container.appendChild(courseCard);
+            });
+        }
+
+        function createCourseCard(course) {
+            const card = document.createElement('div');
+            card.className = 'course-card';
+            
+            // Safely handle potentially missing data
+            const primary = course.primary || {};
+            const luxury = course.luxury || {};
+            const alternatives = course.alternatives || [];
+
+            card.innerHTML = `
+                <div class="course-header">
+                    <span class="course-number">${course.course_number}</span>
+                    <h3>${course.course_name}</h3>
+                </div>
+                
+                <div class="course-dishes">
+                    ${course.dishes.map(d => `<span class="dish-tag">${d}</span>`).join('')}
+                </div>
+                
+                <div class="primary-wine">
+                    <h4>${primary.wine_name || 'Wine'}</h4>
+                    <p class="producer">${primary.producer || ''}</p>
+                    <p class="price">$${primary.price || 0}</p>
+                    
+                    ${luxury.pairing_note ? `
+                        <div class="pairing-note">
+                            ${luxury.pairing_note}
+                        </div>
+                    ` : ''}
+                    
+                    ${luxury.conversation_starters && luxury.conversation_starters.length > 0 ? `
+                        <div class="conversation-starters">
+                            ${luxury.conversation_starters.map(s => 
+                                `<p class="starter">💬 ${s}</p>`
+                            ).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+                
+                ${alternatives.length > 0 ? `
+                    <div class="alternatives">
+                        <h5>Alternative Selections</h5>
+                        ${alternatives.map(alt => `
+                            <div class="alt-wine">
+                                <span>${alt.wine_name || 'Alternative Wine'}</span>
+                                <span class="alt-price">$${alt.price || 0}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            `;
+            
+            return card;
+        }
+
+        // =================================================================
+        // SCREEN NAVIGATION
+        // =================================================================
+
+        function goToScreen(screenName) {
+            // Update state
+            state.currentScreen = screenName;
+
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            
+            // Show target screen
+            document.getElementById(`screen-${screenName}`).classList.add('active');
+
+            // Update step navigation
+            updateStepNav(screenName);
+        }
+
+        function updateStepNav(screenName) {
+            const steps = {
+                'restaurant': 1,
+                'menu': 2,
+                'preferences': 3,
+                'progression': 4
+            };
+
+            const currentStep = steps[screenName] || 1;
+
+            document.querySelectorAll('.step').forEach((step, index) => {
+                if (index < currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+
+        function resetFlow() {
+            state.selectedDishes.clear();
+            state.budget = 1000;
+            state.bottleCount = 1;
+            goToScreen('restaurant');
+            updateSelectedCount();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
 </html>
