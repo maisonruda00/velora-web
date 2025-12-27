@@ -1,45 +1,62 @@
 """
-CONVERSATION STARTER GENERATOR (IP-SAFE VERSION)
-✅ No protected terms (sommelier, Master of Wine, critic names)
-✅ Generic wine expertise terminology
+CONVERSATION STARTER GENERATOR - AI-POWERED VERSION
+✅ Generates wine-specific conversation starters using AI
+✅ Fallback to wine-specific templates (not generic facts)
 
 Generates engaging talking points about wines for social dining experiences.
 """
+import logging
+from llm_client import ai_client
+
+logger = logging.getLogger(__name__)
 
 def generate_conversation_starters(wine_name: str, producer: str, wine_type: str, 
                                    region: str = None, price: float = 0) -> list:
     """
     Generate 2-3 engaging conversation starters about the wine.
     
-    IP-SAFE: No use of protected professional titles or critic names.
+    UPGRADED: Now uses AI to generate wine-specific facts instead of generic templates.
+    """
+    try:
+        # Use AI to generate wine-specific conversation starters
+        starters = ai_client.generate_conversation_starters(
+            wine_name=wine_name,
+            producer=producer,
+            wine_type=wine_type,
+            region=region,
+            price=price
+        )
+        
+        if starters and len(starters) >= 2:
+            logger.info(f"✅ AI conversation starters for {wine_name}")
+            return starters[:3]  # Return top 3
+        else:
+            # This shouldn't happen (AI client has its own fallback)
+            # but just in case
+            return _emergency_fallback(wine_name, wine_type, price)
+            
+    except Exception as e:
+        logger.warning(f"⚠️ Conversation starter error: {e}")
+        return _emergency_fallback(wine_name, wine_type, price)
+
+
+def _emergency_fallback(wine_name: str, wine_type: str, price: float) -> list:
+    """
+    Emergency fallback if AI client completely fails.
+    Still more specific than old generic facts.
     """
     starters = []
     
-    # Pairing wisdom (general principles, no protected terminology)
-    pairing_wisdom = [
-        "Wine experts recommend: match the wine's weight to the dish's richness, not just the color to the protein.",
-        "In great pairings, the wine should make the food taste better AND the food should make the wine taste better—a true symbiosis.",
-        "Acidity in wine is like salt in cooking: it brightens flavors and makes rich dishes feel lighter on the palate.",
-    ]
+    if "Grand Cru" in wine_name:
+        starters.append("Grand Cru status represents less than 2% of total production.")
+    elif "Chablis" in wine_name:
+        starters.append("Chablis vineyards sit on ancient oyster fossils from the Jurassic period.")
+    elif "Barolo" in wine_name:
+        starters.append("Barolo requires a minimum of 38 months aging before release.")
+    else:
+        starters.append("This wine represents a specific terroir expression.")
     
-    import random
-    starters.append(random.choice(pairing_wisdom))
-    
-    # Wine type specific insights
-    type_insights = {
-        'Sparkling': "The pressure inside a Champagne bottle is about 90 PSI—three times that of a car tire.",
-        'White': "White wines are often more terroir-expressive than reds because there's less tannin to mask the soil's mineral character.",
-        'Red': "The polyphenols in red wine that make your mouth feel dry preserve the wine for decades of aging.",
-        'Dessert': "Sweet wines were historically more prized than dry wines—preserving residual sugar was a mark of winemaking skill.",
-    }
-    
-    if len(starters) < 2:
-        starters.append(type_insights.get(wine_type, 
-            "Great wines are defined not by power, but by balance—the interplay of fruit, acidity, and structure."))
-    
-    # Price context
-    if price > 500 and len(starters) < 3:
-        starters.append(f"At ${price:.0f}, this wine reflects not just quality but scarcity.")
+    if price > 500:
+        starters.append(f"At ${price:.0f}, this is investment-grade wine with proven aging potential.")
     
     return starters[:3]
-
