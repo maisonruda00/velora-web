@@ -2,993 +2,332 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velora - Your Digital Wine Concierge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Velora - Private Cellar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --gold: #D4AF37;
+            --gold-dim: #8a702a;
+            --bg-dark: #050505;
         }
-
-        body {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            background: linear-gradient(135deg, #1a0f1c 0%, #0a0a0a 100%);
-            color: #d4af37;
-            min-height: 100vh;
-            padding: 20px;
+        body { 
+            font-family: 'Cormorant Garamond', serif; 
+            background: var(--bg-dark); 
+            color: #e5e5e5; 
+            -webkit-font-smoothing: antialiased;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .gold-text { color: var(--gold); }
+        
+        /* Luxury Cards */
+        .wine-card {
+            background: linear-gradient(180deg, rgba(30,30,30,0.4) 0%, rgba(10,10,10,0.6) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease-out; /* The Velvet Feel */
         }
-
-        h1 {
-            text-align: center;
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        .wine-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-
-        .subtitle {
-            text-align: center;
-            color: #a0a0a0;
-            font-size: 1.2rem;
-            margin-bottom: 3rem;
-        }
-
-        /* Step Navigation */
-        .step-nav {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .step {
-            padding: 0.5rem 1.5rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 20px;
-            font-size: 0.9rem;
-            opacity: 0.5;
-        }
-
-        .step.active {
-            opacity: 1;
-            background: rgba(212, 175, 55, 0.2);
-            border-color: #d4af37;
-        }
-
-        /* Screens */
-        .screen {
-            display: none;
-        }
-
-        .screen.active {
-            display: block;
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* Restaurant Selection */
-        .restaurant-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .restaurant-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(212, 175, 55, 0.2);
-            border-radius: 15px;
-            padding: 2rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .restaurant-card:hover {
-            border-color: #d4af37;
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
-        }
-
-        .restaurant-card h2 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .restaurant-info {
-            color: #a0a0a0;
-            font-size: 0.9rem;
-        }
-
-        /* Menu Display */
-        .menu-controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .menu-toggle {
-            padding: 0.75rem 2rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 2px solid rgba(212, 175, 55, 0.3);
-            border-radius: 25px;
-            color: #d4af37;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .menu-toggle.active {
-            background: rgba(212, 175, 55, 0.3);
-            border-color: #d4af37;
-        }
-
-        .menu-sections {
-            margin-top: 2rem;
-        }
-
-        .menu-section {
-            margin-bottom: 3rem;
-        }
-
-        .menu-section h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            padding-bottom: 0.5rem;
-        }
-
-        .dishes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .dish-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 2px solid rgba(212, 175, 55, 0.2);
-            border-radius: 10px;
-            padding: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .dish-card:hover {
-            border-color: rgba(212, 175, 55, 0.5);
-        }
-
-        .dish-card.selected {
-            border: 3px solid #d4af37;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
-            transform: scale(1.02);
-            background: rgba(212, 175, 55, 0.1);
-        }
-
-        .dish-card h4 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #d4af37;
-        }
-
-        .dish-description {
-            color: #a0a0a0;
-            font-size: 0.9rem;
-            margin-bottom: 0.75rem;
-            line-height: 1.4;
-        }
-
-        .dish-price {
-            color: #d4af37;
-            font-weight: bold;
-        }
-
-        /* Service Preferences */
-        .preferences-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
-        }
-
-        .preference-group {
-            margin-bottom: 2.5rem;
-        }
-
-        .preference-group label {
-            display: block;
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-        }
-
-        .slider-container {
-            position: relative;
-        }
-
+        .animate-up { animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        
+        /* Range Slider */
         input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 5px;
-            background: rgba(212, 175, 55, 0.2);
-            outline: none;
             -webkit-appearance: none;
+            background: #333;
+            height: 1px;
         }
-
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 16px; height: 16px;
+            background: var(--gold);
             border-radius: 50%;
-            background: #d4af37;
             cursor: pointer;
+            transition: transform 0.2s ease;
         }
-
-        .slider-value {
-            display: block;
-            text-align: center;
-            font-size: 1.5rem;
-            margin-top: 0.5rem;
-            color: #d4af37;
-        }
-
-        .bottle-selector {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .bottle-option {
-            padding: 1rem 2rem;
-            background: rgba(212, 175, 55, 0.1);
-            border: 2px solid rgba(212, 175, 55, 0.3);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .bottle-option.selected {
-            background: rgba(212, 175, 55, 0.3);
-            border-color: #d4af37;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-        }
-
-        /* Progression Timeline */
-        .progression-timeline {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .course-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-left: 4px solid #d4af37;
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .course-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .course-number {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #d4af37, #c9a961);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #1a0f1c;
-        }
-
-        .course-header h3 {
-            font-size: 1.5rem;
-        }
-
-        .course-dishes {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .dish-tag {
-            background: rgba(212, 175, 55, 0.2);
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.9rem;
-        }
-
-        .primary-wine {
-            background: rgba(212, 175, 55, 0.05);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .primary-wine h4 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .producer {
-            color: #a0a0a0;
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-
-        .price {
-            font-size: 1.3rem;
-            color: #d4af37;
-            margin-bottom: 1.5rem;
-        }
-
-        .pairing-note {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 3px solid #d4af37;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            font-style: italic;
-            line-height: 1.6;
-            color: #d4af37;
-        }
-
-        .conversation-starters {
-            margin-top: 1.5rem;
-        }
-
-        .starter {
-            background: rgba(255, 255, 255, 0.02);
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            border-radius: 5px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-
-        .alternatives {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-        }
-
-        .alternatives h5 {
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            color: #a0a0a0;
-        }
-
-        .alt-wine {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.75rem;
-            margin-bottom: 0.5rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 5px;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 1rem 3rem;
-            background: linear-gradient(135deg, #d4af37, #c9a961);
-            color: #1a0f1c;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid #d4af37;
-            color: #d4af37;
-        }
-
-        .button-group {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        /* Loading State */
-        .loading {
-            text-align: center;
-            padding: 3rem;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(212, 175, 55, 0.2);
-            border-top: 4px solid #d4af37;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Selected Count Badge */
-        .selected-count {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: linear-gradient(135deg, #d4af37, #c9a961);
-            color: #1a0f1c;
-            padding: 1rem 2rem;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            box-shadow: 0 5px 20px rgba(212, 175, 55, 0.4);
-            z-index: 1000;
-        }
-
-        /* Error Message */
-        .error-message {
-            background: rgba(255, 100, 100, 0.1);
-            border: 2px solid rgba(255, 100, 100, 0.5);
-            color: #ff6464;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        /* Time Indicator */
-        .time-indicator {
-            text-align: center;
-            color: #a0a0a0;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
+        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+        
+        .alt-details { display: none; }
+        .alt-details.open { display: block; animation: fadeUp 0.4s ease-out; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Velora</h1>
-        <p class="subtitle">Your Digital Wine Concierge</p>
+<body class="min-h-screen p-6 flex flex-col items-center">
 
-        <!-- Step Navigation -->
-        <div class="step-nav">
-            <div class="step active" id="step1-nav">Restaurant</div>
-            <div class="step" id="step2-nav">Menu</div>
-            <div class="step" id="step3-nav">Preferences</div>
-            <div class="step" id="step4-nav">Recommendations</div>
+    <header class="w-full max-w-md text-center py-8 opacity-0 animate-up" style="animation-delay: 0.1s;">
+        <h1 class="font-cinzel text-3xl gold-text mb-2">VELORA</h1>
+        <p class="text-xs uppercase tracking-[0.3em] text-gray-500">Private Digital Sommelier</p>
+    </header>
+
+    <main id="app" class="w-full max-w-md relative min-h-[60vh]">
+        
+        <div id="step-restaurant" class="step-view opacity-0 animate-up" style="animation-delay: 0.2s;">
+            <h2 class="text-2xl text-white mb-8 text-center italic">Where are you dining this evening?</h2>
+            <div id="restaurant-list" class="space-y-4"></div>
         </div>
 
-        <!-- SCREEN 1: Restaurant Selection -->
-        <div class="screen active" id="screen-restaurant">
-            <div class="restaurant-grid" id="restaurant-list">
-                <!-- Populated by JavaScript -->
+        <div id="step-menu" class="step-view hidden">
+            <div class="flex justify-between items-end mb-6 border-b border-gray-800 pb-4">
+                <div>
+                    <h2 class="text-2xl text-white" id="menu-title">Menu</h2>
+                    <p class="text-xs text-[#8a702a] uppercase tracking-widest mt-1" id="time-context">Service</p>
+                </div>
+                <button onclick="resetApp()" class="text-xs text-gray-600 hover:text-white uppercase tracking-widest transition-colors duration-300">Back</button>
             </div>
-        </div>
-
-        <!-- SCREEN 2: Menu Selection -->
-        <div class="screen" id="screen-menu">
-            <div class="time-indicator" id="time-indicator"></div>
+            <div id="menu-grid" class="space-y-8 pb-24"></div>
             
-            <div class="menu-controls">
-                <button class="menu-toggle active" id="lunch-toggle">Lunch Service</button>
-                <button class="menu-toggle" id="dinner-toggle">Dinner Service</button>
-            </div>
-
-            <div class="menu-sections" id="menu-display">
-                <!-- Populated by JavaScript -->
-            </div>
-
-            <div class="button-group">
-                <button class="btn btn-secondary" onclick="goToScreen('restaurant')">← Back</button>
-                <button class="btn" onclick="goToScreen('preferences')" id="proceed-to-preferences">
-                    Continue to Preferences
+            <div class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black to-transparent pointer-events-none">
+                <button onclick="goToStep('preferences')" id="btn-course" class="pointer-events-auto w-full bg-[#D4AF37] text-black py-4 font-cinzel font-bold tracking-widest text-xs hover:bg-white transition-all duration-500 shadow-lg shadow-yellow-900/20 opacity-0 transform translate-y-10">
+                    Proceed to Cellar (<span id="dish-count">0</span>)
                 </button>
             </div>
         </div>
 
-        <!-- SCREEN 3: Service Preferences -->
-        <div class="screen" id="screen-preferences">
-            <div class="preferences-container">
-                <div class="preference-group">
-                    <label>Budget (Total for all bottles)</label>
-                    <div class="slider-container">
-                        <input type="range" id="budget-slider" min="200" max="10000" value="1000" step="50">
-                        <span class="slider-value" id="budget-value">$1,000</span>
-                    </div>
-                </div>
-
-                <div class="preference-group">
-                    <label>Number of Bottles</label>
-                    <div class="bottle-selector">
-                        <div class="bottle-option selected" data-bottles="1">1 Bottle</div>
-                        <div class="bottle-option" data-bottles="2">2 Bottles</div>
-                        <div class="bottle-option" data-bottles="3">3 Bottles</div>
-                    </div>
-                </div>
-
-                <div class="button-group">
-                    <button class="btn btn-secondary" onclick="goToScreen('menu')">← Back</button>
-                    <button class="btn" onclick="getRecommendations()" id="get-recommendations-btn">
-                        Get Wine Recommendations
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- SCREEN 4: Wine Progression -->
-        <div class="screen" id="screen-progression">
-            <div class="loading" id="loading-state">
-                <div class="spinner"></div>
-                <p>Curating your wine journey...</p>
-            </div>
-
-            <div id="error-container"></div>
+        <div id="step-preferences" class="step-view hidden pt-12">
+            <h2 class="text-3xl text-white mb-2 text-center italic">Service Preferences</h2>
+            <p class="text-center text-gray-500 text-sm mb-12">Tailoring the cellar selection.</p>
             
-            <div class="progression-timeline" id="progression-timeline">
-                <!-- Populated by JavaScript -->
+            <div class="space-y-12">
+                <div>
+                    <label class="font-cinzel text-[0.65rem] tracking-[0.2em] text-[#666] block text-center mb-6">Service Size</label>
+                    <div class="flex justify-center items-center gap-8">
+                        <button onclick="updateBottles(-1)" class="text-2xl text-gray-500 hover:text-white transition-colors p-2">-</button>
+                        <span id="bottle-display" class="text-4xl gold-text font-cinzel">1</span>
+                        <button onclick="updateBottles(1)" class="text-2xl text-gray-500 hover:text-white transition-colors p-2">+</button>
+                    </div>
+                    <p class="text-center text-xs text-gray-600 mt-2 uppercase tracking-widest">Bottle(s)</p>
+                </div>
+
+                <div>
+                    <label class="font-cinzel text-[0.65rem] tracking-[0.2em] text-[#666] block text-center mb-6">Acquisition Target</label>
+                    <div class="text-center mb-6">
+                        <span class="text-4xl text-white font-cinzel">$<span id="budget-display">1000</span></span>
+                    </div>
+                    <input type="range" id="budget-slider" min="150" max="5000" step="50" value="1000" class="w-full" oninput="updateBudget(this.value)">
+                    <div class="flex justify-between text-[10px] uppercase tracking-widest text-gray-600 mt-4">
+                        <span>Premier</span>
+                        <span>Grand Cru</span>
+                        <span>Iconic</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="button-group" id="progression-actions" style="display: none;">
-                <button class="btn btn-secondary" onclick="resetFlow()">Start Over</button>
-            </div>
+            <button onclick="generateProgression()" class="w-full mt-16 border border-[#D4AF37] text-[#D4AF37] py-4 font-cinzel font-bold tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-all duration-500">
+                Consult Sommelier
+            </button>
         </div>
 
-        <!-- Selected Dishes Badge -->
-        <div class="selected-count" id="selected-count" style="display: none;">
-            <span id="count-text">0 dishes selected</span>
+        <div id="step-results" class="step-view hidden">
+            <h2 class="text-center text-white font-cinzel text-xl mb-8 tracking-widest border-b border-gray-800 pb-4">The Progression</h2>
+            <div id="progression-container" class="space-y-16"></div>
+            <button onclick="resetApp()" class="w-full mt-12 mb-8 text-gray-600 text-xs uppercase tracking-widest hover:text-white transition-colors">Close Consultation</button>
         </div>
-    </div>
+
+        <div id="loading" class="fixed inset-0 bg-black z-50 hidden flex-col items-center justify-center">
+            <div class="w-12 h-12 border-t-2 border-b-2 border-[#D4AF37] rounded-full animate-spin mb-8"></div>
+            <p class="text-[#D4AF37] font-cinzel text-sm tracking-[0.3em] animate-pulse">The Curator is consulting the cellar...</p>
+        </div>
+    </main>
 
     <script>
-        // =================================================================
-        // STATE MANAGEMENT
-        // =================================================================
-        
-        let state = {
-            currentScreen: 'restaurant',
-            selectedRestaurant: null,
-            currentMealTime: 'lunch',
-            selectedDishes: new Map(),
-            budget: 1000,
-            bottleCount: 1
-        };
-
-        // =================================================================
-        // TIME DETECTION
-        // =================================================================
-
-        function detectMealTime() {
-            const hour = new Date().getHours();
-            // Lunch: 11 AM - 3 PM (11-14 in 24h)
-            // Dinner: 3 PM onwards (15-23 in 24h)
-            if (hour >= 11 && hour < 15) {
-                return 'lunch';
-            } else {
-                return 'dinner';
-            }
-        }
-
-        // =================================================================
-        // INITIALIZATION
-        // =================================================================
+        // State
+        let state = { restaurant: null, dishes: [], bottles: 1, budget: 1000 };
 
         async function init() {
-            // Set initial meal time
-            state.currentMealTime = detectMealTime();
-            
-            // Load restaurants
-            await loadRestaurants();
-            
-            // Setup event listeners
-            setupEventListeners();
-        }
-
-        function setupEventListeners() {
-            // Budget slider
-            document.getElementById('budget-slider').addEventListener('input', (e) => {
-                state.budget = parseInt(e.target.value);
-                document.getElementById('budget-value').textContent = `$${state.budget.toLocaleString()}`;
-            });
-
-            // Bottle count selector
-            document.querySelectorAll('.bottle-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    document.querySelectorAll('.bottle-option').forEach(o => o.classList.remove('selected'));
-                    option.classList.add('selected');
-                    state.bottleCount = parseInt(option.dataset.bottles);
-                });
-            });
-
-            // Menu toggles
-            document.getElementById('lunch-toggle').addEventListener('click', () => switchMealTime('lunch'));
-            document.getElementById('dinner-toggle').addEventListener('click', () => switchMealTime('dinner'));
-        }
-
-        // =================================================================
-        // RESTAURANT LOADING
-        // =================================================================
-
-        async function loadRestaurants() {
             try {
-                const response = await fetch('/restaurants');
-                const data = await response.json();
-                
-                if (!data.restaurants) {
-                    throw new Error('No restaurants available');
-                }
-
-                displayRestaurants(data.restaurants);
-            } catch (error) {
-                console.error('Failed to load restaurants:', error);
-                document.getElementById('restaurant-list').innerHTML = `
-                    <div class="error-message">
-                        Unable to load restaurants. Please refresh the page.
-                    </div>
-                `;
+                // FIXED: Only fetch list of restaurants first
+                const res = await fetch('/restaurants');
+                const data = await res.json();
+                renderRestaurants(data.restaurants);
+            } catch (e) {
+                console.error("Init error", e);
+                document.getElementById('restaurant-list').innerHTML = '<p class="text-center text-red-500 text-xs">System Unavailable</p>';
             }
         }
 
-        function displayRestaurants(restaurants) {
-            const container = document.getElementById('restaurant-list');
-            container.innerHTML = restaurants.map(restaurant => `
-                <div class="restaurant-card" onclick="selectRestaurant('${restaurant.id}', '${restaurant.name}')">
-                    <h2>${restaurant.name}</h2>
-                    <div class="restaurant-info">
-                        <p>${restaurant.location}</p>
-                        <p>${restaurant.cuisine} • ${restaurant.price_range}</p>
+        function renderRestaurants(list) {
+            document.getElementById('restaurant-list').innerHTML = list.map(r => `
+                <div onclick="selectRestaurant('${r.id}')" class="wine-card p-6 cursor-pointer text-center group">
+                    <h3 class="text-xl text-white font-cinzel mb-1 group-hover:text-[#D4AF37] transition-colors duration-300">${r.name}</h3>
+                    <p class="text-xs uppercase tracking-widest text-gray-500">${r.cuisine} • ${r.location}</p>
+                </div>
+            `).join('');
+        }
+
+        async function selectRestaurant(id) {
+            state.restaurant = id;
+            const hour = new Date().getHours();
+            const timeContext = (hour >= 11 && hour < 16) ? 'lunch' : 'dinner';
+            document.getElementById('time-context').innerText = timeContext === 'lunch' ? 'Lunch Service' : 'Dinner Service';
+            
+            // FIXED: Fetch specific menu from API instead of raw JSON
+            try {
+                const res = await fetch(`/restaurant/${id}/menu`);
+                const data = await res.json();
+                // Handle structure: data.menus.lunch OR data.menus.dinner
+                const menu = data.menus[timeContext] || data.menus['dinner'];
+                renderMenu(menu);
+                goToStep('menu');
+            } catch (e) {
+                alert("Menu not available at this moment.");
+            }
+        }
+
+        function renderMenu(menuData) {
+            const container = document.getElementById('menu-grid');
+            let html = '';
+            for (const [section, items] of Object.entries(menuData)) {
+                html += `<div class="mb-8"><h3 class="text-center text-xs text-[#D4AF37] uppercase tracking-[0.2em] mb-6">${section}</h3>`;
+                items.forEach(item => {
+                    html += `
+                    <div onclick="toggleDish('${item.name}', this)" class="relative p-4 border-b border-gray-900 cursor-pointer hover:bg-white/5 transition-all duration-300">
+                        <div class="flex justify-between items-baseline">
+                            <span class="text-lg text-gray-300 font-serif">${item.name}</span>
+                            <span class="text-sm text-gray-600 font-cinzel">$${item.price}</span>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-1 italic">${item.description}</p>
+                        <div class="selection-indicator absolute left-0 top-0 bottom-0 w-1 bg-[#D4AF37] opacity-0 transition-opacity duration-300"></div>
+                    </div>`;
+                });
+                html += `</div>`;
+            }
+            container.innerHTML = html;
+        }
+
+        function toggleDish(name, el) {
+            if (state.dishes.includes(name)) {
+                state.dishes = state.dishes.filter(d => d !== name);
+                el.querySelector('.selection-indicator').style.opacity = '0';
+                el.classList.remove('bg-white/5');
+            } else {
+                state.dishes.push(name);
+                el.querySelector('.selection-indicator').style.opacity = '1';
+                el.classList.add('bg-white/5');
+            }
+            // Update button visibility
+            const btn = document.getElementById('btn-course');
+            document.getElementById('dish-count').innerText = state.dishes.length;
+            if (state.dishes.length > 0) btn.classList.remove('opacity-0', 'translate-y-10');
+            else btn.classList.add('opacity-0', 'translate-y-10');
+        }
+
+        function updateBottles(delta) {
+            state.bottles = Math.max(1, Math.min(3, state.bottles + delta));
+            document.getElementById('bottle-display').innerText = state.bottles;
+        }
+
+        function updateBudget(val) {
+            state.budget = val;
+            document.getElementById('budget-display').innerText = val;
+        }
+
+        async function generateProgression() {
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('loading').classList.add('flex');
+            
+            try {
+                const res = await fetch('/consult/progression', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ dishes: state.dishes, bottle_count: state.bottles, budget: parseInt(state.budget) })
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    renderProgression(data.progression);
+                    goToStep('results');
+                } else {
+                    alert("The cellar is currently unavailable.");
+                }
+            } catch (e) {
+                alert("Connection error.");
+            } finally {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('loading').classList.remove('flex');
+            }
+        }
+
+        function renderProgression(progression) {
+            document.getElementById('progression-container').innerHTML = progression.map((course, i) => `
+                <div class="relative pl-6 border-l border-gray-800 animate-up" style="animation-delay: ${i*0.2}s">
+                    <div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-[#D4AF37]"></div>
+                    <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-4">${course.course_name}</p>
+                    
+                    <div class="mb-8">
+                        <h2 class="text-3xl text-white font-serif italic mb-1">${course.primary.wine_name}</h2>
+                        <p class="text-sm text-gray-400 mb-4 font-cinzel tracking-wider">${course.primary.producer}</p>
+                        
+                        <p class="text-[#e5e5e5] text-lg leading-relaxed font-serif italic border-l-2 border-[#D4AF37] pl-4 py-1 mb-6">
+                            "${course.luxury.pairing_note}"
+                        </p>
+                        
+                        <div class="bg-white/5 p-4 border border-gray-800">
+                            <p class="font-cinzel text-[0.65rem] tracking-[0.2em] text-[#D4AF37] mb-2">WORTH KNOWING</p>
+                            <ul class="space-y-2">
+                                ${course.luxury.conversation_starters.map(s => `<li class="text-sm text-gray-400 flex items-start gap-2"><span class="text-[#D4AF37] mt-1">▪</span> ${s}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div class="mt-4 text-right"><span class="text-2xl text-[#D4AF37] font-cinzel">$${course.primary.price}</span></div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <p class="font-cinzel text-[0.65rem] tracking-[0.2em] text-center border-b border-gray-900 pb-2 mb-4 text-gray-500">ALTERNATIVES</p>
+                        ${course.alternatives.map(alt => `
+                            <div class="bg-black border border-gray-900 p-4 hover:border-gray-700 transition-colors duration-300 cursor-pointer" onclick="toggleAlt(this)">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <div class="text-white font-serif text-lg">${alt.wine_name}</div>
+                                        <div class="text-xs text-gray-500 uppercase tracking-wider">${alt.producer}</div>
+                                    </div>
+                                    <div class="text-[#D4AF37]">$${alt.price}</div>
+                                </div>
+                                <div class="alt-details mt-4 pt-4 border-t border-gray-900">
+                                    <p class="text-sm text-gray-400 italic mb-3">"${alt.pairing_note}"</p>
+                                    <ul class="space-y-1">
+                                        ${alt.conversation_starters.map(s => `<li class="text-xs text-gray-500">• ${s}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
             `).join('');
         }
 
-        // =================================================================
-        // RESTAURANT SELECTION
-        // =================================================================
-
-        async function selectRestaurant(restaurantId, restaurantName) {
-            state.selectedRestaurant = restaurantId;
-            
-            try {
-                const response = await fetch(`/restaurant/${restaurantId}/menu`);
-                const data = await response.json();
-                
-                if (!data.menus) {
-                    throw new Error('Menu not available');
-                }
-
-                state.menuData = data.menus;
-                goToScreen('menu');
-                displayMenu(state.currentMealTime);
-                updateTimeIndicator();
-            } catch (error) {
-                console.error('Failed to load menu:', error);
-                alert('Unable to load menu. Please try again.');
-            }
-        }
-
-        // =================================================================
-        // MENU DISPLAY
-        // =================================================================
-
-        function switchMealTime(mealTime) {
-            state.currentMealTime = mealTime;
-            
-            // Update toggles
-            document.getElementById('lunch-toggle').classList.toggle('active', mealTime === 'lunch');
-            document.getElementById('dinner-toggle').classList.toggle('active', mealTime === 'dinner');
-            
-            // Display menu
-            displayMenu(mealTime);
-        }
-
-        function updateTimeIndicator() {
-            const hour = new Date().getHours();
-            const autoSelected = detectMealTime();
-            const indicator = document.getElementById('time-indicator');
-            
-            if (autoSelected === 'lunch') {
-                indicator.textContent = `🕐 Lunch Service (Auto-selected based on current time: ${hour}:00)`;
+        function toggleAlt(el) {
+            const details = el.querySelector('.alt-details');
+            if (details.classList.contains('open')) {
+                details.classList.remove('open');
+                el.classList.remove('border-[#D4AF37]');
             } else {
-                indicator.textContent = `🍷 Dinner Service (Auto-selected based on current time: ${hour}:00)`;
+                document.querySelectorAll('.alt-details').forEach(d => d.classList.remove('open'));
+                details.classList.add('open');
+                el.classList.add('border-[#D4AF37]');
             }
         }
 
-        function displayMenu(mealTime) {
-            const menuData = state.menuData[mealTime];
-            if (!menuData) {
-                console.error('Menu not found for', mealTime);
-                return;
-            }
-
-            const container = document.getElementById('menu-display');
-            container.innerHTML = '';
-
-            // Display each menu section
-            for (const [sectionName, dishes] of Object.entries(menuData)) {
-                const section = createMenuSection(sectionName, dishes);
-                container.appendChild(section);
-            }
+        function goToStep(id) {
+            document.querySelectorAll('.step-view').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`step-${id}`).classList.remove('hidden');
+            window.scrollTo(0,0);
+        }
+        
+        function resetApp() {
+            state.dishes = [];
+            state.bottles = 1;
+            goToStep('restaurant');
         }
 
-        function createMenuSection(sectionName, dishes) {
-            const section = document.createElement('div');
-            section.className = 'menu-section';
-            
-            section.innerHTML = `
-                <h3>${sectionName}</h3>
-                <div class="dishes-grid">
-                    ${dishes.map(dish => createDishCard(dish)).join('')}
-                </div>
-            `;
-            
-            return section;
-        }
-
-        function createDishCard(dish) {
-            const isSelected = state.selectedDishes.has(dish.id);
-            return `
-                <div class="dish-card ${isSelected ? 'selected' : ''}" 
-                     onclick="toggleDishSelection('${dish.id}', ${JSON.stringify(dish).replace(/"/g, '&quot;')})">
-                    <h4>${dish.name}</h4>
-                    <p class="dish-description">${dish.description}</p>
-                    <p class="dish-price">$${dish.price}</p>
-                </div>
-            `;
-        }
-
-        // =================================================================
-        // DISH SELECTION
-        // =================================================================
-
-        function toggleDishSelection(dishId, dishDataJson) {
-            // Parse dish data (handle HTML entities)
-            const dishData = typeof dishDataJson === 'string' ? 
-                JSON.parse(dishDataJson.replace(/&quot;/g, '"')) : dishDataJson;
-            
-            // Toggle selection
-            if (state.selectedDishes.has(dishId)) {
-                state.selectedDishes.delete(dishId);
-            } else {
-                state.selectedDishes.set(dishId, dishData);
-            }
-            
-            // Update UI
-            displayMenu(state.currentMealTime);
-            updateSelectedCount();
-        }
-
-        function updateSelectedCount() {
-            const count = state.selectedDishes.size;
-            const badge = document.getElementById('selected-count');
-            const text = document.getElementById('count-text');
-            
-            if (count > 0) {
-                badge.style.display = 'block';
-                text.textContent = `${count} dish${count === 1 ? '' : 'es'} selected`;
-            } else {
-                badge.style.display = 'none';
-            }
-        }
-
-        // =================================================================
-        // WINE RECOMMENDATIONS
-        // =================================================================
-
-        async function getRecommendations() {
-            if (state.selectedDishes.size === 0) {
-                alert('Please select at least one dish before continuing.');
-                return;
-            }
-
-            // Move to progression screen
-            goToScreen('progression');
-            document.getElementById('loading-state').style.display = 'block';
-            document.getElementById('error-container').innerHTML = '';
-            document.getElementById('progression-timeline').innerHTML = '';
-
-            try {
-                // Prepare dish list
-                const dishes = Array.from(state.selectedDishes.values()).map(d => d.name);
-                
-                const response = await fetch('/consult/progression', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        dishes: dishes,
-                        bottle_count: state.bottleCount,
-                        budget: state.budget
-                    })
-                });
-
-                if (!response.ok) {
-                    const error = await response.json();
-                    throw new Error(error.detail || error.error || 'Failed to get recommendations');
-                }
-
-                const data = await response.json();
-                
-                if (!data.success) {
-                    throw new Error(data.error || 'Recommendation failed');
-                }
-
-                // Hide loading, show progression
-                document.getElementById('loading-state').style.display = 'none';
-                displayProgression(data);
-                document.getElementById('progression-actions').style.display = 'flex';
-
-            } catch (error) {
-                console.error('Recommendation error:', error);
-                document.getElementById('loading-state').style.display = 'none';
-                document.getElementById('error-container').innerHTML = `
-                    <div class="error-message">
-                        <h3>Unable to Generate Recommendations</h3>
-                        <p>${error.message}</p>
-                        <p>Please try again or adjust your selections.</p>
-                    </div>
-                `;
-                document.getElementById('progression-actions').style.display = 'flex';
-            }
-        }
-
-        // =================================================================
-        // PROGRESSION DISPLAY
-        // =================================================================
-
-        function displayProgression(data) {
-            const container = document.getElementById('progression-timeline');
-            container.innerHTML = '';
-
-            if (!data.progression || data.progression.length === 0) {
-                container.innerHTML = '<p class="error-message">No recommendations available.</p>';
-                return;
-            }
-
-            data.progression.forEach((course, index) => {
-                const courseCard = createCourseCard(course, index);
-                container.appendChild(courseCard);
-            });
-        }
-
-        function createCourseCard(course) {
-            const card = document.createElement('div');
-            card.className = 'course-card';
-            
-            // Safely handle potentially missing data
-            const primary = course.primary || {};
-            const luxury = course.luxury || {};
-            const alternatives = course.alternatives || [];
-
-            card.innerHTML = `
-                <div class="course-header">
-                    <span class="course-number">${course.course_number}</span>
-                    <h3>${course.course_name}</h3>
-                </div>
-                
-                <div class="course-dishes">
-                    ${course.dishes.map(d => `<span class="dish-tag">${d}</span>`).join('')}
-                </div>
-                
-                <div class="primary-wine">
-                    <h4>${primary.wine_name || 'Wine'}</h4>
-                    <p class="producer">${primary.producer || ''}</p>
-                    <p class="price">$${primary.price || 0}</p>
-                    
-                    ${luxury.pairing_note ? `
-                        <div class="pairing-note">
-                            ${luxury.pairing_note}
-                        </div>
-                    ` : ''}
-                    
-                    ${luxury.conversation_starters && luxury.conversation_starters.length > 0 ? `
-                        <div class="conversation-starters">
-                            ${luxury.conversation_starters.map(s => 
-                                `<p class="starter">💬 ${s}</p>`
-                            ).join('')}
-                        </div>
-                    ` : ''}
-                </div>
-                
-                ${alternatives.length > 0 ? `
-                    <div class="alternatives">
-                        <h5>Alternative Selections</h5>
-                        ${alternatives.map(alt => `
-                            <div class="alt-wine">
-                                <span>${alt.wine_name || 'Alternative Wine'}</span>
-                                <span class="alt-price">$${alt.price || 0}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                ` : ''}
-            `;
-            
-            return card;
-        }
-
-        // =================================================================
-        // SCREEN NAVIGATION
-        // =================================================================
-
-        function goToScreen(screenName) {
-            // Update state
-            state.currentScreen = screenName;
-
-            // Hide all screens
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            
-            // Show target screen
-            document.getElementById(`screen-${screenName}`).classList.add('active');
-
-            // Update step navigation
-            updateStepNav(screenName);
-        }
-
-        function updateStepNav(screenName) {
-            const steps = {
-                'restaurant': 1,
-                'menu': 2,
-                'preferences': 3,
-                'progression': 4
-            };
-
-            const currentStep = steps[screenName] || 1;
-
-            document.querySelectorAll('.step').forEach((step, index) => {
-                if (index < currentStep) {
-                    step.classList.add('active');
-                } else {
-                    step.classList.remove('active');
-                }
-            });
-        }
-
-        function resetFlow() {
-            state.selectedDishes.clear();
-            state.budget = 1000;
-            state.bottleCount = 1;
-            goToScreen('restaurant');
-            updateSelectedCount();
-        }
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', init);
+        init();
     </script>
 </body>
 </html>
