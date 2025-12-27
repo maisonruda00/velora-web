@@ -4,330 +4,552 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Velora - Private Cellar</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- Luxury Fonts (V3) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
+        /* V3 LUXURY DESIGN SYSTEM */
         :root {
             --gold: #D4AF37;
-            --gold-dim: #8a702a;
-            --bg-dark: #050505;
+            --bg-dark: #0A0A0A;
+            --bg-charcoal: #1A1A1A;
         }
-        body { 
-            font-family: 'Cormorant Garamond', serif; 
-            background: var(--bg-dark); 
-            color: #e5e5e5; 
-            -webkit-font-smoothing: antialiased;
-        }
-        .font-cinzel { font-family: 'Cinzel', serif; }
-        .gold-text { color: var(--gold); }
         
-        /* Luxury Cards */
-        .wine-card {
-            background: linear-gradient(180deg, rgba(30,30,30,0.4) 0%, rgba(10,10,10,0.6) 100%);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            backdrop-filter: blur(10px);
-            transition: all 0.4s ease-out; /* The Velvet Feel */
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 100%);
+            color: #E8E8E8;
+            min-height: 100vh;
         }
+        
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        
+        .text-gold { color: var(--gold); }
+        .border-gold { border-color: var(--gold); }
+        
+        /* MOBILE-OPTIMIZED TYPOGRAPHY (Elena's fix) */
+        .wine-name {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        
+        .dish-description {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 768px) {
+            .wine-name { font-size: 20px; }
+            .dish-description { font-size: 15px; }
+        }
+        
+        /* INTERACTIVE ELEMENTS */
+        .wine-card {
+            background: rgba(20, 20, 20, 0.6);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        
         .wine-card:hover {
             border-color: var(--gold);
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
         
-        /* Animations */
+        /* ANIMATIONS */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        .animate-up { animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
         
-        /* Range Slider */
+        .animate-up {
+            animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+        
+        /* DETAILS/SUMMARY STYLING */
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+        
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+        }
+        
+        /* RANGE SLIDER */
         input[type="range"] {
             -webkit-appearance: none;
             background: #333;
             height: 1px;
         }
+        
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 16px; height: 16px;
+            width: 16px;
+            height: 16px;
             background: var(--gold);
             border-radius: 50%;
             cursor: pointer;
-            transition: transform 0.2s ease;
         }
-        input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
         
-        .alt-details { display: none; }
-        .alt-details.open { display: block; animation: fadeUp 0.4s ease-out; }
+        /* LOADING SPINNER */
+        .spinner {
+            border: 3px solid rgba(212, 175, 55, 0.2);
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* SELECTION INDICATOR */
+        .dish-selected {
+            background: rgba(212, 175, 55, 0.08);
+        }
+        
+        .selection-indicator {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gold);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
     </style>
 </head>
-<body class="min-h-screen p-6 flex flex-col items-center">
 
+<body class="min-h-screen p-6 flex flex-col items-center">
+    
+    <!-- HEADER -->
     <header class="w-full max-w-md text-center py-8 opacity-0 animate-up" style="animation-delay: 0.1s;">
-        <h1 class="font-cinzel text-3xl gold-text mb-2">VELORA</h1>
-        <p class="text-xs uppercase tracking-[0.3em] text-gray-500">Private Digital Sommelier</p>
+        <h1 class="font-cinzel text-4xl text-gold mb-2 tracking-widest">VELORA</h1>
+        <p class="text-[10px] uppercase tracking-[0.4em] text-gray-500">Private Digital Sommelier</p>
     </header>
 
+    <!-- MAIN APP CONTAINER -->
     <main id="app" class="w-full max-w-md relative min-h-[60vh]">
         
+        <!-- STEP 1: RESTAURANT SELECTION -->
         <div id="step-restaurant" class="step-view opacity-0 animate-up" style="animation-delay: 0.2s;">
-            <h2 class="text-2xl text-white mb-8 text-center italic">Where are you dining this evening?</h2>
+            <h2 class="text-2xl text-white mb-8 text-center italic font-light">
+                Where are you dining this evening?
+            </h2>
             <div id="restaurant-list" class="space-y-4"></div>
         </div>
 
+        <!-- STEP 2: MENU SELECTION -->
         <div id="step-menu" class="step-view hidden">
             <div class="flex justify-between items-end mb-6 border-b border-gray-800 pb-4">
                 <div>
                     <h2 class="text-2xl text-white" id="menu-title">Menu</h2>
-                    <p class="text-xs text-[#8a702a] uppercase tracking-widest mt-1" id="time-context">Service</p>
+                    <p class="text-xs text-gold uppercase tracking-widest mt-1" id="time-context">Service</p>
                 </div>
-                <button onclick="resetApp()" class="text-xs text-gray-600 hover:text-white uppercase tracking-widest transition-colors duration-300">Back</button>
+                <button onclick="resetApp()" class="text-xs text-gray-600 hover:text-white uppercase tracking-widest transition-colors">
+                    Back
+                </button>
             </div>
             <div id="menu-grid" class="space-y-8 pb-24"></div>
             
+            <!-- FLOATING ACTION BUTTON -->
             <div class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black to-transparent pointer-events-none">
-                <button onclick="goToStep('preferences')" id="btn-course" class="pointer-events-auto w-full bg-[#D4AF37] text-black py-4 font-cinzel font-bold tracking-widest text-xs hover:bg-white transition-all duration-500 shadow-lg shadow-yellow-900/20 opacity-0 transform translate-y-10">
-                    Proceed to Cellar (<span id="dish-count">0</span>)
+                <button 
+                    onclick="goToStep('preferences')" 
+                    id="btn-course" 
+                    class="pointer-events-auto w-full bg-[#D4AF37] text-black py-4 font-cinzel font-bold tracking-widest text-xs hover:bg-white transition-all duration-500 shadow-lg shadow-yellow-900/20 opacity-0 transform translate-y-10">
+                    CONFIRM SELECTION (<span id="dish-count">0</span>)
                 </button>
             </div>
         </div>
 
+        <!-- STEP 3: PREFERENCES -->
         <div id="step-preferences" class="step-view hidden pt-12">
-            <h2 class="text-3xl text-white mb-2 text-center italic">Service Preferences</h2>
-            <p class="text-center text-gray-500 text-sm mb-12">Tailoring the cellar selection.</p>
+            <h2 class="text-3xl text-white mb-2 text-center italic font-light">The Cellar</h2>
+            <p class="text-center text-gray-500 text-sm mb-12">Tailoring your acquisition.</p>
             
             <div class="space-y-12">
+                <!-- BOTTLE COUNT -->
                 <div>
-                    <label class="font-cinzel text-[0.65rem] tracking-[0.2em] text-[#666] block text-center mb-6">Service Size</label>
+                    <label class="font-cinzel text-[0.65rem] tracking-[0.2em] text-[#666] block text-center mb-6">
+                        SERVICE SIZE
+                    </label>
                     <div class="flex justify-center items-center gap-8">
-                        <button onclick="updateBottles(-1)" class="text-2xl text-gray-500 hover:text-white transition-colors p-2">-</button>
-                        <span id="bottle-display" class="text-4xl gold-text font-cinzel">1</span>
-                        <button onclick="updateBottles(1)" class="text-2xl text-gray-500 hover:text-white transition-colors p-2">+</button>
+                        <button onclick="updateBottles(-1)" class="text-2xl text-gray-500 hover:text-white p-2 transition-colors">
+                            -
+                        </button>
+                        <span id="bottle-display" class="text-4xl text-gold font-cinzel">1</span>
+                        <button onclick="updateBottles(1)" class="text-2xl text-gray-500 hover:text-white p-2 transition-colors">
+                            +
+                        </button>
                     </div>
                     <p class="text-center text-xs text-gray-600 mt-2 uppercase tracking-widest">Bottle(s)</p>
                 </div>
-
+                
+                <!-- BUDGET SLIDER -->
                 <div>
-                    <label class="font-cinzel text-[0.65rem] tracking-[0.2em] text-[#666] block text-center mb-6">Acquisition Target</label>
+                    <label class="font-cinzel text-[0.65rem] tracking-[0.2em] text-[#666] block text-center mb-6">
+                        BUDGET TARGET
+                    </label>
                     <div class="text-center mb-6">
-                        <span class="text-4xl text-white font-cinzel">$<span id="budget-display">1000</span></span>
+                        <span class="text-4xl text-white font-cinzel">
+                            $<span id="budget-display">1000</span>
+                        </span>
                     </div>
-                    <input type="range" id="budget-slider" min="150" max="5000" step="50" value="1000" class="w-full" oninput="updateBudget(this.value)">
-                    <div class="flex justify-between text-[10px] uppercase tracking-widest text-gray-600 mt-4">
-                        <span>Premier</span>
-                        <span>Grand Cru</span>
-                        <span>Iconic</span>
-                    </div>
+                    <input 
+                        type="range" 
+                        id="budget-slider" 
+                        min="150" 
+                        max="5000" 
+                        step="50" 
+                        value="1000" 
+                        class="w-full" 
+                        oninput="updateBudget(this.value)">
                 </div>
             </div>
-
-            <button onclick="generateProgression()" class="w-full mt-16 border border-[#D4AF37] text-[#D4AF37] py-4 font-cinzel font-bold tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-all duration-500">
-                Consult Sommelier
+            
+            <button 
+                onclick="generateProgression()" 
+                class="w-full mt-16 border border-[#D4AF37] text-[#D4AF37] py-4 font-cinzel font-bold tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-all duration-500">
+                CONSULT SOMMELIER
             </button>
         </div>
 
+        <!-- STEP 4: RESULTS -->
         <div id="step-results" class="step-view hidden">
-            <h2 class="text-center text-white font-cinzel text-xl mb-8 tracking-widest border-b border-gray-800 pb-4">The Progression</h2>
-            <div id="progression-container" class="space-y-16"></div>
-            <button onclick="resetApp()" class="w-full mt-12 mb-8 text-gray-600 text-xs uppercase tracking-widest hover:text-white transition-colors">Close Consultation</button>
+            <div id="progression-container" class="space-y-12"></div>
+            <button 
+                onclick="resetApp()" 
+                class="w-full mt-12 mb-8 text-gray-600 text-xs uppercase tracking-widest hover:text-white transition-colors">
+                Start New Consultation
+            </button>
         </div>
 
-        <div id="loading" class="fixed inset-0 bg-black z-50 hidden flex-col items-center justify-center">
-            <div class="w-12 h-12 border-t-2 border-b-2 border-[#D4AF37] rounded-full animate-spin mb-8"></div>
-            <p class="text-[#D4AF37] font-cinzel text-sm tracking-[0.3em] animate-pulse">The Curator is consulting the cellar...</p>
+        <!-- LOADING OVERLAY -->
+        <div id="loading" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center backdrop-blur-sm">
+            <div class="spinner mb-8"></div>
+            <p class="text-[#D4AF37] font-cinzel text-sm tracking-[0.3em] animate-pulse">
+                Consulting the Cellar...
+            </p>
         </div>
     </main>
 
     <script>
-        // State
-        let state = { restaurant: null, dishes: [], bottles: 1, budget: 1000 };
-
+        // APPLICATION STATE
+        let state = {
+            restaurant: null,
+            dishes: [],
+            bottles: 1,
+            budget: 1000
+        };
+        
+        // INITIALIZATION
         async function init() {
             try {
-                // FIXED: Only fetch list of restaurants first
                 const res = await fetch('/restaurants');
                 const data = await res.json();
                 renderRestaurants(data.restaurants);
             } catch (e) {
-                console.error("Init error", e);
-                document.getElementById('restaurant-list').innerHTML = '<p class="text-center text-red-500 text-xs">System Unavailable</p>';
+                console.error('Failed to load restaurants:', e);
             }
         }
 
+        // RENDER RESTAURANT LIST
         function renderRestaurants(list) {
-            document.getElementById('restaurant-list').innerHTML = list.map(r => `
-                <div onclick="selectRestaurant('${r.id}')" class="wine-card p-6 cursor-pointer text-center group">
-                    <h3 class="text-xl text-white font-cinzel mb-1 group-hover:text-[#D4AF37] transition-colors duration-300">${r.name}</h3>
-                    <p class="text-xs uppercase tracking-widest text-gray-500">${r.cuisine} • ${r.location}</p>
+            const container = document.getElementById('restaurant-list');
+            container.innerHTML = list.map(r => `
+                <div onclick="selectRestaurant('${escapeHtml(r.id)}')" 
+                     class="wine-card p-6 cursor-pointer text-center group">
+                    <h3 class="text-xl text-white font-cinzel mb-1 group-hover:text-[#D4AF37] transition-colors duration-300">
+                        ${escapeHtml(r.name)}
+                    </h3>
+                    <p class="text-xs uppercase tracking-widest text-gray-500">
+                        ${escapeHtml(r.cuisine)} • ${escapeHtml(r.location)}
+                    </p>
                 </div>
             `).join('');
         }
 
+        // SELECT RESTAURANT
         async function selectRestaurant(id) {
             state.restaurant = id;
+            
+            // Determine lunch vs dinner
             const hour = new Date().getHours();
             const timeContext = (hour >= 11 && hour < 16) ? 'lunch' : 'dinner';
-            document.getElementById('time-context').innerText = timeContext === 'lunch' ? 'Lunch Service' : 'Dinner Service';
+            document.getElementById('time-context').innerText = 
+                timeContext === 'lunch' ? 'LUNCH SERVICE' : 'DINNER SERVICE';
             
-            // FIXED: Fetch specific menu from API instead of raw JSON
             try {
                 const res = await fetch(`/restaurant/${id}/menu`);
                 const data = await res.json();
-                // Handle structure: data.menus.lunch OR data.menus.dinner
                 const menu = data.menus[timeContext] || data.menus['dinner'];
                 renderMenu(menu);
                 goToStep('menu');
             } catch (e) {
-                alert("Menu not available at this moment.");
+                alert("Menu unavailable. Please try another restaurant.");
+                console.error(e);
             }
         }
 
+        // RENDER MENU
         function renderMenu(menuData) {
             const container = document.getElementById('menu-grid');
             let html = '';
+            
+            if (!menuData || typeof menuData !== 'object') {
+                container.innerHTML = '<p class="text-gray-500 text-center">Menu unavailable.</p>';
+                return;
+            }
+            
             for (const [section, items] of Object.entries(menuData)) {
-                html += `<div class="mb-8"><h3 class="text-center text-xs text-[#D4AF37] uppercase tracking-[0.2em] mb-6">${section}</h3>`;
+                if (!Array.isArray(items) || items.length === 0) continue;
+                
+                html += `<div class="mb-10">`;
+                html += `<h3 class="text-center text-xs text-[#D4AF37] uppercase tracking-[0.3em] mb-6 border-b border-[#D4AF37]/20 pb-2 mx-12">
+                    ${escapeHtml(section)}
+                </h3>`;
+                
                 items.forEach(item => {
+                    // CRITICAL FIX: Proper string escaping for onclick handlers
+                    const safeName = escapeForJs(item.name);
+                    const displayName = escapeHtml(item.name);
+                    const displayDesc = escapeHtml(item.description || '');
+                    
                     html += `
-                    <div onclick="toggleDish('${item.name}', this)" class="relative p-4 border-b border-gray-900 cursor-pointer hover:bg-white/5 transition-all duration-300">
+                    <div onclick="toggleDish('${safeName}', this)" 
+                         class="relative p-4 mb-2 cursor-pointer group transition-all duration-300 rounded-sm hover:bg-white/5">
                         <div class="flex justify-between items-baseline">
-                            <span class="text-lg text-gray-300 font-serif">${item.name}</span>
-                            <span class="text-sm text-gray-600 font-cinzel">$${item.price}</span>
+                            <span class="wine-name text-gray-200 font-serif group-hover:text-[#D4AF37] transition-colors">
+                                ${displayName}
+                            </span>
+                            <span class="text-sm text-gray-600 font-cinzel">
+                                $${item.price || '0'}
+                            </span>
                         </div>
-                        <p class="text-sm text-gray-600 mt-1 italic">${item.description}</p>
-                        <div class="selection-indicator absolute left-0 top-0 bottom-0 w-1 bg-[#D4AF37] opacity-0 transition-opacity duration-300"></div>
+                        ${displayDesc ? `
+                            <p class="dish-description text-gray-500 mt-1 italic font-serif opacity-80">
+                                ${displayDesc}
+                            </p>
+                        ` : ''}
+                        <div class="selection-indicator"></div>
                     </div>`;
                 });
                 html += `</div>`;
             }
+            
             container.innerHTML = html;
         }
 
+        // TOGGLE DISH SELECTION
         function toggleDish(name, el) {
-            if (state.dishes.includes(name)) {
-                state.dishes = state.dishes.filter(d => d !== name);
+            const index = state.dishes.indexOf(name);
+            
+            if (index > -1) {
+                // Deselect
+                state.dishes.splice(index, 1);
                 el.querySelector('.selection-indicator').style.opacity = '0';
-                el.classList.remove('bg-white/5');
+                el.classList.remove('dish-selected');
             } else {
+                // Select
                 state.dishes.push(name);
                 el.querySelector('.selection-indicator').style.opacity = '1';
-                el.classList.add('bg-white/5');
+                el.classList.add('dish-selected');
             }
-            // Update button visibility
+            
+            // Update button
             const btn = document.getElementById('btn-course');
-            document.getElementById('dish-count').innerText = state.dishes.length;
-            if (state.dishes.length > 0) btn.classList.remove('opacity-0', 'translate-y-10');
-            else btn.classList.add('opacity-0', 'translate-y-10');
+            const count = state.dishes.length;
+            document.getElementById('dish-count').innerText = count;
+            
+            if (count > 0) {
+                btn.classList.remove('opacity-0', 'translate-y-10');
+            } else {
+                btn.classList.add('opacity-0', 'translate-y-10');
+            }
         }
 
+        // UPDATE BOTTLES
         function updateBottles(delta) {
-            state.bottles = Math.max(1, Math.min(3, state.bottles + delta));
+            state.bottles = Math.max(1, Math.min(6, state.bottles + delta));
             document.getElementById('bottle-display').innerText = state.bottles;
         }
 
+        // UPDATE BUDGET
         function updateBudget(val) {
-            state.budget = val;
+            state.budget = parseInt(val);
             document.getElementById('budget-display').innerText = val;
         }
 
+        // GENERATE PROGRESSION
         async function generateProgression() {
-            document.getElementById('loading').classList.remove('hidden');
-            document.getElementById('loading').classList.add('flex');
+            // Show loading
+            const loadingEl = document.getElementById('loading');
+            loadingEl.classList.remove('hidden');
+            loadingEl.classList.add('flex');
             
             try {
                 const res = await fetch('/consult/progression', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ dishes: state.dishes, bottle_count: state.bottles, budget: parseInt(state.budget) })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        dishes: state.dishes,
+                        bottle_count: state.bottles,
+                        budget: parseInt(state.budget)
+                    })
                 });
+                
                 const data = await res.json();
                 
                 if (data.success) {
                     renderProgression(data.progression);
                     goToStep('results');
                 } else {
-                    alert("The cellar is currently unavailable.");
+                    alert(data.error || "Unable to generate pairing. Please adjust your selections.");
                 }
             } catch (e) {
-                alert("Connection error.");
+                alert("Connection error. Please try again.");
+                console.error(e);
             } finally {
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('loading').classList.remove('flex');
+                loadingEl.classList.add('hidden');
+                loadingEl.classList.remove('flex');
             }
         }
 
+        // RENDER PROGRESSION
         function renderProgression(progression) {
-            document.getElementById('progression-container').innerHTML = progression.map((course, i) => `
+            const container = document.getElementById('progression-container');
+            
+            container.innerHTML = progression.map((course, i) => `
                 <div class="relative pl-6 border-l border-gray-800 animate-up" style="animation-delay: ${i*0.2}s">
                     <div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-[#D4AF37]"></div>
-                    <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-4">${course.course_name}</p>
+                    
+                    <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-4">
+                        ${escapeHtml(course.course_name)}
+                    </p>
                     
                     <div class="mb-8">
-                        <h2 class="text-3xl text-white font-serif italic mb-1">${course.primary.wine_name}</h2>
-                        <p class="text-sm text-gray-400 mb-4 font-cinzel tracking-wider">${course.primary.producer}</p>
-                        
-                        <p class="text-[#e5e5e5] text-lg leading-relaxed font-serif italic border-l-2 border-[#D4AF37] pl-4 py-1 mb-6">
-                            "${course.luxury.pairing_note}"
+                        <h2 class="text-3xl text-white font-serif italic mb-1">
+                            ${escapeHtml(course.primary.wine_name)}
+                        </h2>
+                        <p class="text-sm text-gray-400 mb-4 font-cinzel tracking-wider">
+                            ${escapeHtml(course.primary.producer)}
                         </p>
                         
-                        <div class="bg-white/5 p-4 border border-gray-800">
-                            <p class="font-cinzel text-[0.65rem] tracking-[0.2em] text-[#D4AF37] mb-2">WORTH KNOWING</p>
-                            <ul class="space-y-2">
-                                ${course.luxury.conversation_starters.map(s => `<li class="text-sm text-gray-400 flex items-start gap-2"><span class="text-[#D4AF37] mt-1">▪</span> ${s}</li>`).join('')}
-                            </ul>
-                        </div>
-                        <div class="mt-4 text-right"><span class="text-2xl text-[#D4AF37] font-cinzel">$${course.primary.price}</span></div>
-                    </div>
-
-                    <div class="space-y-4">
-                        <p class="font-cinzel text-[0.65rem] tracking-[0.2em] text-center border-b border-gray-900 pb-2 mb-4 text-gray-500">ALTERNATIVES</p>
-                        ${course.alternatives.map(alt => `
-                            <div class="bg-black border border-gray-900 p-4 hover:border-gray-700 transition-colors duration-300 cursor-pointer" onclick="toggleAlt(this)">
-                                <div class="flex justify-between items-center">
-                                    <div>
-                                        <div class="text-white font-serif text-lg">${alt.wine_name}</div>
-                                        <div class="text-xs text-gray-500 uppercase tracking-wider">${alt.producer}</div>
-                                    </div>
-                                    <div class="text-[#D4AF37]">$${alt.price}</div>
-                                </div>
-                                <div class="alt-details mt-4 pt-4 border-t border-gray-900">
-                                    <p class="text-sm text-gray-400 italic mb-3">"${alt.pairing_note}"</p>
-                                    <ul class="space-y-1">
-                                        ${alt.conversation_starters.map(s => `<li class="text-xs text-gray-500">• ${s}</li>`).join('')}
-                                    </ul>
-                                </div>
+                        ${course.luxury.pairing_note ? `
+                            <p class="text-[#e5e5e5] text-lg leading-relaxed font-serif italic border-l-2 border-[#D4AF37] pl-4 py-1 mb-6">
+                                "${escapeHtml(course.luxury.pairing_note)}"
+                            </p>
+                        ` : ''}
+                        
+                        ${course.luxury.conversation_starters && course.luxury.conversation_starters.length > 0 ? `
+                            <div class="bg-white/5 p-4 border border-gray-800">
+                                <p class="font-cinzel text-[0.65rem] tracking-[0.2em] text-[#D4AF37] mb-2">
+                                    WORTH KNOWING
+                                </p>
+                                <ul class="space-y-2">
+                                    ${course.luxury.conversation_starters.map(s => `
+                                        <li class="text-sm text-gray-400 flex items-start gap-2">
+                                            <span class="text-[#D4AF37] mt-1">▪</span>
+                                            ${escapeHtml(s)}
+                                        </li>
+                                    `).join('')}
+                                </ul>
                             </div>
-                        `).join('')}
+                        ` : ''}
+                        
+                        <div class="mt-4 text-right">
+                            <span class="text-2xl text-[#D4AF37] font-cinzel">
+                                $${course.primary.price || '0'}
+                            </span>
+                        </div>
                     </div>
+                    
+                    ${course.alternatives && course.alternatives.length > 0 ? `
+                        <details class="group">
+                            <summary class="font-cinzel text-xs tracking-widest text-gray-600 hover:text-gold cursor-pointer transition-colors text-center border-b border-gray-900 pb-2">
+                                VIEW ALTERNATIVES (${course.alternatives.length})
+                            </summary>
+                            <div class="space-y-4 mt-6">
+                                ${course.alternatives.map(alt => `
+                                    <div class="bg-black border border-gray-900 p-4 hover:border-gray-700 transition-colors">
+                                        <div class="flex justify-between items-center mb-2">
+                                            <div>
+                                                <div class="wine-name text-white font-serif">
+                                                    ${escapeHtml(alt.wine_name)}
+                                                </div>
+                                                <div class="text-xs text-gray-500 uppercase tracking-wider">
+                                                    ${escapeHtml(alt.producer)}
+                                                </div>
+                                            </div>
+                                            <div class="text-[#D4AF37]">
+                                                $${alt.price || '0'}
+                                            </div>
+                                        </div>
+                                        ${alt.pairing_note ? `
+                                            <p class="text-xs text-gray-500 italic mt-2">
+                                                "${escapeHtml(alt.pairing_note.substring(0, 150))}..."
+                                            </p>
+                                        ` : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </details>
+                    ` : ''}
                 </div>
             `).join('');
         }
 
-        function toggleAlt(el) {
-            const details = el.querySelector('.alt-details');
-            if (details.classList.contains('open')) {
-                details.classList.remove('open');
-                el.classList.remove('border-[#D4AF37]');
-            } else {
-                document.querySelectorAll('.alt-details').forEach(d => d.classList.remove('open'));
-                details.classList.add('open');
-                el.classList.add('border-[#D4AF37]');
-            }
-        }
-
+        // NAVIGATION
         function goToStep(id) {
             document.querySelectorAll('.step-view').forEach(el => el.classList.add('hidden'));
             document.getElementById(`step-${id}`).classList.remove('hidden');
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         }
-        
+
         function resetApp() {
             state.dishes = [];
             state.bottles = 1;
+            state.budget = 1000;
+            document.getElementById('budget-slider').value = 1000;
+            document.getElementById('budget-display').innerText = '1000';
+            document.getElementById('bottle-display').innerText = '1';
             goToStep('restaurant');
         }
 
+        // UTILITY FUNCTIONS
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function escapeForJs(text) {
+            if (!text) return '';
+            return text.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\\/g, '\\\\');
+        }
+
+        // START APP
         init();
     </script>
+    
 </body>
 </html>
