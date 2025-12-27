@@ -532,6 +532,57 @@ def generate_progression(dishes: List[str], bottle_count: int, budget: int) -> D
         if i == len(groups) - 1:
             course_name = "Grand Finale"
         
+        # Generate luxury content for alternatives
+        alternatives_with_luxury = []
+        for alt_candidate in candidates[1:3]:  # Top 2 alternatives
+            alt_wine = alt_candidate['wine']
+            alt_luxury = {}
+            
+            if LUXURY_MODE:
+                try:
+                    combined_dishes = " + ".join(dish_names)
+                    
+                    # Generate pairing note for alternative
+                    alt_note = narrator.generate_pairing_story(
+                        wine_name=alt_wine['name'],
+                        wine_type=alt_wine['type'],
+                        dish_name=combined_dishes,
+                        wine_properties={
+                            'acidity': alt_wine['acid'],
+                            'tannin': alt_wine['tannin'],
+                            'body': alt_wine['body']
+                        }
+                    )
+                    
+                    # Generate conversation starters for alternative
+                    alt_starters = generate_conversation_starters(
+                        wine_name=alt_wine['name'],
+                        producer=alt_wine['producer'],
+                        wine_type=alt_wine['type'],
+                        price=alt_wine['price']
+                    )
+                    
+                    alt_luxury = {
+                        'pairing_note': alt_note,
+                        'conversation_starters': alt_starters
+                    }
+                except Exception as e:
+                    print(f"⚠️ Alternative luxury content error: {e}")
+                    alt_luxury = {
+                        'pairing_note': f"An excellent alternative {alt_wine['type']} wine for this course.",
+                        'conversation_starters': []
+                    }
+            
+            alternatives_with_luxury.append({
+                "wine_name": alt_wine['name'],
+                "producer": alt_wine['producer'],
+                "price": alt_wine['price'],
+                "type": alt_wine['type'],
+                "compatibility_score": round(alt_candidate['score'], 1),
+                "pairing_note": alt_luxury.get('pairing_note', ''),
+                "conversation_starters": alt_luxury.get('conversation_starters', [])
+            })
+        
         # Build course entry
         progression.append({
             "course_number": i + 1,
@@ -546,16 +597,7 @@ def generate_progression(dishes: List[str], bottle_count: int, budget: int) -> D
                 "compatibility_score": round(candidates[0]['score'], 1)
             },
             "luxury": luxury,
-            "alternatives": [
-                {
-                    "wine_name": x['wine']['name'],
-                    "producer": x['wine']['producer'],
-                    "price": x['wine']['price'],
-                    "type": x['wine']['type'],
-                    "compatibility_score": round(x['score'], 1)
-                }
-                for x in candidates[1:3]  # Top 2 alternatives
-            ]
+            "alternatives": alternatives_with_luxury
         })
     
     return {
