@@ -25,7 +25,7 @@ except ImportError:
 _wine_cache = None
 
 def load_wines() -> List[Dict]:
-    """Load wine database with STRICT wine-only filtering"""
+    """Load wine database with STRICT wine-only filtering + BOTTLE-ONLY filter"""
     global _wine_cache
     if _wine_cache:
         return _wine_cache
@@ -54,6 +54,21 @@ def load_wines() -> List[Dict]:
         'rum', 'tequila', 'mezcal', 'cognac', 'brandy', 'coffee', 'tea', 'soda',
         'juice', 'budweiser', 'coors', 'miller', 'corona'
     }
+    
+    # BOTTLE-ONLY FILTER - Standard wine bottle sizes
+    VALID_BOTTLE_SIZES = {
+        '750ml', '750', '1.5l', '1500ml', 'magnum', '3l', '3000ml', 'double magnum',
+        '6l', '6000ml', 'imperial', '375ml', 'half bottle', '500ml', 'nv', '2019',
+        '2020', '2021', '2022', '2023', '2024'  # Years sometimes in bottle_size field
+    }
+    
+    # BY-THE-GLASS INDICATORS - Exclude these
+    GLASS_INDICATORS = {
+        'glass', 'glass pour', 'by the glass', 'btg', 'pour'
+    }
+    
+    # PRICE MINIMUM - Bottles are typically $20+, glasses are $7-18
+    MINIMUM_BOTTLE_PRICE = 20.0
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
     paths = [
@@ -106,6 +121,31 @@ def load_wines() -> List[Dict]:
                             price = float(row.get('price', 0))
                             if price <= 0:
                                 continue
+                            
+                            # BOTTLE-ONLY FILTER: Exclude by-the-glass wines
+                            # Check 1: Price minimum (bottles are typically $20+)
+                            if price < MINIMUM_BOTTLE_PRICE:
+                                continue
+                            
+                            # Check 2: Bottle size field
+                            bottle_size = row.get('bottle_size', '').strip().lower()
+                            
+                            # Reject if explicitly marked as glass pour
+                            if any(glass_ind in bottle_size for glass_ind in GLASS_INDICATORS):
+                                continue
+                            
+                            # Reject if bottle size looks like volume in ml/oz for a glass
+                            # (90ml, 120ml, 175ml are typical glass pours)
+                            if bottle_size.isdigit():
+                                ml_size = int(bottle_size)
+                                if ml_size < 375:  # Anything under 375ml half-bottle is suspicious
+                                    continue
+                            
+                            # Accept if bottle size is in valid list OR empty (legacy data)
+                            if bottle_size and not any(valid in bottle_size for valid in VALID_BOTTLE_SIZES):
+                                # Unknown bottle size format - skip to be safe
+                                continue
+                                
                         except:
                             continue
                         
