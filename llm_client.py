@@ -130,21 +130,70 @@ Output only the sentence. No preamble, no quotes, no markdown."""
                 logger.error(f"[{self.request_count}] ❌ Claude failed: {e}, using templates")
         
         # TIER 3: Final fallback to templates
-        logger.warning(f"[{self.request_count}] ⚠️ All AIs unavailable, using template")
-        return self._fallback_note(wine_name, dish_name)
+        logger.warning(f"[{self.request_count}] ⚠️ All AIs unavailable, using intelligent fallback")
+        return self._fallback_note(wine_name, dish_name, wine_properties)
 
-    def _fallback_note(self, wine: str, dish: str) -> str:
+    def _fallback_note(self, wine_name: str, dish_name: str, wine_properties: dict = None) -> str:
         """
-        High-quality template fallback.
-        Still sounds sophisticated even without AI.
+        INTELLIGENT template fallback based on actual wine/dish characteristics.
+        Uses pairing science when AI unavailable.
         """
-        templates = [
-            f"The structure of the {wine} provides a necessary counterpoint to the weight of the {dish}, ensuring a clean finish.",
-            f"Precise and crystalline, this wine acts as a perfect foil to the richness of the {dish}.",
-            f"The tension in the {wine} mirrors the complexity of the {dish}, adhering to classic pairing principles.",
-            f"The wine's backbone and restrained elegance establish the framework needed to complement the {dish}."
-        ]
-        return random.choice(templates)
+        if not wine_properties:
+            wine_properties = {}
+        
+        # Extract wine characteristics
+        acidity = wine_properties.get('acidity', 5)
+        tannin = wine_properties.get('tannin', 5)
+        body = wine_properties.get('body', 5)
+        sweetness = wine_properties.get('sweetness', 1)
+        
+        # Analyze dish for pairing principles
+        dish_lower = dish_name.lower()
+        
+        # HIGH ACIDITY wines (7-10)
+        if acidity >= 7:
+            if any(rich in dish_lower for rich in ['butter', 'cream', 'fatty', 'rib', 'foie gras']):
+                return f"The vibrant acidity in the {wine_name} cuts through the richness of the {dish_name}, cleansing the palate between bites."
+            elif any(seafood in dish_lower for seafood in ['oyster', 'scallop', 'fish', 'seafood']):
+                return f"The crystalline acidity of the {wine_name} mirrors the mineral salinity of the {dish_name}, creating a harmonious coastal pairing."
+            else:
+                return f"The precise acidity in the {wine_name} provides structure and lift to complement the {dish_name}."
+        
+        # HIGH TANNIN wines (7-10)
+        elif tannin >= 7:
+            if any(protein in dish_lower for protein in ['steak', 'beef', 'lamb', 'ribeye', 'wagyu']):
+                return f"The structured tannins in the {wine_name} bind with the proteins in the {dish_name}, softening with each bite while cleansing the palate."
+            elif any(aged in dish_lower for aged in ['aged', 'parmesan', 'pecorino', 'comté']):
+                return f"The wine's firm tannins complement the umami depth of the {dish_name}, while its structure prevents palate fatigue."
+            else:
+                return f"The assertive tannin structure of the {wine_name} provides a necessary framework to stand up to the intensity of the {dish_name}."
+        
+        # SWEET/OFF-DRY wines (sweetness > 3)
+        elif sweetness > 3:
+            if any(spicy in dish_lower for spicy in ['spicy', 'chili', 'curry', 'szechuan']):
+                return f"The subtle sweetness in the {wine_name} tempers the heat of the {dish_name}, while the wine's acidity maintains balance."
+            elif any(dessert in dish_lower for dessert in ['chocolate', 'cake', 'tart', 'dessert']):
+                return f"The wine's elegant sweetness complements the {dish_name} without overwhelming it, while maintaining refreshing acidity."
+            else:
+                return f"The off-dry character of the {wine_name} provides a counterpoint to the savory elements of the {dish_name}."
+        
+        # FULL-BODIED wines (body >= 8)
+        elif body >= 8:
+            if any(rich in dish_lower for rich in ['duck', 'short rib', 'osso buco', 'braised']):
+                return f"The wine's full-bodied structure has the weight necessary to match the richness of the {dish_name} without being overwhelmed."
+            else:
+                return f"The concentrated power of the {wine_name} provides sufficient presence to complement the {dish_name}."
+        
+        # LIGHT-BODIED wines (body <= 4)
+        elif body <= 4:
+            if any(delicate in dish_lower for delicate in ['salad', 'vegetable', 'herb', 'green']):
+                return f"The wine's delicate frame ensures it won't overpower the subtle flavors of the {dish_name}."
+            else:
+                return f"The restrained elegance of the {wine_name} provides a refreshing counterpoint to the {dish_name}."
+        
+        # DEFAULT fallback (balanced wines, 5-7 range)
+        else:
+            return f"The balanced structure of the {wine_name} complements the {dish_name}, with sufficient acidity to refresh and enough body to match its weight."
     
     def generate_conversation_starters(self, wine_name: str, producer: str, 
                                       wine_type: str, region: str = None, 
