@@ -25,10 +25,35 @@ except ImportError:
 _wine_cache = None
 
 def load_wines() -> List[Dict]:
-    """Load wine database with quality filtering"""
+    """Load wine database with STRICT wine-only filtering"""
     global _wine_cache
     if _wine_cache:
         return _wine_cache
+    
+    # STRICT WINE-ONLY SECTIONS
+    VALID_WINE_SECTIONS = {
+        'red wine', 'white wine', 'sparkling', 'champagne', 'rosé', 'rose', 'dessert wine',
+        'red wines', 'white wines', 'sparkling wines', 'champagne & sparkling',
+        'french red wine', 'french white wine', 'italian red wine', 'italian white wine',
+        'spanish red wine', 'spanish white wine', 'usa red wine', 'domestic red wine',
+        'napa valley cabernet', 'bordeaux', 'burgundy', 'red burgundy', 'white burgundy',
+        'pinot noir', 'cabernet sauvignon', 'chardonnay', 'sauvignon blanc', 'riesling',
+        'champagne & sparkling wines', 'red', 'white', 'sparkling wine'
+    }
+    
+    # BLACKLIST - explicitly exclude these
+    EXCLUDE_SECTIONS = {
+        'spirits', 'beer', 'cocktails', 'zero proof', 'non-alcoholic', 'water',
+        'general', 'à la carte', 'entrees', 'appetizers', 'desserts', 'sides',
+        'reserve list', 'large format', 'half bottles'  # These are categories, not wine types
+    }
+    
+    # BLACKLIST - non-wine items in names
+    EXCLUDE_NAMES = {
+        'egg', 'water', 'beer', 'ale', 'lager', 'vodka', 'whiskey', 'whisky', 'gin',
+        'rum', 'tequila', 'mezcal', 'cognac', 'brandy', 'coffee', 'tea', 'soda',
+        'juice', 'budweiser', 'coors', 'miller', 'corona'
+    }
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
     paths = [
@@ -51,6 +76,32 @@ def load_wines() -> List[Dict]:
                         if not wine_name or wine_name.lower() == 'unknown':
                             continue
                         
+                        # STRICT FILTER: Check if name contains non-wine keywords
+                        name_lower = wine_name.lower()
+                        if any(exclude in name_lower for exclude in EXCLUDE_NAMES):
+                            continue
+                        
+                        # STRICT FILTER: Check section
+                        section = row.get('section', '').strip().lower()
+                        
+                        # Skip if in blacklist
+                        if any(exclude in section for exclude in EXCLUDE_SECTIONS):
+                            continue
+                        
+                        # Skip if bottle size is in section (bad data)
+                        if 'ml' in section or 'oz' in section or 'l' == section:
+                            continue
+                        
+                        # Only allow if section contains wine-related terms
+                        # OR if section is empty but name looks like wine
+                        is_valid_section = any(valid in section for valid in VALID_WINE_SECTIONS)
+                        
+                        if not is_valid_section and section:
+                            # Skip unless we can identify it's wine from other clues
+                            # Check if producer name exists (wines have producers, food doesn't)
+                            if not row.get('producer', '').strip():
+                                continue
+                        
                         try:
                             price = float(row.get('price', 0))
                             if price <= 0:
@@ -72,7 +123,7 @@ def load_wines() -> List[Dict]:
                         })
                 
                 _wine_cache = wines
-                print(f"✅ Loaded {len(wines)} wines")
+                print(f"✅ Loaded {len(wines)} WINES ONLY (filtered out non-wine items)")
                 return wines
             except Exception as e:
                 print(f"❌ Error loading wines: {e}")
