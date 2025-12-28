@@ -596,6 +596,23 @@
                 wineOptions.forEach((wine, wineIdx) => {
                     if (!wine) return;
                     
+                    // Get pairing note and conversation starters
+                    let pairingNote = '';
+                    let conversationStarters = [];
+                    
+                    if (wineIdx === 0) {
+                        // Primary wine - get from course.luxury
+                        pairingNote = course.luxury?.pairing_note || '';
+                        conversationStarters = course.luxury?.conversation_starters || [];
+                    } else {
+                        // Alternative wine - get from alternatives array
+                        const altIndex = wineIdx - 1;
+                        if (course.alternatives && course.alternatives[altIndex]) {
+                            pairingNote = course.alternatives[altIndex].pairing_note || '';
+                            conversationStarters = course.alternatives[altIndex].conversation_starters || [];
+                        }
+                    }
+                    
                     html += `
                     <div class="wine-option" 
                          data-course="${courseNum}" 
@@ -607,6 +624,20 @@
                         <p class="text-sm text-gray-400 mb-3 font-cinzel tracking-wider">
                             ${escapeHtml(wine.producer)}
                         </p>
+                        
+                        ${pairingNote ? `
+                            <p class="text-sm text-gray-300 italic leading-relaxed mb-4 border-l-2 border-[#D4AF37]/40 pl-3 py-2">
+                                "${escapeHtml(pairingNote.substring(0, 150))}${pairingNote.length > 150 ? '...' : ''}"
+                            </p>
+                        ` : ''}
+                        
+                        ${conversationStarters.length > 0 ? `
+                            <div class="text-xs text-gray-500 mb-3">
+                                <span class="text-[#D4AF37]/60 uppercase tracking-wider text-[10px]">Worth Knowing:</span>
+                                <p class="mt-1">${escapeHtml(conversationStarters[0].substring(0, 100))}${conversationStarters[0].length > 100 ? '...' : ''}</p>
+                            </div>
+                        ` : ''}
+                        
                         <div class="text-right mt-4">
                             <span class="text-xl gold-text font-cinzel">
                                 $${wine.price ? wine.price.toFixed(0) : '0'}
