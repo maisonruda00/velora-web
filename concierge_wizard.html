@@ -616,8 +616,30 @@
                                 <span class="text-lg text-gray-200 font-serif group-hover:text-[#D4AF37] transition-colors">
                                     ${escapeHtml(item.name)}
                                 </span>
-                                <span class="text-sm text-gray-600 font-cinzel">
-                                    $${item.price}
+                                <span class="text-sm font-cinzel">
+                                    ${(() => {
+                                        const price = item.price;
+                                        if (price === null || price === undefined) {
+                                            return '<span class="text-orange-400 font-semibold">Call for price</span>';
+                                        }
+                                        if (typeof price === 'number') {
+                                            return '<span class="text-gray-400">$' + price.toFixed(2) + '</span>';
+                                        }
+                                        const priceStr = String(price).trim();
+                                        if (priceStr.toLowerCase() === 'included') {
+                                            return '<span class="text-green-400 font-semibold">Included</span>';
+                                        }
+                                        if (priceStr.toUpperCase() === 'MP' || priceStr.toUpperCase() === 'M.P.') {
+                                            return '<span class="text-blue-400 font-semibold">Market Price</span>';
+                                        }
+                                        if (priceStr.includes('/') && /^\d+\/\d+/.test(priceStr)) {
+                                            return '<span class="text-gray-400">From $' + priceStr.split('/')[0] + '</span>';
+                                        }
+                                        if (priceStr.toLowerCase().includes('see') || priceStr.toLowerCase().includes('per-piece')) {
+                                            return '<span class="text-blue-400 text-xs">' + priceStr + '</span>';
+                                        }
+                                        return '<span class="text-gray-400">' + priceStr + '</span>';
+                                    })()}
                                 </span>
                             </div>
                             <div class="selection-indicator absolute left-0 top-0 bottom-0 w-[2px] bg-[#D4AF37] opacity-0 transition-opacity duration-300"></div>
