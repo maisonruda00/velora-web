@@ -8,7 +8,11 @@
     <!-- Luxury Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet">
     
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Alpine.js for Sequential Selection -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
     
     <style>
         :root {
@@ -29,208 +33,105 @@
         .font-cinzel { font-family: 'Cinzel', serif; }
         .gold-text { color: var(--gold); }
         
-        /* LUXURY DROPDOWN */
-        select {
-            background: linear-gradient(180deg, rgba(30,30,30,0.6) 0%, rgba(10,10,10,0.8) 100%);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            color: #e5e5e5;
-            padding: 16px 20px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-        
-        select:hover, select:focus {
-            border-color: var(--gold);
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
-            outline: none;
-        }
-        
-        select option {
-            background: #1A1A1A;
-            color: #e5e5e5;
-            padding: 12px;
-        }
-        
-        /* BACK BUTTON */
-        .back-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: rgba(212, 175, 55, 0.6);
-            font-size: 12px;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 8px 0;
-        }
-        
-        .back-button:hover {
-            color: var(--gold);
-        }
-        
-        .back-button::before {
-            content: "←";
-            font-size: 18px;
-        }
-        
-        /* WINE SELECTION CARDS - ALL EQUAL PROMINENCE */
-        .wine-option {
-            position: relative;
+        /* Wine Cards */
+        .wine-card {
             background: linear-gradient(180deg, rgba(30,30,30,0.4) 0%, rgba(10,10,10,0.6) 100%);
             border: 1px solid rgba(212, 175, 55, 0.15);
             backdrop-filter: blur(10px);
             transition: all 0.4s ease-out;
             cursor: pointer;
-            padding: 24px;
-            margin-bottom: 20px;
-            border-radius: 4px;
         }
         
-        .wine-option:hover {
+        .wine-card:hover {
             border-color: var(--gold);
             transform: translateY(-2px);
             box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
         }
         
-        .wine-option.selected {
+        .wine-card.selected {
             border-color: var(--gold);
-            border-width: 2px;
-            box-shadow: 0 0 40px rgba(212, 175, 55, 0.35);
-            background: linear-gradient(180deg, rgba(40,35,20,0.6) 0%, rgba(20,18,10,0.8) 100%);
+            background: linear-gradient(180deg, rgba(212,175,55,0.1) 0%, rgba(212,175,55,0.05) 100%);
         }
         
-        .wine-option.selected::after {
-            content: "✓";
-            position: absolute;
-            top: 16px;
-            right: 20px;
+        /* Rarity Diamonds */
+        .rarity-indicator {
+            display: flex;
+            gap: 2px;
+            font-size: 10px;
+        }
+        
+        .diamond {
+            color: #444;
+        }
+        
+        .diamond.filled {
             color: var(--gold);
-            font-size: 28px;
-            font-weight: bold;
         }
         
-        /* ANIMATIONS */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .animate-up {
-            animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-        
-        /* DISH ITEMS */
-        .dish-item {
-            position: relative;
-            padding: 16px;
-            margin-bottom: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            cursor: pointer;
+        /* Progress Bar */
+        .progress-dot {
+            width: 32px;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
             transition: all 0.3s ease;
         }
         
-        .dish-item:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
-        
-        .dish-item.selected {
-            background: rgba(212, 175, 55, 0.08);
-            border-left: 2px solid var(--gold);
-        }
-        
-        .selection-indicator {
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
+        .progress-dot.active {
             background: var(--gold);
-            opacity: 0;
-            transition: opacity 0.3s;
         }
         
-        /* RANGE SLIDER */
-        input[type="range"] {
-            -webkit-appearance: none;
-            background: #333;
-            height: 1px;
-            width: 100%;
+        .progress-dot.completed {
+            background: #666;
         }
         
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            background: var(--gold);
-            border-radius: 50%;
-            cursor: pointer;
+        /* Loading Animation */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
         
-        /* LOADING SPINNER */
         .spinner {
-            border: 3px solid rgba(212, 175, 55, 0.2);
-            border-top: 3px solid var(--gold);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
             animation: spin 1s linear infinite;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* Fade Transitions */
+        .fade-enter {
+            animation: fadeIn 0.5s ease-in;
         }
         
-        /* FINAL SELECTION PAGE - CLEAN & ELEGANT */
-        .final-wine-item {
-            padding: 24px 0;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-        }
-        
-        .final-wine-item:last-child {
-            border-bottom: none;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
     </style>
 </head>
+<body class="p-4">
 
-<body class="min-h-screen p-6 flex flex-col items-center">
-    
     <!-- HEADER -->
-    <header class="w-full max-w-md text-center py-8 opacity-0 animate-up" style="animation-delay: 0.1s;">
-        <h1 class="font-cinzel text-4xl gold-text mb-2 tracking-widest">VELORA</h1>
+    <header class="w-full max-w-md mx-auto text-center py-6 mb-8">
+        <h1 class="font-cinzel text-3xl gold-text mb-1 tracking-widest">VELORA</h1>
         <p class="text-[10px] uppercase tracking-[0.4em] text-gray-500">Private Digital Sommelier</p>
     </header>
 
     <!-- MAIN APP -->
-    <main id="app" class="w-full max-w-md relative min-h-[60vh]">
+    <main class="w-full max-w-md mx-auto pb-24">
         
         <!-- STEP 1: RESTAURANT SELECTION -->
-        <div id="step-restaurant" class="step-view opacity-0 animate-up" style="animation-delay: 0.2s;">
-            <h2 class="text-2xl text-white mb-8 text-center italic font-light">
-                Where are you dining this evening?
-            </h2>
+        <div id="step-restaurant" class="step-view">
+            <h2 class="text-2xl text-white mb-8 text-center italic font-light">Where are you dining?</h2>
             
-            <select id="restaurant-select" class="w-full font-cinzel">
-                <option value="">Select a restaurant...</option>
+            <select id="restaurant-select" 
+                    onchange="selectRestaurant(this.value)"
+                    class="w-full bg-gray-900/60 border border-gray-700 text-white p-4 rounded focus:border-gold focus:outline-none">
+                <option value="">Choose a restaurant...</option>
             </select>
-            
-            <button 
-                onclick="proceedToMenu()"
-                id="btn-select-restaurant"
-                class="w-full mt-8 border border-[#D4AF37] text-[#D4AF37] py-4 font-cinzel font-bold tracking-widest text-xs hover:bg-[#D4AF37] hover:text-black transition-all duration-500 opacity-50 cursor-not-allowed"
-                disabled>
-                CONTINUE
-            </button>
         </div>
 
         <!-- STEP 2: MENU SELECTION -->
         <div id="step-menu" class="step-view hidden">
             <div class="mb-6">
-                <span class="back-button font-cinzel" onclick="goToStep('restaurant')">Restaurant</span>
+                <span class="back-button font-cinzel text-xs text-gray-500 cursor-pointer hover:text-gold" 
+                      onclick="goToStep('restaurant')">← BACK TO RESTAURANTS</span>
             </div>
             
             <div class="flex justify-between items-end mb-6 border-b border-gray-800 pb-4">
@@ -240,23 +141,23 @@
                 </div>
             </div>
             
-            <div id="menu-grid" class="space-y-8 pb-24"></div>
+            <div id="menu-grid" class="space-y-8"></div>
             
-            <!-- FLOATING CONFIRM BUTTON -->
             <div class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black to-transparent pointer-events-none">
                 <button 
                     onclick="goToStep('preferences')" 
                     id="btn-course" 
-                    class="pointer-events-auto w-full bg-[#D4AF37] text-black py-4 font-cinzel font-bold tracking-widest text-xs hover:bg-white transition-all duration-500 shadow-lg shadow-yellow-900/20 opacity-0 transform translate-y-10">
+                    class="pointer-events-auto w-full bg-[#D4AF37] text-black py-4 font-cinzel font-bold tracking-widest text-xs hover:bg-white transition-all duration-500 opacity-0 transform translate-y-10">
                     CONFIRM SELECTION (<span id="dish-count">0</span>)
                 </button>
             </div>
         </div>
 
         <!-- STEP 3: PREFERENCES -->
-        <div id="step-preferences" class="step-view hidden pt-12">
+        <div id="step-preferences" class="step-view hidden">
             <div class="mb-6">
-                <span class="back-button font-cinzel" onclick="goToStep('menu')">Menu</span>
+                <span class="back-button font-cinzel text-xs text-gray-500 cursor-pointer hover:text-gold" 
+                      onclick="goToStep('menu')">← BACK TO MENU</span>
             </div>
             
             <h2 class="text-3xl text-white mb-2 text-center italic font-light">The Cellar</h2>
@@ -269,7 +170,7 @@
                         SERVICE SIZE
                     </label>
                     <div class="flex justify-center items-center gap-8">
-                        <button onclick="updateBottles(-1)" class="text-2xl text-gray-500 hover:text-white p-2 transition-colors">-</button>
+                        <button onclick="updateBottles(-1)" class="text-2xl text-gray-500 hover:text-white p-2 transition-colors">−</button>
                         <span id="bottle-display" class="text-4xl gold-text font-cinzel">1</span>
                         <button onclick="updateBottles(1)" class="text-2xl text-gray-500 hover:text-white p-2 transition-colors">+</button>
                     </div>
@@ -294,7 +195,7 @@
                         step="50" 
                         value="1000" 
                         class="w-full" 
-                        oninput="updateBudget(this.value)">
+                        oninput="document.getElementById('budget-display').innerText = this.value">
                 </div>
             </div>
             
@@ -305,500 +206,565 @@
             </button>
         </div>
 
-        <!-- STEP 4: WINE SELECTION (Choose from 3 options per course) -->
+        <!-- STEP 4: SEQUENTIAL WINE SELECTION (Alpine.js) -->
         <div id="step-selection" class="step-view hidden">
             <div class="mb-6">
-                <span class="back-button font-cinzel" onclick="goToStep('preferences')">Preferences</span>
+                <span class="back-button font-cinzel text-xs text-gray-500 cursor-pointer hover:text-gold" 
+                      onclick="goToStep('preferences')">← BACK TO PREFERENCES</span>
             </div>
             
-            <h2 class="text-3xl text-white mb-2 text-center italic font-light">Your Pairings</h2>
-            <p class="text-center text-gray-500 text-sm mb-12">Select your preference for each course.</p>
-            
-            <div id="wine-selection-container" class="space-y-16 pb-32"></div>
-            
-            <!-- CONFIRM SELECTION BUTTON -->
-            <div class="fixed bottom-0 left-0 w-full p-6 bg-gradient-to-t from-black via-black to-transparent pointer-events-none">
-                <button 
-                    onclick="confirmWineSelection()" 
-                    id="btn-confirm-wines"
-                    class="pointer-events-auto w-full bg-[#D4AF37] text-black py-4 font-cinzel font-bold tracking-widest text-xs hover:bg-white transition-all duration-500 shadow-lg shadow-yellow-900/20 opacity-50 cursor-not-allowed"
-                    disabled>
-                    FINALIZE SELECTION
-                </button>
+            <!-- Alpine.js Component -->
+            <div x-data="wineSelectionApp()" x-init="init()">
+                
+                <!-- Progress Indicators -->
+                <div class="flex justify-center gap-2 mb-8">
+                    <template x-for="(course, idx) in courses" :key="idx">
+                        <div class="progress-dot" 
+                             :class="{
+                                 'active': idx === currentIndex,
+                                 'completed': selections[idx] !== null
+                             }"></div>
+                    </template>
+                </div>
+                
+                <!-- Bottle Selection View -->
+                <div x-show="!showingSummary" class="fade-enter">
+                    <div class="text-center mb-8">
+                        <p class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">
+                            Bottle <span x-text="currentIndex + 1"></span> of <span x-text="courses.length"></span>
+                        </p>
+                        <h2 class="text-2xl text-white italic mb-1" 
+                            x-text="currentCourse ? currentCourse.dishes.join(', ') : ''"></h2>
+                        <p class="text-xs text-gray-600">Select your preference</p>
+                    </div>
+                    
+                    <!-- Wine Options -->
+                    <div class="space-y-6">
+                        <template x-for="(wine, wineIdx) in (currentCourse ? currentCourse.options : [])" :key="wineIdx">
+                            <div class="wine-card p-6" 
+                                 :class="{'selected': selections[currentIndex] && selections[currentIndex].wine_name === wine.wine_name}"
+                                 @click="selectWine(wine)">
+                                
+                                <!-- Header: Rarity + Price -->
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="rarity-indicator">
+                                        <template x-for="n in 5" :key="n">
+                                            <span class="diamond" 
+                                                  :class="{'filled': n <= (wine.rarity_level || 1)}">◆</span>
+                                        </template>
+                                    </div>
+                                    <div class="text-2xl gold-text font-cinzel" 
+                                         x-text="'$' + (wine.price || 0)"></div>
+                                </div>
+                                
+                                <!-- Wine Name & Producer -->
+                                <h3 class="text-3xl text-white font-serif italic mb-2" 
+                                    x-text="wine.wine_name"></h3>
+                                <p class="text-sm text-gray-400 font-cinzel tracking-wider mb-4" 
+                                   x-text="wine.producer"></p>
+                                
+                                <!-- Interesting Fact (V5.0 NEW) -->
+                                <div x-show="wine.interesting_fact" class="mb-4 p-4 bg-gray-900/50 rounded border-l-2 border-gold/40">
+                                    <p class="text-[10px] uppercase tracking-wider text-gold/70 mb-2">Worth Knowing:</p>
+                                    <p class="text-sm text-gray-300 leading-relaxed" 
+                                       x-text="wine.interesting_fact"></p>
+                                </div>
+                                
+                                <!-- Pairing Note (if available) -->
+                                <div x-show="wine.pairing_note" class="mb-4 text-sm text-gray-400 italic">
+                                    <p x-text="wine.pairing_note"></p>
+                                </div>
+                                
+                                <!-- Retail Search Button (V5.0 NEW) -->
+                                <div class="mt-4 flex justify-end">
+                                    <a :href="'https://www.google.com/search?tbm=shop&q=buy+' + encodeURIComponent(wine.wine_name) + '+750ml+-auction+-bid'" 
+                                       target="_blank"
+                                       @click.stop
+                                       class="text-[10px] text-gray-600 hover:text-gold uppercase tracking-wider border border-gray-800 hover:border-gold px-3 py-1 transition-all">
+                                        🔍 Check Retail
+                                    </a>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    
+                    <!-- Navigation Buttons -->
+                    <div class="flex gap-4 mt-8">
+                        <button x-show="currentIndex > 0"
+                                @click="previousBottle()"
+                                class="flex-1 border border-gray-700 text-gray-400 py-3 text-xs uppercase tracking-wider font-cinzel hover:border-gold hover:text-gold transition-all">
+                            ← Previous
+                        </button>
+                        <button x-show="currentIndex < courses.length - 1 && selections[currentIndex]"
+                                @click="nextBottle()"
+                                class="flex-1 bg-gold text-black py-3 text-xs uppercase tracking-wider font-cinzel font-bold hover:bg-white transition-all">
+                            Next →
+                        </button>
+                        <button x-show="currentIndex === courses.length - 1 && selections[currentIndex]"
+                                @click="goToSummary()"
+                                class="flex-1 bg-gold text-black py-3 text-xs uppercase tracking-wider font-cinzel font-bold hover:bg-white transition-all">
+                            Review →
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Summary View -->
+                <div x-show="showingSummary" class="fade-enter">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl text-white font-cinzel mb-2">Your Collection</h2>
+                        <p class="text-sm text-gray-500">Review and confirm your selection</p>
+                    </div>
+                    
+                    <!-- Selected Wines Timeline -->
+                    <div class="space-y-8 relative pl-6 border-l border-gray-800 mb-12">
+                        <template x-for="(sel, idx) in selections" :key="idx">
+                            <div x-show="sel" class="relative">
+                                <div class="absolute -left-[29px] top-0 w-3 h-3 rounded-full bg-[#D4AF37]"></div>
+                                
+                                <div class="bg-gray-900/30 p-6 rounded border border-gray-800">
+                                    <p class="text-[10px] uppercase tracking-widest text-gray-500 mb-2">
+                                        Bottle <span x-text="idx + 1"></span>
+                                    </p>
+                                    <h3 class="text-2xl text-white font-serif italic mb-1" 
+                                        x-text="sel.wine_name"></h3>
+                                    <p class="text-sm text-gray-400 mb-2" 
+                                       x-text="sel.producer"></p>
+                                    <p class="text-xs text-gray-600 mb-3" 
+                                       x-text="courses[idx] ? courses[idx].dishes.join(', ') : ''"></p>
+                                    
+                                    <div class="flex justify-between items-center pt-3 border-t border-gray-800">
+                                        <div class="rarity-indicator">
+                                            <template x-for="n in (sel.rarity_level || 1)" :key="n">
+                                                <span class="diamond filled">◆</span>
+                                            </template>
+                                        </div>
+                                        <div>
+                                            <span class="text-2xl gold-text font-cinzel" 
+                                                  x-text="'$' + (sel.price || 0)"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    
+                    <!-- Total Cost -->
+                    <div class="p-6 bg-gold/10 border border-gold/30 rounded mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg text-white font-cinzel">Total Investment</span>
+                            <span class="text-3xl gold-text font-cinzel" 
+                                  x-text="'$' + totalCost.toFixed(0)"></span>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex gap-4">
+                        <button @click="backToSelection()"
+                                class="flex-1 border border-gray-700 text-gray-400 py-4 text-xs uppercase tracking-wider font-cinzel hover:border-gold hover:text-gold transition-all">
+                            ← Edit Selection
+                        </button>
+                        <button @click="confirmSelection()"
+                                class="flex-1 bg-gold text-black py-4 font-cinzel font-bold tracking-widest text-xs hover:bg-white transition-all">
+                            CONFIRM
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- STEP 5: FINAL SELECTION (Show to sommelier) -->
+        <!-- STEP 5: FINAL CONFIRMATION -->
         <div id="step-final" class="step-view hidden">
-            <div class="mb-8">
-                <span class="back-button font-cinzel" onclick="goToStep('selection')">Revise</span>
-            </div>
-            
-            <div class="text-center mb-12">
-                <h2 class="text-4xl text-white mb-3 font-cinzel tracking-wide">Your Selection</h2>
-                <p class="text-xs text-gray-500 uppercase tracking-[0.3em]" id="restaurant-name-final"></p>
-            </div>
-            
-            <div id="final-selection-container" class="space-y-6 mb-24"></div>
-            
-            <div class="text-center pt-8 border-t border-gray-800">
-                <button 
-                    onclick="resetApp()" 
-                    class="text-xs text-gray-600 uppercase tracking-widest hover:gold-text transition-colors">
-                    New Consultation
+            <div class="text-center py-12">
+                <div class="text-6xl mb-6">🍷</div>
+                <h2 class="text-3xl text-white font-cinzel mb-4">Selection Confirmed</h2>
+                <p class="text-gray-400 mb-8">Your cellar awaits.</p>
+                <button onclick="resetApp()" 
+                        class="text-gray-600 text-xs hover:text-white uppercase tracking-widest">
+                    Start New Consultation
                 </button>
             </div>
         </div>
 
-        <!-- LOADING OVERLAY -->
-        <div id="loading" class="fixed inset-0 bg-black/90 z-50 hidden flex-col items-center justify-center backdrop-blur-sm">
-            <div class="spinner mb-8"></div>
-            <p class="gold-text font-cinzel text-sm tracking-[0.3em] animate-pulse">
-                Consulting the Cellar...
-            </p>
-        </div>
     </main>
 
+    <!-- LOADING OVERLAY (with rotating quotes - V5.0) -->
+    <div id="loading-overlay" class="fixed inset-0 bg-black z-50 hidden flex-col items-center justify-center">
+        <div class="w-12 h-12 border-t-2 border-b-2 border-[#D4AF37] rounded-full spinner mb-8"></div>
+        
+        <p class="text-gray-400 text-sm mb-2">Consulting Velora...</p>
+        <p class="text-gray-600 text-xs uppercase tracking-widest mb-12">Curating Your Cellar</p>
+        
+        <!-- Rotating Wine Quotes (V5.0 NEW) -->
+        <div class="text-center max-w-xl px-6">
+            <p id="quote-text" class="text-lg text-gold/90 italic mb-3 transition-opacity duration-500">
+                "Wine is bottled poetry."
+            </p>
+            <p id="quote-author" class="text-sm text-gold/50 tracking-wider transition-opacity duration-500">
+                — Robert Louis Stevenson
+            </p>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
     <script>
-        // APPLICATION STATE
-        let state = {
-            restaurant: null,
-            restaurantName: '',
+        // =================================================================
+        // STATE MANAGEMENT
+        // =================================================================
+        
+        const state = {
+            restaurants: [],
+            selectedRestaurant: null,
             dishes: [],
             bottles: 1,
             budget: 1000,
-            progression: null,
-            selectedWines: {} // courseNumber: { wine, dishes }
+            progression: null
         };
+
+        // =================================================================
+        // LOADING QUOTES SYSTEM (V5.0)
+        // =================================================================
         
+        const WINE_QUOTES = [
+            { text: "Wine is bottled poetry.", author: "Robert Louis Stevenson" },
+            { text: "A bottle of wine contains more philosophy than all the books in the world.", author: "Louis Pasteur" },
+            { text: "Wine is sunlight, held together by water.", author: "Galileo Galilei" },
+            { text: "In wine, there is truth.", author: "Pliny the Elder" },
+            { text: "Wine makes every meal an occasion, every table more elegant, every day more civilized.", author: "Andre Simon" },
+            { text: "Wine is the most civilized thing in the world.", author: "Ernest Hemingway" },
+            { text: "Good wine is a good familiar creature if it be well used.", author: "William Shakespeare" },
+            { text: "Age appears to be best in four things: old wood to burn, old wine to drink, old friends to trust.", author: "Francis Bacon" },
+            { text: "Wine rejoices the heart of man and joy is the mother of all virtues.", author: "Johann Wolfgang von Goethe" },
+            { text: "Great wine requires a mad man to grow the vine, a wise man to watch over it, and a lover to drink it.", author: "Salvador Dalí" }
+        ];
+        
+        let quoteInterval = null;
+        let currentQuoteIndex = 0;
+        
+        function startLoadingQuotes() {
+            currentQuoteIndex = Math.floor(Math.random() * WINE_QUOTES.length);
+            updateQuote();
+            
+            quoteInterval = setInterval(() => {
+                currentQuoteIndex = (currentQuoteIndex + 1) % WINE_QUOTES.length;
+                updateQuote();
+            }, 3000);
+        }
+        
+        function stopLoadingQuotes() {
+            if (quoteInterval) {
+                clearInterval(quoteInterval);
+                quoteInterval = null;
+            }
+        }
+        
+        function updateQuote() {
+            const quote = WINE_QUOTES[currentQuoteIndex];
+            const textEl = document.getElementById('quote-text');
+            const authorEl = document.getElementById('quote-author');
+            
+            textEl.style.opacity = '0';
+            authorEl.style.opacity = '0';
+            
+            setTimeout(() => {
+                textEl.textContent = `"${quote.text}"`;
+                authorEl.textContent = `— ${quote.author}`;
+                textEl.style.opacity = '1';
+                authorEl.style.opacity = '1';
+            }, 300);
+        }
+        
+        // =================================================================
+        // ALPINE.JS COMPONENT (V5.0 Sequential Selection)
+        // =================================================================
+        
+        function wineSelectionApp() {
+            return {
+                courses: [],
+                selections: [],
+                currentIndex: 0,
+                showingSummary: false,
+                
+                get currentCourse() {
+                    return this.courses[this.currentIndex] || null;
+                },
+                
+                get totalCost() {
+                    return this.selections
+                        .filter(s => s !== null)
+                        .reduce((sum, wine) => sum + (wine.price || 0), 0);
+                },
+                
+                init() {
+                    // Listen for data from main app
+                    window.addEventListener('progression-loaded', (e) => {
+                        this.courses = e.detail;
+                        this.selections = new Array(this.courses.length).fill(null);
+                        this.currentIndex = 0;
+                        this.showingSummary = false;
+                    });
+                },
+                
+                selectWine(wine) {
+                    this.selections[this.currentIndex] = wine;
+                    
+                    // Auto-advance after short delay
+                    setTimeout(() => {
+                        if (this.currentIndex < this.courses.length - 1) {
+                            this.nextBottle();
+                        } else {
+                            this.goToSummary();
+                        }
+                    }, 300);
+                },
+                
+                nextBottle() {
+                    if (this.currentIndex < this.courses.length - 1) {
+                        this.currentIndex++;
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                },
+                
+                previousBottle() {
+                    if (this.currentIndex > 0) {
+                        this.currentIndex--;
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                },
+                
+                goToSummary() {
+                    this.showingSummary = true;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                },
+                
+                backToSelection() {
+                    this.showingSummary = false;
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                },
+                
+                confirmSelection() {
+                    state.progression = this.selections;
+                    goToStep('final');
+                }
+            };
+        }
+        
+        // =================================================================
         // INITIALIZATION
+        // =================================================================
+        
         async function init() {
             try {
-                const res = await fetch('/restaurants');
-                const data = await res.json();
-                renderRestaurantDropdown(data.restaurants);
-            } catch (e) {
-                console.error('Failed to load restaurants:', e);
-                alert('Unable to load restaurants. Please refresh the page.');
+                const response = await fetch('/restaurants');
+                const data = await response.json();
+                state.restaurants = data.restaurants || [];
+                
+                const select = document.getElementById('restaurant-select');
+                select.innerHTML = '<option value="">Choose a restaurant...</option>' +
+                    state.restaurants.map(r => 
+                        `<option value="${r.id}">${r.name} - ${r.cuisine}</option>`
+                    ).join('');
+            } catch (error) {
+                console.error('Failed to load restaurants:', error);
             }
         }
-
-        // RENDER RESTAURANT DROPDOWN
-        function renderRestaurantDropdown(list) {
-            const select = document.getElementById('restaurant-select');
+        
+        // =================================================================
+        // RESTAURANT & MENU
+        // =================================================================
+        
+        async function selectRestaurant(restaurantId) {
+            if (!restaurantId) return;
             
-            // Sort alphabetically
-            list.sort((a, b) => a.name.localeCompare(b.name));
-            
-            list.forEach(r => {
-                const option = document.createElement('option');
-                option.value = r.id;
-                option.textContent = `${r.name} • ${r.cuisine}`;
-                option.dataset.name = r.name;
-                select.appendChild(option);
-            });
-            
-            // Enable button when selection changes
-            select.addEventListener('change', function() {
-                const btn = document.getElementById('btn-select-restaurant');
-                if (this.value) {
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                    state.restaurant = this.value;
-                    state.restaurantName = this.options[this.selectedIndex].dataset.name;
-                } else {
-                    btn.disabled = true;
-                    btn.classList.add('opacity-50', 'cursor-not-allowed');
-                }
-            });
-        }
-
-        // PROCEED TO MENU
-        async function proceedToMenu() {
-            if (!state.restaurant) return;
-            
-            const hour = new Date().getHours();
-            const timeContext = (hour >= 11 && hour < 16) ? 'lunch' : 'dinner';
-            document.getElementById('time-context').innerText = 
-                timeContext === 'lunch' ? 'LUNCH SERVICE' : 'DINNER SERVICE';
-            document.getElementById('menu-title').innerText = state.restaurantName;
+            state.selectedRestaurant = restaurantId;
+            state.dishes = [];
             
             try {
-                const res = await fetch(`/restaurant/${state.restaurant}/menu`);
-                const data = await res.json();
-                const menu = data.menus[timeContext] || data.menus['dinner'];
+                const hour = new Date().getHours();
+                const context = (hour >= 11 && hour < 16) ? 'lunch' : 'dinner';
+                
+                const response = await fetch(`/restaurant/${restaurantId}/menu`);
+                const data = await response.json();
+                
+                const menu = data.menus[context] || data.menus['dinner'] || {};
                 renderMenu(menu);
+                
                 goToStep('menu');
-            } catch (e) {
-                alert("Menu unavailable. Please try another restaurant.");
-                console.error(e);
+            } catch (error) {
+                console.error('Failed to load menu:', error);
             }
         }
-
-        // RENDER MENU
+        
         function renderMenu(menuData) {
-            const container = document.getElementById('menu-grid');
             let html = '';
             
-            if (!menuData || typeof menuData !== 'object') {
-                container.innerHTML = '<p class="text-gray-500 text-center">Menu unavailable.</p>';
-                return;
-            }
-            
-            // Define section order
-            const sectionOrder = ['Appetizers', 'Salads', 'Mains', 'Sides', 'Desserts'];
-            
-            // Render in order
-            for (const section of sectionOrder) {
-                const items = menuData[section];
+            for (const [section, items] of Object.entries(menuData)) {
                 if (!Array.isArray(items) || items.length === 0) continue;
                 
-                html += `<div class="mb-10">`;
-                html += `<h3 class="text-center text-xs gold-text uppercase tracking-[0.3em] mb-6 border-b border-[#D4AF37]/20 pb-2">
-                    ${section}
-                </h3>`;
+                html += `
+                    <div class="mb-8">
+                        <h3 class="text-center text-xs text-[#D4AF37] uppercase tracking-[0.3em] mb-6 border-b border-[#D4AF37]/20 pb-2 mx-12">
+                            ${escapeHtml(section)}
+                        </h3>
+                `;
                 
                 items.forEach(item => {
                     const safeName = escapeForJs(item.name);
-                    const displayName = escapeHtml(item.name);
-                    const displayDesc = escapeHtml(item.description || '');
-                    
                     html += `
-                    <div onclick="toggleDish('${safeName}', this)" 
-                         class="dish-item group">
-                        <div class="flex justify-between items-baseline">
-                            <span class="text-lg text-gray-200 font-serif group-hover:gold-text transition-colors">
-                                ${displayName}
-                            </span>
-                            <span class="text-sm text-gray-600 font-cinzel">
-                                $${item.price || '0'}
-                            </span>
+                        <div onclick="toggleDish('${safeName}', this)" 
+                             class="relative p-4 mb-2 cursor-pointer group transition-all duration-300 rounded-sm hover:bg-white/5">
+                            <div class="flex justify-between items-baseline">
+                                <span class="text-lg text-gray-200 font-serif group-hover:text-[#D4AF37] transition-colors">
+                                    ${escapeHtml(item.name)}
+                                </span>
+                                <span class="text-sm text-gray-600 font-cinzel">
+                                    $${item.price}
+                                </span>
+                            </div>
+                            <div class="selection-indicator absolute left-0 top-0 bottom-0 w-[2px] bg-[#D4AF37] opacity-0 transition-opacity duration-300"></div>
                         </div>
-                        ${displayDesc ? `
-                            <p class="text-sm text-gray-500 mt-1 italic opacity-80">
-                                ${displayDesc}
-                            </p>
-                        ` : ''}
-                        <div class="selection-indicator"></div>
-                    </div>`;
+                    `;
                 });
+                
                 html += `</div>`;
             }
             
-            container.innerHTML = html;
+            document.getElementById('menu-grid').innerHTML = html;
         }
-
-        // TOGGLE DISH SELECTION
-        function toggleDish(name, el) {
-            const index = state.dishes.indexOf(name);
-            
-            if (index > -1) {
-                state.dishes.splice(index, 1);
-                el.querySelector('.selection-indicator').style.opacity = '0';
-                el.classList.remove('selected');
+        
+        function toggleDish(name, element) {
+            if (state.dishes.includes(name)) {
+                state.dishes = state.dishes.filter(d => d !== name);
+                element.querySelector('.selection-indicator').style.opacity = '0';
             } else {
                 state.dishes.push(name);
-                el.querySelector('.selection-indicator').style.opacity = '1';
-                el.classList.add('selected');
+                element.querySelector('.selection-indicator').style.opacity = '1';
             }
             
-            updateConfirmButton();
-        }
-
-        // UPDATE CONFIRM BUTTON
-        function updateConfirmButton() {
             const btn = document.getElementById('btn-course');
-            const count = state.dishes.length;
-            document.getElementById('dish-count').innerText = count;
+            const count = document.getElementById('dish-count');
             
-            if (count > 0) {
+            count.innerText = state.dishes.length;
+            
+            if (state.dishes.length > 0) {
                 btn.classList.remove('opacity-0', 'translate-y-10');
             } else {
                 btn.classList.add('opacity-0', 'translate-y-10');
             }
         }
-
-        // UPDATE BOTTLES
+        
+        // =================================================================
+        // PREFERENCES
+        // =================================================================
+        
         function updateBottles(delta) {
-            state.bottles = Math.max(1, Math.min(6, state.bottles + delta));
+            state.bottles = Math.max(1, Math.min(5, state.bottles + delta));
             document.getElementById('bottle-display').innerText = state.bottles;
         }
-
-        // UPDATE BUDGET
-        function updateBudget(val) {
-            state.budget = parseInt(val);
-            document.getElementById('budget-display').innerText = val;
-        }
-
-        // GENERATE PROGRESSION
+        
+        // =================================================================
+        // PAIRING GENERATION
+        // =================================================================
+        
         async function generateProgression() {
-            const loadingEl = document.getElementById('loading');
-            loadingEl.classList.remove('hidden');
-            loadingEl.classList.add('flex');
+            const budget = parseInt(document.getElementById('budget-slider').value);
+            state.budget = budget;
+            
+            // Show loading
+            showLoading();
+            startLoadingQuotes();
             
             try {
-                const res = await fetch('/consult/progression', {
+                const response = await fetch('/consult/progression', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         dishes: state.dishes,
                         bottle_count: state.bottles,
-                        budget: parseInt(state.budget)
+                        budget: budget
                     })
                 });
                 
-                const data = await res.json();
+                const data = await response.json();
                 
                 if (data.success) {
-                    state.progression = data;
-                    renderWineSelection(data.progression);
+                    state.progression = data.progression;
+                    
+                    // Notify Alpine.js component
+                    window.dispatchEvent(new CustomEvent('progression-loaded', {
+                        detail: data.progression
+                    }));
+                    
+                    hideLoading();
+                    stopLoadingQuotes();
                     goToStep('selection');
                 } else {
-                    alert(data.error || "Unable to generate pairing. Please try again.");
+                    throw new Error(data.error || 'Pairing generation failed');
                 }
-            } catch (e) {
-                alert("Connection error. Please try again.");
-                console.error(e);
-            } finally {
-                loadingEl.classList.add('hidden');
-                loadingEl.classList.remove('flex');
+            } catch (error) {
+                console.error('Error generating progression:', error);
+                alert('Unable to generate pairing. Please try again.');
+                hideLoading();
+                stopLoadingQuotes();
             }
         }
-
-        // RENDER WINE SELECTION (3 options per course, all equal)
-        function renderWineSelection(progression) {
-            const container = document.getElementById('wine-selection-container');
-            state.selectedWines = {}; // Reset selections
-            
-            let html = '';
-            
-            progression.forEach((course, courseIdx) => {
-                const courseNum = course.course_number;
-                const dishes = course.dishes.join(', ');
-                
-                // Build array of all 3 wines
-                const wineOptions = [
-                    course.primary,
-                    ...(course.alternatives || []).slice(0, 2)
-                ];
-                
-                html += `
-                <div class="course-selection" data-course="${courseNum}">
-                    <div class="mb-6 pb-3 border-b border-gray-700">
-                        <p class="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">Course ${courseNum}</p>
-                        <p class="text-lg text-gray-300 italic">${escapeHtml(dishes)}</p>
-                    </div>
-                    
-                    <div class="space-y-5">
-                `;
-                
-                // Render all 3 wines with EQUAL prominence
-                wineOptions.forEach((wine, wineIdx) => {
-                    if (!wine) return;
-                    
-                    // Get pairing note and conversation starters
-                    let pairingNote = '';
-                    let conversationStarters = [];
-                    
-                    if (wineIdx === 0) {
-                        // Primary wine - get from course.luxury
-                        pairingNote = course.luxury?.pairing_note || '';
-                        conversationStarters = course.luxury?.conversation_starters || [];
-                    } else {
-                        // Alternative wine - get from alternatives array
-                        const altIndex = wineIdx - 1;
-                        if (course.alternatives && course.alternatives[altIndex]) {
-                            pairingNote = course.alternatives[altIndex].pairing_note || '';
-                            conversationStarters = course.alternatives[altIndex].conversation_starters || [];
-                        }
-                    }
-                    
-                    html += `
-                    <div class="wine-option" 
-                         data-course="${courseNum}" 
-                         data-wine-idx="${wineIdx}"
-                         onclick="selectWine(${courseNum}, ${wineIdx})">
-                        <h3 class="text-2xl text-white font-serif italic mb-1">
-                            ${escapeHtml(wine.wine_name)}
-                        </h3>
-                        <p class="text-sm text-gray-400 mb-3 font-cinzel tracking-wider">
-                            ${escapeHtml(wine.producer)}
-                        </p>
-                        
-                        ${pairingNote ? `
-                            <p class="text-sm text-gray-300 italic leading-relaxed mb-4 border-l-2 border-[#D4AF37]/40 pl-3 py-2">
-                                "${escapeHtml(pairingNote.substring(0, 150))}${pairingNote.length > 150 ? '...' : ''}"
-                            </p>
-                        ` : ''}
-                        
-                        ${conversationStarters.length > 0 ? `
-                            <div class="text-xs text-gray-500 mb-3">
-                                <span class="text-[#D4AF37]/60 uppercase tracking-wider text-[10px]">Worth Knowing:</span>
-                                <p class="mt-1">${escapeHtml(conversationStarters[0].substring(0, 100))}${conversationStarters[0].length > 100 ? '...' : ''}</p>
-                            </div>
-                        ` : ''}
-                        
-                        <div class="text-right mt-4">
-                            <span class="text-xl gold-text font-cinzel">
-                                $${wine.price ? wine.price.toFixed(0) : '0'}
-                            </span>
-                        </div>
-                    </div>
-                    `;
-                });
-                
-                html += `
-                    </div>
-                </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-            updateFinalizeButton();
-        }
-
-        // SELECT WINE (user clicks on one of the 3 options)
-        function selectWine(courseNum, wineIdx) {
-            // Find the course in progression
-            const course = state.progression.progression.find(c => c.course_number === courseNum);
-            if (!course) return;
-            
-            // Get the selected wine
-            const wineOptions = [
-                course.primary,
-                ...(course.alternatives || []).slice(0, 2)
-            ];
-            const selectedWine = wineOptions[wineIdx];
-            if (!selectedWine) return;
-            
-            // Save selection
-            state.selectedWines[courseNum] = {
-                wine: selectedWine,
-                dishes: course.dishes
-            };
-            
-            // Update UI - remove selected class from all wines in this course
-            const courseEl = document.querySelector(`.course-selection[data-course="${courseNum}"]`);
-            if (courseEl) {
-                courseEl.querySelectorAll('.wine-option').forEach(el => {
-                    el.classList.remove('selected');
-                });
-                
-                // Add selected class to clicked wine
-                const selectedEl = courseEl.querySelector(
-                    `.wine-option[data-course="${courseNum}"][data-wine-idx="${wineIdx}"]`
-                );
-                if (selectedEl) {
-                    selectedEl.classList.add('selected');
-                }
-            }
-            
-            updateFinalizeButton();
-        }
-
-        // UPDATE FINALIZE BUTTON
-        function updateFinalizeButton() {
-            const btn = document.getElementById('btn-confirm-wines');
-            const totalCourses = state.progression ? state.progression.progression.length : 0;
-            const selectedCount = Object.keys(state.selectedWines).length;
-            
-            if (selectedCount === totalCourses && totalCourses > 0) {
-                btn.disabled = false;
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-            } else {
-                btn.disabled = true;
-                btn.classList.add('opacity-50', 'cursor-not-allowed');
-            }
-        }
-
-        // CONFIRM WINE SELECTION
-        function confirmWineSelection() {
-            renderFinalSelection();
-            goToStep('final');
-        }
-
-        // RENDER FINAL SELECTION (Clean page to show sommelier)
-        function renderFinalSelection() {
-            const container = document.getElementById('final-selection-container');
-            document.getElementById('restaurant-name-final').innerText = state.restaurantName;
-            
-            let html = '';
-            
-            // Sort by course number
-            const courses = Object.keys(state.selectedWines).sort((a, b) => parseInt(a) - parseInt(b));
-            
-            courses.forEach(courseNum => {
-                const selection = state.selectedWines[courseNum];
-                const wine = selection.wine;
-                const dishes = selection.dishes.join(', ');
-                
-                html += `
-                <div class="final-wine-item">
-                    <div class="mb-2">
-                        <p class="text-[10px] uppercase tracking-[0.3em] text-gray-600 mb-1">
-                            Course ${courseNum}
-                        </p>
-                        <p class="text-sm text-gray-400 italic mb-4">
-                            ${escapeHtml(dishes)}
-                        </p>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-3xl text-white font-serif italic mb-2">
-                            ${escapeHtml(wine.wine_name)}
-                        </h3>
-                        <p class="text-base text-gray-400 font-cinzel tracking-wide">
-                            ${escapeHtml(wine.producer)}
-                        </p>
-                    </div>
-                </div>
-                `;
-            });
-            
-            container.innerHTML = html;
-        }
-
+        
+        // =================================================================
         // NAVIGATION
-        function goToStep(id) {
+        // =================================================================
+        
+        function goToStep(stepId) {
             document.querySelectorAll('.step-view').forEach(el => el.classList.add('hidden'));
-            document.getElementById(`step-${id}`).classList.remove('hidden');
+            document.getElementById(`step-${stepId}`).classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
+        
+        function showLoading() {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+        }
+        
+        function hideLoading() {
+            const overlay = document.getElementById('loading-overlay');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+        }
+        
         function resetApp() {
             state.dishes = [];
             state.bottles = 1;
             state.budget = 1000;
-            state.restaurant = null;
+            state.selectedRestaurant = null;
             state.progression = null;
-            state.selectedWines = {};
             
             document.getElementById('restaurant-select').value = '';
             document.getElementById('budget-slider').value = 1000;
             document.getElementById('budget-display').innerText = '1000';
             document.getElementById('bottle-display').innerText = '1';
             
-            const btn = document.getElementById('btn-select-restaurant');
-            btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
-            
             goToStep('restaurant');
         }
-
+        
+        // =================================================================
         // UTILITY FUNCTIONS
+        // =================================================================
+        
         function escapeHtml(text) {
             if (!text) return '';
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
-
+        
         function escapeForJs(text) {
             if (!text) return '';
-            return text.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\\/g, '\\\\');
+            return text.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n');
         }
-
+        
+        // =================================================================
         // START APP
+        // =================================================================
+        
         init();
     </script>
     
