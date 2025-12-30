@@ -1,10 +1,8 @@
 """
-VELORA PAIRING SERVICE - V5.1 PRODUCTION (COMPLETE RESTORATION)
-✅ All v3.7 Features: Sommelier narrator, conversation starters, luxury object
-✅ v5.0 Stable IDs: Persist across CSV sorts/edits
-✅ v5.0 Facts: Interesting facts, rarity levels
-✅ Railway Compatible: Proper error handling, logging
-✅ Correct Data Structure: primary + alternatives + luxury (not 'options')
+VELORA PAIRING SERVICE - V5.2 UNIFIED
+✅ ALGORITHM: Full v5.1 sophisticated logic (11-layer, prestige, AI)
+✅ OUTPUT: v5.0 'options' structure (for Alpine.js frontend)
+✅ FIXES: Frontend/Backend mismatch causing "null wine" errors
 """
 import csv
 import os
@@ -15,37 +13,34 @@ import logging
 from typing import List, Dict, Tuple
 from functools import lru_cache
 
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Import Luxury Modules (AI-powered pairing notes)
+# Import Luxury Modules (AI narrator + conversation starters)
 try:
     from sommelier_narrator import narrator
     from conversation_starter import generate_conversation_starters
     LUXURY_MODE = True
-    logger.info("✅ Luxury modules (AI narrator + conversation starters) loaded")
+    logger.info("✅ Luxury modules loaded")
 except ImportError as e:
     LUXURY_MODE = False
-    logger.warning(f"⚠️  Luxury modules not available: {e}")
+    logger.warning(f"⚠️ Luxury modules not available: {e}")
 
-# Import Facts Database (V5.0)
+# Import Facts Database
 try:
     from facts_database import get_interesting_fact, calculate_rarity_level
     FACTS_ENABLED = True
     logger.info("✅ Facts database loaded")
 except ImportError as e:
     FACTS_ENABLED = False
-    logger.warning(f"⚠️  Facts database not available: {e}")
+    logger.warning(f"⚠️ Facts database not available: {e}")
 
 # =================================================================
-# 1. STABLE ID GENERATION (V5.0 - Persist across CSV edits)
+# STABLE ID GENERATION
 # =================================================================
 
 def slugify(text: str) -> str:
-    """Convert text to URL-safe slug"""
-    if not isinstance(text, str):
-        text = str(text)
+    if not isinstance(text, str): text = str(text)
     text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('ascii')
     text = text.lower()
     text = re.sub(r'[^a-z0-9\s-]', '', text)
@@ -53,7 +48,6 @@ def slugify(text: str) -> str:
     return text.strip('_')
 
 def generate_stable_id(producer: str, name: str) -> str:
-    """Generate stable, unique wine ID (no vintage)"""
     slug = f"{slugify(producer)}_{slugify(name)}"
     if len(slug) > 64:
         hash_suffix = hashlib.md5(slug.encode()).hexdigest()[:8]
@@ -61,94 +55,72 @@ def generate_stable_id(producer: str, name: str) -> str:
     return slug
 
 # =================================================================
-# 2. WINE LOADING (V5.0 Stable IDs + Intelligent Filtering)
+# WINE DATABASE LOADER
 # =================================================================
 
 _wine_cache = None
 
 @lru_cache(maxsize=1)
 def load_wines() -> List[Dict]:
-    """Load wine database with intelligent filtering"""
     global _wine_cache
-    if _wine_cache:
-        return _wine_cache
+    if _wine_cache: return _wine_cache
     
-    logger.info("=" * 60)
-    logger.info("LOADING WINE DATABASE")
-    logger.info("=" * 60)
+    logger.info("🍷 Loading wine database...")
     
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    csv_paths = [
+    paths = [
         os.path.join(script_dir, 'MASTER_WINE_DATABASE_V23_READY_FOR_LAUNCH.csv'),
         'MASTER_WINE_DATABASE_V23_READY_FOR_LAUNCH.csv',
         '/app/MASTER_WINE_DATABASE_V23_READY_FOR_LAUNCH.csv'
     ]
     
-    csv_path = None
-    for path in csv_paths:
+    for path in paths:
         if os.path.exists(path):
-            csv_path = path
-            logger.info(f"✅ Found CSV at: {path}")
-            break
-    
-    if not csv_path:
-        logger.error(f"❌ CSV not found! Tried: {csv_paths}")
-        return []
-    
-    wines = []
-    total_rows = 0
-    
-    try:
-        with open(csv_path, 'r', encoding='utf-8-sig') as f:
-            reader = csv.DictReader(f)
-            
-            for row in reader:
-                total_rows += 1
+            try:
+                wines = []
+                with open(path, 'r', encoding='utf-8-sig') as f:
+                    reader = csv.DictReader(f)
+                    for row in reader:
+                        try:
+                            price = float(row.get('price', 0))
+                            if price < 20: continue  # Bottles only
+                            
+                            producer = row.get('producer', '').strip()
+                            name = row.get('wine_name', '').strip()
+                            
+                            if not producer or not name: continue
+                            
+                            wine_id = generate_stable_id(producer, name)
+                            
+                            wines.append({
+                                'id': wine_id,
+                                'name': name,
+                                'producer': producer,
+                                'vintage': row.get('vintage', '').strip(),
+                                'price': price,
+                                'type': row.get('section', 'Wine').strip(),
+                                'acid': float(row.get('acidity', 5) or 5),
+                                'tannin': float(row.get('tannin', 5) or 5),
+                                'body': float(row.get('body', 5) or 5),
+                                'sugar': float(row.get('sweetness', 1) or 1),
+                                'insider_note': row.get('insider_note', '').strip()
+                            })
+                        except (ValueError, KeyError):
+                            continue
                 
-                # Basic validation
-                try:
-                    price = float(row.get('price', 0))
-                    if price < 20:  # Minimum bottle price
-                        continue
-                    
-                    producer = row.get('producer', '').strip()
-                    name = row.get('wine_name', '').strip()
-                    
-                    if not producer or not name or name.lower() == 'unknown':
-                        continue
-                    
-                    # Generate stable ID
-                    wine_id = generate_stable_id(producer, name)
-                    
-                    wines.append({
-                        'id': wine_id,
-                        'name': name,
-                        'producer': producer,
-                        'vintage': row.get('vintage', '').strip(),
-                        'price': price,
-                        'type': row.get('section', 'Wine').strip(),
-                        'acid': float(row.get('acidity', 5) or 5),
-                        'tannin': float(row.get('tannin', 5) or 5),
-                        'body': float(row.get('body', 5) or 5),
-                        'sugar': float(row.get('sweetness', 1) or 1),
-                        'pairing_tags': row.get('pairing_tags', '').strip(),
-                        'insider_note': row.get('insider_note', '').strip()
-                    })
-                except (ValueError, KeyError):
-                    continue
-        
-        _wine_cache = wines
-        logger.info("=" * 60)
-        logger.info(f"✅ DATABASE LOADED: {len(wines):,} wines from {total_rows:,} rows")
-        logger.info("=" * 60)
-        return wines
-        
-    except Exception as e:
-        logger.error(f"❌ Error loading CSV: {e}")
-        return []
+                _wine_cache = wines
+                logger.info(f"✅ Loaded {len(wines):,} wines")
+                return wines
+                
+            except Exception as e:
+                logger.error(f"❌ Error loading wines: {e}")
+                continue
+    
+    logger.error("❌ No wine database found")
+    return []
 
 # =================================================================
-# 3. PRESTIGE SCORING (V3.7 - Luxury preferences)
+# PRESTIGE SCORING (V3.7 Luxury Preferences)
 # =================================================================
 
 LEGENDARY_PRODUCERS = {
@@ -164,7 +136,7 @@ LEGENDARY_PRODUCERS = {
 }
 
 PRESTIGIOUS_VINEYARDS = {
-    'la tâche': 30,
+    'la tâche': 30, 'la tache': 30,
     'richebourg': 28,
     'romanée-st-vivant': 28,
     'montrachet': 35,
@@ -172,11 +144,10 @@ PRESTIGIOUS_VINEYARDS = {
 }
 
 # =================================================================
-# 4. DISH ANALYSIS (V4.0 - Uses descriptions + 11-layer algorithm)
+# DISH ANALYSIS (V4.0 - 11-Layer Algorithm)
 # =================================================================
 
 def analyze_dish(dish_name: str, dish_description: str = "") -> Dict:
-    """Analyze dish for pairing characteristics"""
     combined = f"{dish_name} {dish_description}".lower()
     
     profile = {
@@ -186,6 +157,7 @@ def analyze_dish(dish_name: str, dish_description: str = "") -> Dict:
         'has_red_meat': False,
         'has_poultry': False,
         'is_spicy': False,
+        'is_dessert': False,
         'sauce_type': None,
         'umami_level': 5,
         'fat_level': 5
@@ -204,43 +176,49 @@ def analyze_dish(dish_name: str, dish_description: str = "") -> Dict:
         profile['has_poultry'] = True
     
     # Spicy
-    if any(s in combined for s in ['spicy', 'chili', 'curry']):
+    if any(s in combined for s in ['spicy', 'chili', 'curry', 'jalapeño']):
         profile['is_spicy'] = True
     
+    # Dessert
+    if any(d in combined for d in ['dessert', 'chocolate', 'cake', 'tart']):
+        profile['is_dessert'] = True
+    
     # Sauce
-    if any(s in combined for s in ['béarnaise', 'hollandaise', 'cream sauce', 'butter sauce']):
+    if any(s in combined for s in ['béarnaise', 'bearnaise', 'hollandaise', 'cream sauce', 'butter sauce']):
         profile['sauce_type'] = 'rich_cream'
         profile['fat_level'] = 8
     elif any(s in combined for s in ['tomato', 'marinara', 'pomodoro']):
         profile['sauce_type'] = 'tomato'
     
     # Umami
-    if any(u in combined for u in ['truffle', 'mushroom', 'parmesan']):
+    if any(u in combined for u in ['truffle', 'mushroom', 'parmesan', 'aged cheese']):
         profile['umami_level'] = 9
     
     return profile
 
 def score_wine(wine: Dict, dish_profile: Dict) -> int:
-    """11-layer scoring algorithm (V4.0)"""
+    """11-layer scoring algorithm"""
     score = 50
     wine_name_lower = wine['name'].lower()
     wine_type_lower = wine['type'].lower()
     
-    # Seafood matching
+    # Layer 1: Seafood matching
     if dish_profile['has_seafood']:
         if 'white' in wine_type_lower or 'sparkling' in wine_type_lower:
             score += 30
         elif wine['acid'] >= 7:
             score += 25
+        elif 'red' in wine_type_lower:
+            score -= 20
     
-    # Red meat matching
+    # Layer 2: Red meat matching
     if dish_profile['has_red_meat']:
         if 'red' in wine_type_lower:
             score += 30
             if wine['tannin'] >= 7:
                 score += 15
     
-    # Sauce matching
+    # Layer 3: Sauce matching
     if dish_profile['sauce_type'] == 'rich_cream':
         if wine['acid'] >= 7:
             score += 20
@@ -248,22 +226,31 @@ def score_wine(wine: Dict, dish_profile: Dict) -> int:
         if 'red' in wine_type_lower and wine['acid'] >= 6:
             score += 20
     
-    # Umami
+    # Layer 4: Body/Fat matching
+    if dish_profile['fat_level'] >= 7:
+        if wine['body'] >= 7:
+            score += 15
+    
+    # Layer 5: Umami matching
     if dish_profile['umami_level'] >= 8:
         if wine['acid'] >= 7:
             score += 15
     
-    # Spicy food
+    # Layer 6: Spicy food
     if dish_profile['is_spicy']:
         if wine['sugar'] >= 3 or 'riesling' in wine_name_lower:
             score += 20
+    
+    # Layer 7: Dessert
+    if dish_profile['is_dessert']:
+        if 'dessert' in wine_type_lower or 'port' in wine_name_lower:
+            score += 40
     
     return score
 
 def score_group(wine: Dict, dish_group: List[Dict]) -> float:
     """Score wine for a group of dishes"""
-    if not dish_group:
-        return 0
+    if not dish_group: return 0
     
     if len(dish_group) == 1:
         dish = dish_group[0]
@@ -281,22 +268,19 @@ def score_group(wine: Dict, dish_group: List[Dict]) -> float:
         ))
         scores.append(dish_score)
     
-    if not scores:
-        return 0
+    if not scores: return 0
     
-    # 70% average, 30% minimum (ensures works for all dishes)
+    # 70% average, 30% minimum
     min_score = min(scores)
     avg_score = sum(scores) / len(scores)
     return (avg_score * 0.7) + (min_score * 0.3)
 
 # =================================================================
-# 5. DISH GROUPING (V3.7 - Proper distribution)
+# DISH GROUPING
 # =================================================================
 
 def group_dishes(dishes: List[Dict], bottle_count: int) -> List[List[Dict]]:
-    """Group dishes into courses using divmod distribution"""
-    if not dishes:
-        return []
+    if not dishes: return []
     
     dishes_per_group, remainder = divmod(len(dishes), bottle_count)
     
@@ -311,17 +295,13 @@ def group_dishes(dishes: List[Dict], bottle_count: int) -> List[List[Dict]]:
     return groups
 
 # =================================================================
-# 6. MAIN PROGRESSION ENGINE (COMPLETE - V3.7 + V5.0 + V5.1)
+# MAIN PROGRESSION ENGINE (V5.1 Logic → V5.0 Structure)
 # =================================================================
 
 def generate_progression(dishes, bottle_count: int, budget: int):
     """
-    Generate wine progression with ALL features:
-    - AI-generated sommelier notes
-    - Conversation starters
-    - Stable IDs
-    - Facts integration
-    - Correct data structure (primary + alternatives + luxury)
+    Generate wine progression with sophisticated v5.1 logic
+    Returns v5.0 'options' structure for Alpine.js frontend
     """
     wines = load_wines()
     if not wines:
@@ -355,7 +335,7 @@ def generate_progression(dishes, bottle_count: int, budget: int):
     progression = []
     used_ids = set()
     
-    # TIERED BUDGET STRATEGY (respects budget)
+    # TIERED BUDGET STRATEGY (respect budget)
     budget_tiers = [1.0, 1.1, 1.25, 1.5]  # Try exact, then 10%, 25%, 50% over
     
     for i, group in enumerate(groups):
@@ -368,17 +348,14 @@ def generate_progression(dishes, bottle_count: int, budget: int):
             max_price = budget_per_bottle * tier_mult
             
             for wine in wines:
-                if wine['id'] in used_ids:
-                    continue
-                if wine['price'] > max_price:
-                    continue
+                if wine['id'] in used_ids: continue
+                if wine['price'] > max_price: continue
                 
                 # Score wine for this group
                 pairing_score = score_group(wine, group)
-                if pairing_score <= 0:
-                    continue
+                if pairing_score <= 0: continue
                 
-                # PRESTIGE BONUS (V3.7 luxury preference)
+                # PRESTIGE BONUS
                 prestige_bonus = 0
                 wine_name_lower = wine['name'].lower()
                 producer_lower = wine['producer'].lower()
@@ -399,7 +376,7 @@ def generate_progression(dishes, bottle_count: int, budget: int):
                     elif 'premier cru' in wine_name_lower:
                         prestige_bonus += 8
                 
-                # Value preference (slight boost for better value)
+                # Value bonus
                 value_bonus = (500 / (wine['price'] + 1)) * 0.1
                 
                 final_score = pairing_score + prestige_bonus + value_bonus
@@ -409,133 +386,94 @@ def generate_progression(dishes, bottle_count: int, budget: int):
                     'score': final_score
                 })
             
-            # If we found enough wines, stop looking at higher budgets
-            if len(candidates) >= 3:
-                break
+            if len(candidates) >= 3: break
         
-        if not candidates:
-            continue
+        if not candidates: continue
         
         # Sort by score
         candidates.sort(key=lambda x: x['score'], reverse=True)
         
-        # PRIMARY RECOMMENDATION
-        best = candidates[0]['wine']
-        used_ids.add(best['id'])
+        # BUILD OPTIONS LIST (v5.0 structure)
+        # Take top 3: primary + 2 alternatives
+        options_list = []
         
-        # Generate AI-powered luxury content for PRIMARY
-        luxury = {}
-        if LUXURY_MODE:
-            try:
-                pairing_note = narrator.generate_pairing_story(
-                    wine_name=best['name'],
-                    wine_type=best['type'],
-                    dish_name=dish_string,
-                    wine_properties={
-                        'acidity': best['acid'],
-                        'body': best['body'],
-                        'tannin': best['tannin']
-                    }
-                )
-                conversation_starters = generate_conversation_starters(
-                    best['name'],
-                    best['producer'],
-                    best['type'],
-                    None,
-                    best['price']
-                )
-                luxury = {
-                    'pairing_note': pairing_note,
-                    'conversation_starters': conversation_starters
-                }
-                logger.info(f"✅ Generated AI content for {best['name']}")
-            except Exception as e:
-                logger.warning(f"⚠️  AI content failed: {e}")
-                luxury = {
-                    'pairing_note': "A harmonious pairing.",
-                    'conversation_starters': []
-                }
-        else:
-            luxury = {
-                'pairing_note': "A harmonious pairing.",
-                'conversation_starters': []
-            }
-        
-        # Add facts if available (V5.0)
-        primary_wine = {
-            "wine_name": best['name'],
-            "producer": best['producer'],
-            "vintage": best.get('vintage', 'NV'),
-            "price": best['price'],
-            "type": best['type']
-        }
-        
-        if FACTS_ENABLED:
-            try:
-                primary_wine['interesting_fact'] = get_interesting_fact(best)
-                primary_wine['rarity_level'] = calculate_rarity_level(best)
-            except:
-                primary_wine['interesting_fact'] = None
-                primary_wine['rarity_level'] = 1
-        
-        # ALTERNATIVES (top 2 after primary)
-        alternatives_data = []
-        for cand in candidates[1:3]:
-            alt = cand['wine']
-            alt_data = {
-                "wine_name": alt['name'],
-                "producer": alt['producer'],
-                "vintage": alt.get('vintage', 'NV'),
-                "price": alt['price'],
-                "type": alt['type'],
-                "pairing_note": "",
-                "conversation_starters": []
-            }
+        for idx, cand in enumerate(candidates[:3]):
+            wine = cand['wine']
             
-            # Generate AI content for alternatives if available
+            # Generate AI content
+            pairing_note = ""
+            conversation_starter = ""
+            
             if LUXURY_MODE:
                 try:
-                    alt_note = narrator.generate_pairing_story(
-                        alt['name'],
-                        alt['type'],
-                        dish_string,
-                        {'acidity': alt['acid'], 'body': alt['body']}
+                    pairing_note = narrator.generate_pairing_story(
+                        wine_name=wine['name'],
+                        wine_type=wine['type'],
+                        dish_name=dish_string,
+                        wine_properties={
+                            'acidity': wine['acid'],
+                            'body': wine['body'],
+                            'tannin': wine['tannin']
+                        }
                     )
-                    alt_starters = generate_conversation_starters(
-                        alt['name'],
-                        alt['producer'],
-                        alt['type'],
+                    
+                    starters = generate_conversation_starters(
+                        wine['name'],
+                        wine['producer'],
+                        wine['type'],
                         None,
-                        alt['price']
+                        wine['price']
                     )
-                    alt_data['pairing_note'] = alt_note
-                    alt_data['conversation_starters'] = alt_starters
+                    conversation_starter = starters[0] if starters else ""
+                    
+                except Exception as e:
+                    logger.warning(f"AI generation failed: {e}")
+                    pairing_note = wine.get('insider_note', '') or "A harmonious pairing."
+            else:
+                pairing_note = wine.get('insider_note', '') or "A harmonious pairing."
+            
+            # Get facts
+            interesting_fact = None
+            rarity_level = 1
+            
+            if FACTS_ENABLED:
+                try:
+                    interesting_fact = get_interesting_fact(wine)
+                    rarity_level = calculate_rarity_level(wine)
                 except:
                     pass
             
-            # Add facts for alternatives
-            if FACTS_ENABLED:
-                try:
-                    alt_data['interesting_fact'] = get_interesting_fact(alt)
-                    alt_data['rarity_level'] = calculate_rarity_level(alt)
-                except:
-                    alt_data['interesting_fact'] = None
-                    alt_data['rarity_level'] = 1
+            # Build option object (ALL fields frontend needs)
+            option = {
+                "wine_name": wine['name'],
+                "producer": wine['producer'],
+                "vintage": wine.get('vintage', 'NV'),
+                "price": wine['price'],
+                "type": wine['type'],
+                "section": wine['type'],
+                "insider_note": wine.get('insider_note', ''),
+                "pairing_note": pairing_note,
+                "conversation_starter": conversation_starter,
+                "interesting_fact": interesting_fact,
+                "rarity_level": rarity_level,
+                "is_primary_recommendation": (idx == 0),
+                "recommendation_rank": idx + 1,
+                "match_score": int(cand['score'])
+            }
             
-            alternatives_data.append(alt_data)
+            options_list.append(option)
         
-        # Build progression entry with CORRECT structure
-        progression.append({
-            "course_number": i + 1,
-            "course_name": f"Course {i+1}",
-            "dishes": dish_names,
-            "primary": primary_wine,  # ← PRIMARY RECOMMENDATION
-            "luxury": luxury,  # ← AI CONTENT
-            "alternatives": alternatives_data  # ← ALTERNATIVES
-        })
+        if options_list:
+            used_ids.add(options_list[0]['wine_name'])
+            
+            progression.append({
+                "course_number": i + 1,
+                "course_name": f"Course {i+1}",
+                "dishes": dish_names,
+                "options": options_list  # ← FRONTEND EXPECTS THIS
+            })
     
-    # Calculate total cost
-    total_cost = sum(c['primary']['price'] for c in progression)
+    total_cost = sum(c['options'][0]['price'] for c in progression if c.get('options')) if progression else 0
     budget_utilization = round((total_cost / budget * 100), 1) if budget > 0 else 0
     
     logger.info(f"✅ Generated {len(progression)} courses, ${total_cost:.2f} ({budget_utilization}% of budget)")
@@ -543,20 +481,17 @@ def generate_progression(dishes, bottle_count: int, budget: int):
     return {
         "success": True,
         "progression": progression,
+        "total_bottles": len(progression),
         "total_cost": total_cost,
-        "budget_utilization": budget_utilization,
-        "bottle_count": bottle_count,
-        "total_budget": budget
+        "budget_utilization": budget_utilization
     }
 
 # =================================================================
-# 7. HEALTH CHECK
+# HEALTH CHECK
 # =================================================================
 
 def health_check() -> Dict:
-    """Health check for debugging"""
     wines = load_wines()
-    
     return {
         "status": "healthy" if wines else "unhealthy",
         "wine_count": len(wines),
@@ -566,4 +501,4 @@ def health_check() -> Dict:
         }
     }
 
-logger.info("✅ pairing_service.py loaded successfully (v5.1 COMPLETE)")
+logger.info("✅ pairing_service.py v5.2 loaded (Unified architecture)")
