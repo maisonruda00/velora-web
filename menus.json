@@ -7,23 +7,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Appetizers": [
-          {
-            "id": "4_Charles_Prime_Rib_3",
-            "name": "Shrimp Cocktail",
-            "price": 29,
-            "description": "cocktail sauce, dijonnaise"
-          }
-        ],
-        "Salads": [
-          {
-            "id": "4_Charles_Prime_Rib_5",
-            "name": "Little Gem Salad",
-            "price": 25,
-            "description": "lightly dressed with avocado & fines herbes"
-          }
-        ],
-        "Mains": [
+        "Brunch": [
           {
             "id": "4_Charles_Prime_Rib_0",
             "name": "Truffle Omelette",
@@ -35,7 +19,9 @@
             "name": "Crab Cake Benedict",
             "price": 43,
             "description": "baked crab cake, poached farm egg, bearnaise sauce"
-          },
+          }
+        ],
+        "À La Carte": [
           {
             "id": "4_Charles_Prime_Rib_1",
             "name": "Thick Cut Bacon",
@@ -47,12 +33,22 @@
             "name": "Hash Browns",
             "price": 14,
             "description": "crispy fried potatoes, garlic aioli"
-          },
+          }
+        ],
+        "Steak & Eggs": [
           {
             "id": "4_Charles_Prime_Rib_2",
             "name": "Bone-In Filet",
             "price": 99,
             "description": "16oz USDA Prime Beef"
+          }
+        ],
+        "RAW BAR & SHELLFISH": [
+          {
+            "id": "4_Charles_Prime_Rib_3",
+            "name": "Shrimp Cocktail",
+            "price": 29,
+            "description": "cocktail sauce, dijonnaise"
           },
           {
             "id": "4_Charles_Prime_Rib_4",
@@ -65,13 +61,25 @@
             "name": "Hokkaido King Crab (3/4 lb)",
             "price": 124,
             "description": "3/4 lb portion"
-          },
+          }
+        ],
+        "APPETIZERS": [
           {
             "id": "4_Charles_Prime_Rib_4",
             "name": "Roasted Bone Marrow",
             "price": 27,
             "description": "red onion jam & sourdough toast"
-          },
+          }
+        ],
+        "HOUSE SALADS": [
+          {
+            "id": "4_Charles_Prime_Rib_5",
+            "name": "Little Gem Salad",
+            "price": 25,
+            "description": "lightly dressed with avocado & fines herbes"
+          }
+        ],
+        "ENTREES": [
           {
             "id": "4_Charles_Prime_Rib_6",
             "name": "Crispy Brick Chicken",
@@ -101,13 +109,17 @@
             "name": "Bacon",
             "price": 8,
             "description": "Add to burger"
-          },
+          }
+        ],
+        "ROAST PRIME RIB OF BEEF": [
           {
             "id": "4_Charles_Prime_Rib_7",
             "name": "English Cut",
             "price": 79,
             "description": "thin sliced & delicate; USDA Prime Rib of Beef, salt crusted, with natural beef jus & horseradish cream"
-          },
+          }
+        ],
+        "ENHANCE ANY ITEM": [
           {
             "id": "4_Charles_Prime_Rib_8",
             "name": "Peppercorn Crust",
@@ -129,29 +141,7 @@
         ]
       },
       "dinner": {
-        "Appetizers": [
-          {
-            "id": "4_Charles_Prime_Rib_3",
-            "name": "Shrimp Cocktail",
-            "price": 29,
-            "description": "cocktail sauce, dijonnaise"
-          },
-          {
-            "id": "4_Charles_Prime_Rib_4",
-            "name": "Otoro Tartare w/ Caviar",
-            "price": 125,
-            "description": "bluefin tuna belly, yuasa white soy, brown butter toast"
-          }
-        ],
-        "Salads": [
-          {
-            "id": "4_Charles_Prime_Rib_5",
-            "name": "Little Gem Salad",
-            "price": 25,
-            "description": "lightly dressed with avocado & fines herbes"
-          }
-        ],
-        "Mains": [
+        "Brunch": [
           {
             "id": "4_Charles_Prime_Rib_0",
             "name": "Truffle Omelette",
@@ -175,7 +165,9 @@
             "name": "Smoked Salmon Platter",
             "price": 48,
             "description": "catsmo smokehouse salmon, whipped cream cheese, tomato, cucumber, capers, Utopia bagels: everything or plain"
-          },
+          }
+        ],
+        "À La Carte": [
           {
             "id": "4_Charles_Prime_Rib_1",
             "name": "Thick Cut Bacon",
@@ -199,7 +191,9 @@
             "name": "Whole Avocado",
             "price": 5,
             "description": "Utopia Bagels: everything or plain"
-          },
+          }
+        ],
+        "Steak & Eggs": [
           {
             "id": "4_Charles_Prime_Rib_2",
             "name": "Bone-In Filet",
@@ -217,6 +211,14 @@
             "name": "Wagyu New York Strip Steak",
             "price": 159,
             "description": "16oz bone-in, béarnaise sauce, steak salt"
+          }
+        ],
+        "RAW BAR & SHELLFISH": [
+          {
+            "id": "4_Charles_Prime_Rib_3",
+            "name": "Shrimp Cocktail",
+            "price": 29,
+            "description": "cocktail sauce, dijonnaise"
           },
           {
             "id": "4_Charles_Prime_Rib_4",
@@ -238,6 +240,12 @@
           },
           {
             "id": "4_Charles_Prime_Rib_4",
+            "name": "Otoro Tartare w/ Caviar",
+            "price": 125,
+            "description": "bluefin tuna belly, yuasa white soy, brown butter toast"
+          },
+          {
+            "id": "4_Charles_Prime_Rib_4",
             "name": "Fresh Oysters",
             "price": 4,
             "description": null
@@ -247,12 +255,22 @@
             "name": "Baked Crab Cake",
             "price": 34,
             "description": "1/2 lb, preserved lemon, remoulade"
-          },
+          }
+        ],
+        "APPETIZERS": [
           {
             "id": "4_Charles_Prime_Rib_4",
             "name": "Roasted Bone Marrow",
             "price": 27,
             "description": "red onion jam & sourdough toast"
+          }
+        ],
+        "HOUSE SALADS": [
+          {
+            "id": "4_Charles_Prime_Rib_5",
+            "name": "Little Gem Salad",
+            "price": 25,
+            "description": "lightly dressed with avocado & fines herbes"
           },
           {
             "id": "4_Charles_Prime_Rib_6",
@@ -265,7 +283,9 @@
             "name": "Smoked Salmon Caesar",
             "price": 24,
             "description": "potato chips, classic caesar dressing"
-          },
+          }
+        ],
+        "ENTREES": [
           {
             "id": "4_Charles_Prime_Rib_6",
             "name": "Crispy Brick Chicken",
@@ -331,7 +351,9 @@
             "name": "Cacio e Pepe Carbonara Pasta",
             "price": 32,
             "description": "thick-cut bacon, toasted black pepper, pecorino, bucatini"
-          },
+          }
+        ],
+        "ROAST PRIME RIB OF BEEF": [
           {
             "id": "4_Charles_Prime_Rib_7",
             "name": "English Cut",
@@ -343,7 +365,9 @@
             "name": "Chicago Cut",
             "price": 104,
             "description": "generous, center cut; USDA Prime Rib of Beef, salt crusted, with natural beef jus & horseradish cream"
-          },
+          }
+        ],
+        "ENHANCE ANY ITEM": [
           {
             "id": "4_Charles_Prime_Rib_8",
             "name": "Peppercorn Crust",
@@ -392,27 +416,25 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Appetizers": [
+        "Cold": [
+          {
+            "id": "53_8",
+            "name": "OYSTER AND UNI*",
+            "price": 34,
+            "description": "yuzu ponzu gelée, trout roe"
+          },
+          {
+            "id": "53_9",
+            "name": "FLUKE KOMBUJIME*",
+            "price": 31,
+            "description": "shiso salt, lime"
+          },
           {
             "id": "53_9",
             "name": "SALMON CARPACCIO*",
             "price": 29,
             "description": "sesame, shio kombu"
           },
-          {
-            "id": "53_9",
-            "name": "EEL CLUB",
-            "price": 47,
-            "description": "foie gras, strawberry"
-          },
-          {
-            "id": "53_14",
-            "name": "Premium Lunch Set",
-            "price": 58,
-            "description": "one set per person. CHOICE OF ONE EACH: SALMON CARPACCIO, SEAWEED SALAD, MIZUNA SALAD / CRYSTAL DUMPLING, CRISPY WONTON / BLACK COD CLAYPOT, VEGGIE DELIGHT, KUNG PAO CHICKEN, PRAWN UDON NOODLE"
-          }
-        ],
-        "Salads": [
           {
             "id": "53_9",
             "name": "MIZUNA SALAD",
@@ -432,18 +454,12 @@
             "description": "wood ear mushroom, chili"
           }
         ],
-        "Mains": [
-          {
-            "id": "53_8",
-            "name": "OYSTER AND UNI*",
-            "price": 34,
-            "description": "yuzu ponzu gelée, trout roe"
-          },
+        "Hot": [
           {
             "id": "53_9",
-            "name": "FLUKE KOMBUJIME*",
-            "price": 31,
-            "description": "shiso salt, lime"
+            "name": "EEL CLUB",
+            "price": 47,
+            "description": "foie gras, strawberry"
           },
           {
             "id": "53_10",
@@ -468,7 +484,9 @@
             "name": "CRYSTAL DUMPLING",
             "price": 19,
             "description": "morel mushroom, spinach"
-          },
+          }
+        ],
+        "Steam": [
           {
             "id": "53_10",
             "name": "DIVER SCALLOP",
@@ -486,7 +504,9 @@
             "name": "HAINANESE CHICKEN AND RICE",
             "price": 38,
             "description": null
-          },
+          }
+        ],
+        "Grill": [
           {
             "id": "53_11",
             "name": "KING PRAWN",
@@ -504,7 +524,9 @@
             "name": "LAMB RIB",
             "price": 36,
             "description": "barbeque yogurt glaze"
-          },
+          }
+        ],
+        "Wok": [
           {
             "id": "53_12",
             "name": "BEEF TENDERLOIN",
@@ -540,7 +562,9 @@
             "name": "PEA SHOOT",
             "price": 22,
             "description": "sambal"
-          },
+          }
+        ],
+        "Clay Pot": [
           {
             "id": "53_13",
             "name": "BLACK COD",
@@ -553,86 +577,18 @@
             "price": 36,
             "description": "maitake, garlic"
           }
+        ],
+        "Premium Lunch Set": [
+          {
+            "id": "53_14",
+            "name": "Premium Lunch Set",
+            "price": 58,
+            "description": "one set per person. CHOICE OF ONE EACH: SALMON CARPACCIO, SEAWEED SALAD, MIZUNA SALAD / CRYSTAL DUMPLING, CRISPY WONTON / BLACK COD CLAYPOT, VEGGIE DELIGHT, KUNG PAO CHICKEN, PRAWN UDON NOODLE"
+          }
         ]
       },
       "dinner": {
-        "Appetizers": [
-          {
-            "id": "53_1",
-            "name": "SALMON CARPACCIO*",
-            "price": 29,
-            "description": "sesame, shio kombu"
-          },
-          {
-            "id": "53_7",
-            "name": "SALMON CARPACCIO*",
-            "price": 29,
-            "description": "sesame, shio kombu"
-          },
-          {
-            "id": "53_2",
-            "name": "EEL CLUB",
-            "price": 47,
-            "description": "foie gras, cherry"
-          },
-          {
-            "id": "53_8",
-            "name": "PRIME STRIP LOIN",
-            "price": 120,
-            "description": "red chili, foie gras"
-          },
-          {
-            "id": "53_6",
-            "name": "Premium Brunch Set",
-            "price": 58,
-            "description": "one set per person. Choice of one each: Salmon Carpaccio, Seaweed Salad, Mizuna Salad; Vegetable Spring Roll, Crispy Wonton; Black Cod Claypot, Veggie Delight, Kung Pao Chicken, Prawn Udon Noodle"
-          },
-          {
-            "id": "53_8",
-            "name": "EEL CLUB",
-            "price": 47,
-            "description": "foie gras, cherry"
-          }
-        ],
-        "Salads": [
-          {
-            "id": "53_1",
-            "name": "MIZUNA SALAD",
-            "price": 32,
-            "description": "mushroom, hazelnut, truffle"
-          },
-          {
-            "id": "53_1",
-            "name": "SEAWEED SALAD",
-            "price": 24,
-            "description": "granny smith, sesame, walnut"
-          },
-          {
-            "id": "53_1",
-            "name": "CUCUMBER SALAD",
-            "price": 16,
-            "description": "wood ear mushroom, chili"
-          },
-          {
-            "id": "53_7",
-            "name": "MIZUNA SALAD",
-            "price": 32,
-            "description": "mushroom, hazelnut, truffle"
-          },
-          {
-            "id": "53_7",
-            "name": "SEAWEED SALAD",
-            "price": 24,
-            "description": "granny smith, sesame, walnut"
-          },
-          {
-            "id": "53_7",
-            "name": "CUCUMBER SALAD",
-            "price": 16,
-            "description": "wood ear mushroom, chili"
-          }
-        ],
-        "Mains": [
+        "Cold": [
           {
             "id": "53_0",
             "name": "OYSTER AND UNI*",
@@ -646,10 +602,46 @@
             "description": "shiso salt, lime"
           },
           {
+            "id": "53_1",
+            "name": "SALMON CARPACCIO*",
+            "price": 29,
+            "description": "sesame, shio kombu"
+          },
+          {
+            "id": "53_1",
+            "name": "MIZUNA SALAD",
+            "price": 32,
+            "description": "mushroom, hazelnut, truffle"
+          },
+          {
+            "id": "53_1",
+            "name": "SEAWEED SALAD",
+            "price": 24,
+            "description": "granny smith, sesame, walnut"
+          },
+          {
+            "id": "53_1",
+            "name": "CUCUMBER SALAD",
+            "price": 16,
+            "description": "wood ear mushroom, chili"
+          },
+          {
+            "id": "53_7",
+            "name": "TORO TARTARE*",
+            "price": 69,
+            "description": "1/2 oz golden kaluga, cassava chip"
+          },
+          {
             "id": "53_7",
             "name": "FLUKE KOMBUJIME*",
             "price": 31,
             "description": "shiso salt, lime"
+          },
+          {
+            "id": "53_7",
+            "name": "SALMON CARPACCIO*",
+            "price": 29,
+            "description": "sesame, shio kombu"
           },
           {
             "id": "53_7",
@@ -670,10 +662,36 @@
             "description": "szechuan peppercorn, leek"
           },
           {
+            "id": "53_7",
+            "name": "MIZUNA SALAD",
+            "price": 32,
+            "description": "mushroom, hazelnut, truffle"
+          },
+          {
+            "id": "53_7",
+            "name": "SEAWEED SALAD",
+            "price": 24,
+            "description": "granny smith, sesame, walnut"
+          },
+          {
+            "id": "53_7",
+            "name": "CUCUMBER SALAD",
+            "price": 16,
+            "description": "wood ear mushroom, chili"
+          }
+        ],
+        "Dim Sum": [
+          {
             "id": "53_1",
             "name": "DUCK PIE TEE",
             "price": 24,
             "description": "chipotle, cilantro"
+          },
+          {
+            "id": "53_2",
+            "name": "EEL CLUB",
+            "price": 47,
+            "description": "foie gras, cherry"
           },
           {
             "id": "53_2",
@@ -698,7 +716,9 @@
             "name": "XIAO LONG BAO",
             "price": 26,
             "description": "chicken, truffle"
-          },
+          }
+        ],
+        "Steam": [
           {
             "id": "53_2",
             "name": "DIVER SCALLOP",
@@ -752,7 +772,9 @@
             "name": "BOK CHOY",
             "price": 20,
             "description": "toasted garlic"
-          },
+          }
+        ],
+        "Grill": [
           {
             "id": "53_3",
             "name": "KING PRAWN",
@@ -801,6 +823,14 @@
             "price": 38,
             "description": "peanut sauce, pickled onion"
           },
+          {
+            "id": "53_8",
+            "name": "PRIME STRIP LOIN",
+            "price": 120,
+            "description": "red chili, foie gras"
+          }
+        ],
+        "Wok": [
           {
             "id": "53_4",
             "name": "BEEF TENDERLOIN",
@@ -890,7 +920,9 @@
             "name": "MAPO TOFU",
             "price": 24,
             "description": "preserved radish, tobanjan"
-          },
+          }
+        ],
+        "Clay Pot": [
           {
             "id": "53_5",
             "name": "BLACK COD",
@@ -938,13 +970,23 @@
             "name": "TIGER PRAWN",
             "price": 45,
             "description": "curry, cilantro"
+          }
+        ],
+        "Sets": [
+          {
+            "id": "53_6",
+            "name": "Premium Brunch Set",
+            "price": 58,
+            "description": "one set per person. Choice of one each: Salmon Carpaccio, Seaweed Salad, Mizuna Salad; Vegetable Spring Roll, Crispy Wonton; Black Cod Claypot, Veggie Delight, Kung Pao Chicken, Prawn Udon Noodle"
           },
           {
             "id": "53_7",
             "name": "Dim Sum Set",
             "price": 78,
             "description": "one set per person. Includes: Hot and Sour Soup, Crispy Wonton 2pc, Lobster Spring Roll 1pc, Crystal Dumpling 2pc, Royal Shumai 2pc, Xiao Long Bao 2pc. Choice of: Egg Noodle, Fried Rice"
-          },
+          }
+        ],
+        "Hot": [
           {
             "id": "53_7",
             "name": "TRUFFLE EGG",
@@ -956,6 +998,12 @@
             "name": "DUCK PIE TEE",
             "price": 24,
             "description": "chipotle, cilantro"
+          },
+          {
+            "id": "53_8",
+            "name": "EEL CLUB",
+            "price": 47,
+            "description": "foie gras, cherry"
           },
           {
             "id": "53_8",
@@ -999,14 +1047,6 @@
             "price": 37,
             "description": "cabbage, chili"
           }
-        ],
-        "Desserts": [
-          {
-            "id": "53_7",
-            "name": "TORO TARTARE*",
-            "price": 69,
-            "description": "1/2 oz golden kaluga, cassava chip"
-          }
         ]
       }
     }
@@ -1019,7 +1059,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Mains": [
+        "Supplements": [
           {
             "id": "Huso_0",
             "name": "White Truffle Supplement",
@@ -1029,7 +1069,7 @@
         ]
       },
       "dinner": {
-        "Mains": [
+        "Supplements": [
           {
             "id": "Huso_0",
             "name": "White Truffle Supplement",
@@ -1069,38 +1109,18 @@
           },
           {
             "id": "RH_Guesthouse_1",
-            "name": "Shrimp Cocktail",
-            "price": 28,
-            "description": "6 pcs; Cocktail Sauce, Dijonnaise, Horseradish, Lemon"
-          },
-          {
-            "id": "RH_Guesthouse_1",
-            "name": "King Crab Legs",
-            "price": 1,
-            "description": "Dijonnaise, Cocktail Sauce, Melted Butter"
-          }
-        ],
-        "Salads": [
-          {
-            "id": "RH_Guesthouse_1",
-            "name": "Green Bean Salad",
-            "price": 24,
-            "description": "Butter Lettuce, Red Wine Vinaigrette, Chives"
-          },
-          {
-            "id": "RH_Guesthouse_1",
-            "name": "Classic Caesar",
-            "price": 19,
-            "description": "Romaine, Parmigiano Reggiano, Croutons"
-          }
-        ],
-        "Mains": [
-          {
-            "id": "RH_Guesthouse_1",
             "name": "Oysters",
             "price": 1,
             "description": "Mignonette, Lemon"
           },
+          {
+            "id": "RH_Guesthouse_1",
+            "name": "Shrimp Cocktail",
+            "price": 28,
+            "description": "6 pcs; Cocktail Sauce, Dijonnaise, Horseradish, Lemon"
+          }
+        ],
+        "Salads": [
           {
             "id": "RH_Guesthouse_1",
             "name": "Chinese Chicken Salad",
@@ -1133,6 +1153,18 @@
           },
           {
             "id": "RH_Guesthouse_1",
+            "name": "Green Bean Salad",
+            "price": 24,
+            "description": "Butter Lettuce, Red Wine Vinaigrette, Chives"
+          },
+          {
+            "id": "RH_Guesthouse_1",
+            "name": "Classic Caesar",
+            "price": 19,
+            "description": "Romaine, Parmigiano Reggiano, Croutons"
+          },
+          {
+            "id": "RH_Guesthouse_1",
             "name": "Rotisserie Chicken (Salad Addition)",
             "price": 14,
             "description": "Salad addition"
@@ -1154,7 +1186,9 @@
             "name": "Buttered Lobster (Salad Addition)",
             "price": 28,
             "description": "Salad addition"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "RH_Guesthouse_0",
             "name": "Bluefin Toro",
@@ -1211,6 +1245,12 @@
           },
           {
             "id": "RH_Guesthouse_1",
+            "name": "King Crab Legs",
+            "price": 1,
+            "description": "Dijonnaise, Cocktail Sauce, Melted Butter"
+          },
+          {
+            "id": "RH_Guesthouse_1",
             "name": "Lobster",
             "price": 1,
             "description": "Melted Butter, Lemon"
@@ -1220,13 +1260,17 @@
             "name": "Gem Lettuce",
             "price": 21,
             "description": "Radish, Feta, Avocado, Buttermilk Herb Dressing"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "RH_Guesthouse_1",
             "name": "Crispy Artichokes",
             "price": 22,
             "description": "Potatoes, Rosemary Aioli"
-          },
+          }
+        ],
+        "Desserts": [
           {
             "id": "RH_Guesthouse_1",
             "name": "Grilled Avocado with Caviar",
@@ -1245,50 +1289,18 @@
           },
           {
             "id": "RH_Guesthouse_1",
-            "name": "Shrimp Cocktail",
-            "price": 28,
-            "description": "6 pcs; Cocktail Sauce, Dijonnaise, Horseradish, Lemon"
-          },
-          {
-            "id": "RH_Guesthouse_1",
-            "name": "King Crab Legs",
-            "price": 1,
-            "description": "Dijonnaise, Cocktail Sauce, Melted Butter"
-          }
-        ],
-        "Salads": [
-          {
-            "id": "RH_Guesthouse_1",
-            "name": "Green Bean Salad",
-            "price": 24,
-            "description": "Butter Lettuce, Red Wine Vinaigrette, Chives"
-          },
-          {
-            "id": "RH_Guesthouse_1",
-            "name": "Classic Caesar",
-            "price": 19,
-            "description": "Romaine, Parmigiano Reggiano, Croutons"
-          },
-          {
-            "id": "RH_Guesthouse_1",
-            "name": "Filet Mignon (Salad Addition)",
-            "price": 32,
-            "description": "Salad addition"
-          },
-          {
-            "id": "RH_Guesthouse_1",
-            "name": "Half Avocado (Salad Addition)",
-            "price": 5,
-            "description": "Salad addition"
-          }
-        ],
-        "Mains": [
-          {
-            "id": "RH_Guesthouse_1",
             "name": "Oysters",
             "price": 1,
             "description": "Mignonette, Lemon"
           },
+          {
+            "id": "RH_Guesthouse_1",
+            "name": "Shrimp Cocktail",
+            "price": 28,
+            "description": "6 pcs; Cocktail Sauce, Dijonnaise, Horseradish, Lemon"
+          }
+        ],
+        "Salads": [
           {
             "id": "RH_Guesthouse_1",
             "name": "Chinese Chicken Salad",
@@ -1321,6 +1333,18 @@
           },
           {
             "id": "RH_Guesthouse_1",
+            "name": "Green Bean Salad",
+            "price": 24,
+            "description": "Butter Lettuce, Red Wine Vinaigrette, Chives"
+          },
+          {
+            "id": "RH_Guesthouse_1",
+            "name": "Classic Caesar",
+            "price": 19,
+            "description": "Romaine, Parmigiano Reggiano, Croutons"
+          },
+          {
+            "id": "RH_Guesthouse_1",
             "name": "Rotisserie Chicken (Salad Addition)",
             "price": 14,
             "description": "Salad addition"
@@ -1345,10 +1369,24 @@
           },
           {
             "id": "RH_Guesthouse_1",
+            "name": "Filet Mignon (Salad Addition)",
+            "price": 32,
+            "description": "Salad addition"
+          },
+          {
+            "id": "RH_Guesthouse_1",
+            "name": "Half Avocado (Salad Addition)",
+            "price": 5,
+            "description": "Salad addition"
+          },
+          {
+            "id": "RH_Guesthouse_1",
             "name": "Rotisserie Chicken Sandwich",
             "price": 29,
             "description": "Butter, Aioli, Arugula, Charred Baguette"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "RH_Guesthouse_0",
             "name": "Bluefin Toro",
@@ -1402,6 +1440,12 @@
             "name": "Délice de Bourgogne Board",
             "price": 24,
             "description": "Strawberry Preserves, Grapes, Warm Baguette"
+          },
+          {
+            "id": "RH_Guesthouse_1",
+            "name": "King Crab Legs",
+            "price": 1,
+            "description": "Dijonnaise, Cocktail Sauce, Melted Butter"
           },
           {
             "id": "RH_Guesthouse_1",
@@ -1492,7 +1536,9 @@
             "name": "Green Beans",
             "price": 12,
             "description": "Side Dish"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "RH_Guesthouse_1",
             "name": "Crispy Artichokes",
@@ -1519,6 +1565,24 @@
           },
           {
             "id": "RH_Guesthouse_1",
+            "name": "Truffle Fries",
+            "price": 20,
+            "description": "Side Dish"
+          },
+          {
+            "id": "RH_Guesthouse_1",
+            "name": "French Fries",
+            "price": 11,
+            "description": "Side Dish"
+          },
+          {
+            "id": "RH_Guesthouse_1",
+            "name": "Sweet Potato Fries",
+            "price": 12,
+            "description": "Side Dish"
+          },
+          {
+            "id": "RH_Guesthouse_1",
             "name": "Roasted Potatoes",
             "price": 12,
             "description": "Side Dish"
@@ -1534,7 +1598,9 @@
             "name": "Potato Purée",
             "price": 12,
             "description": "Side Dish"
-          },
+          }
+        ],
+        "Desserts": [
           {
             "id": "RH_Guesthouse_1",
             "name": "Grilled Avocado with Caviar",
@@ -1565,26 +1631,6 @@
             "price": 12,
             "description": "Petite Baked Potato with Sea Salt, Chive Butter, Crème Fraîche"
           }
-        ],
-        "Sides": [
-          {
-            "id": "RH_Guesthouse_1",
-            "name": "Truffle Fries",
-            "price": 20,
-            "description": "Side Dish"
-          },
-          {
-            "id": "RH_Guesthouse_1",
-            "name": "French Fries",
-            "price": 11,
-            "description": "Side Dish"
-          },
-          {
-            "id": "RH_Guesthouse_1",
-            "name": "Sweet Potato Fries",
-            "price": 12,
-            "description": "Side Dish"
-          }
         ]
       }
     }
@@ -1613,7 +1659,9 @@
             "name": "Wagyu Yukhwe",
             "price": 5,
             "description": "gochujang, korean pear, egg yolk"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "atoboy_1",
             "name": "Wagyu Rib",
@@ -1632,7 +1680,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Mains": [
+        "Tasting Menu": [
           {
             "id": "atomix_l_1",
             "name": "10-Course Lunch Tasting Menu",
@@ -1642,7 +1690,7 @@
         ]
       },
       "dinner": {
-        "Mains": [
+        "Tasting Menu": [
           {
             "id": "atomix_d_1",
             "name": "10-Course Dinner Tasting Menu",
@@ -1667,7 +1715,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Salads": [
+        "Antipasti": [
           {
             "id": "babbo_1",
             "name": "Babbo Celery Salad",
@@ -1679,9 +1727,7 @@
             "name": "White Escarole Salad",
             "price": 24,
             "description": "torn escarole hearts, toasted walnuts, Chianti vinegar, shaved torpedo onions, pecorino foglio di noce"
-          }
-        ],
-        "Mains": [
+          },
           {
             "id": "babbo_1",
             "name": "49 Day Minestrone",
@@ -1705,7 +1751,9 @@
             "name": "Carne Cruda",
             "price": 32,
             "description": "beef tenderloin tartare with mustard zabaglione & potato crisps"
-          },
+          }
+        ],
+        "Primi": [
           {
             "id": "babbo_1",
             "name": "Goat cheese Tortelloni",
@@ -1723,7 +1771,9 @@
             "name": "Linguine Vongole",
             "price": 33,
             "description": "cockles, fiano, garlic breadcrumbs"
-          },
+          }
+        ],
+        "Secondi": [
           {
             "id": "babbo_1",
             "name": "Poached Lobster alla Catalana",
@@ -1741,21 +1791,9 @@
             "name": "Fried Veal Sweetbreads",
             "price": 34,
             "description": "fennel ragù, quince agrodolce, orange zest"
-          },
-          {
-            "id": "babbo_1",
-            "name": "Blueberry Blue Cheese Budino",
-            "price": 18,
-            "description": "grissini crust, macerated blueberries, orange peel"
-          },
-          {
-            "id": "babbo_1",
-            "name": "Finfish Trio",
-            "price": 39,
-            "description": "Fluke with tomato raisins, sea beans, Sicilian EVOO; Trout caper-cured, stracchino, red onion, dill; Tuna rose marina sauce & garlic breadcrumbs"
           }
         ],
-        "Desserts": [
+        "Dolce": [
           {
             "id": "babbo_0",
             "name": "Babbo Zabaglione",
@@ -1776,14 +1814,26 @@
           },
           {
             "id": "babbo_1",
+            "name": "Blueberry Blue Cheese Budino",
+            "price": 18,
+            "description": "grissini crust, macerated blueberries, orange peel"
+          },
+          {
+            "id": "babbo_1",
             "name": "Chocolate Olive Oil Cake",
             "price": 18,
             "description": "olive oil gelato, candied orange peel"
+          },
+          {
+            "id": "babbo_1",
+            "name": "Finfish Trio",
+            "price": 39,
+            "description": "Fluke with tomato raisins, sea beans, Sicilian EVOO; Trout caper-cured, stracchino, red onion, dill; Tuna rose marina sauce & garlic breadcrumbs"
           }
         ]
       },
       "dinner": {
-        "Salads": [
+        "Antipasti": [
           {
             "id": "babbo_1",
             "name": "Babbo Celery Salad",
@@ -1796,14 +1846,6 @@
             "price": 24,
             "description": "torn escarole hearts, toasted walnuts, Chianti vinegar, shaved torpedo onions, pecorino foglio di noce"
           },
-          {
-            "id": "babbo_1",
-            "name": "Crisped Skin Dourade",
-            "price": 51,
-            "description": "salsa verde & herb salad *Cape May, NJ"
-          }
-        ],
-        "Mains": [
           {
             "id": "babbo_1",
             "name": "49 Day Minestrone",
@@ -1839,7 +1881,9 @@
             "name": "Trenette",
             "price": 28,
             "description": "basil pesto, romano beans, potato strings"
-          },
+          }
+        ],
+        "Primi": [
           {
             "id": "babbo_1",
             "name": "Linguine Vongole",
@@ -1881,6 +1925,12 @@
             "name": "Beef cheek Ravioli",
             "price": 45,
             "description": "crushed chicken liver & black truffle butter"
+          },
+          {
+            "id": "babbo_1",
+            "name": "Crisped Skin Dourade",
+            "price": 51,
+            "description": "salsa verde & herb salad *Cape May, NJ"
           },
           {
             "id": "babbo_1",
@@ -1929,7 +1979,9 @@
             "name": "Polenta",
             "price": 15,
             "description": "mascarpone & parmigiano"
-          },
+          }
+        ],
+        "Secondi": [
           {
             "id": "babbo_1",
             "name": "Poached Lobster alla Catalana",
@@ -1965,21 +2017,9 @@
             "name": "Lamb Scottadito",
             "price": 82,
             "description": "alla puttanesca & swiss chard *Rocky Mountains, CO"
-          },
-          {
-            "id": "babbo_1",
-            "name": "Blueberry Blue Cheese Budino",
-            "price": 18,
-            "description": "grissini crust, macerated blueberries, orange peel"
-          },
-          {
-            "id": "babbo_1",
-            "name": "Finfish Trio",
-            "price": 39,
-            "description": "Fluke with tomato raisins, sea beans, Sicilian EVOO; Trout caper-cured, stracchino, red onion, dill; Tuna rose marina sauce & garlic breadcrumbs"
           }
         ],
-        "Desserts": [
+        "Dolce": [
           {
             "id": "babbo_0",
             "name": "Babbo Zabaglione",
@@ -2000,9 +2040,21 @@
           },
           {
             "id": "babbo_1",
+            "name": "Blueberry Blue Cheese Budino",
+            "price": 18,
+            "description": "grissini crust, macerated blueberries, orange peel"
+          },
+          {
+            "id": "babbo_1",
             "name": "Chocolate Olive Oil Cake",
             "price": 18,
             "description": "olive oil gelato, candied orange peel"
+          },
+          {
+            "id": "babbo_1",
+            "name": "Finfish Trio",
+            "price": 39,
+            "description": "Fluke with tomato raisins, sea beans, Sicilian EVOO; Trout caper-cured, stracchino, red onion, dill; Tuna rose marina sauce & garlic breadcrumbs"
           }
         ]
       }
@@ -2037,32 +2089,12 @@
           },
           {
             "id": "bad_roman_1",
-            "name": "Faroe Island Salmon Crudo",
-            "price": 24,
-            "description": "Honeydew, Pickled Serrano, Fresh Basil"
-          },
-          {
-            "id": "bad_roman_1",
-            "name": "Yellowfin Tuna Tartare",
-            "price": 32,
-            "description": "Lemon Olive Oil, Marinated Tomatoes"
-          }
-        ],
-        "Salads": [
-          {
-            "id": "bad_roman_1",
-            "name": "Spicy Gem Caesar",
-            "price": 22,
-            "description": "Aged Parmesan, Ciabatta Crumbs"
-          }
-        ],
-        "Mains": [
-          {
-            "id": "bad_roman_1",
             "name": "Crispy Calamari Casino",
             "price": 23,
             "description": ""
-          },
+          }
+        ],
+        "Salads": [
           {
             "id": "bad_roman_1",
             "name": "Arugula & Pears",
@@ -2077,10 +2109,18 @@
           },
           {
             "id": "bad_roman_1",
+            "name": "Spicy Gem Caesar",
+            "price": 22,
+            "description": "Aged Parmesan, Ciabatta Crumbs"
+          },
+          {
+            "id": "bad_roman_1",
             "name": "Kale Mafaldine",
             "price": 29,
             "description": "Sun-Dried Tomatoes, Drunken Goat Cheese, Toasted Pignola"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "bad_roman_1",
             "name": "Napoletana",
@@ -2116,6 +2156,12 @@
             "name": "Montauk Fluke",
             "price": 19,
             "description": "Market Giardinera, Toasted Sesame"
+          },
+          {
+            "id": "bad_roman_1",
+            "name": "Faroe Island Salmon Crudo",
+            "price": 24,
+            "description": "Honeydew, Pickled Serrano, Fresh Basil"
           },
           {
             "id": "bad_roman_1",
@@ -2272,12 +2318,6 @@
             "name": "Eggplant Agrodolce",
             "price": 16,
             "description": "Toasted Sesame"
-          },
-          {
-            "id": "bad_roman_1",
-            "name": "Dressed Big Rock Oysters",
-            "price": 5,
-            "description": "Cherry Pepper Mignonette. Price per piece."
           }
         ],
         "Sides": [
@@ -2318,6 +2358,18 @@
             "name": "Lemon Cheesecake",
             "price": 19,
             "description": ""
+          },
+          {
+            "id": "bad_roman_1",
+            "name": "Dressed Big Rock Oysters",
+            "price": 5,
+            "description": "Cherry Pepper Mignonette. Price per piece."
+          },
+          {
+            "id": "bad_roman_1",
+            "name": "Yellowfin Tuna Tartare",
+            "price": 32,
+            "description": "Lemon Olive Oil, Marinated Tomatoes"
           }
         ]
       },
@@ -2343,61 +2395,15 @@
           },
           {
             "id": "bad_roman_1",
-            "name": "U7 Shrimp Cocktail",
-            "price": 32,
-            "description": "Calabrian Aioli. Price varies $24/$32."
-          },
-          {
-            "id": "bad_roman_1",
-            "name": "Faroe Island Salmon Crudo",
-            "price": 24,
-            "description": "Honeydew, Pickled Serrano, Fresh Basil"
-          },
-          {
-            "id": "bad_roman_1",
-            "name": "Faroe Island Salmon Crudo",
-            "price": 24,
-            "description": "Honeydew, Pickled Serrano, Fresh Basil"
-          },
-          {
-            "id": "bad_roman_1",
-            "name": "Yellowfin Tuna Tartare",
-            "price": 32,
-            "description": "Lemon Olive Oil, Marinated Tomatoes"
-          },
-          {
-            "id": "bad_roman_1",
-            "name": "Yellowfin Tuna Tartare",
-            "price": 32,
-            "description": "Lemon Olive Oil, Marinated Tomatoes"
-          }
-        ],
-        "Salads": [
-          {
-            "id": "bad_roman_1",
-            "name": "Spicy Gem Caesar",
-            "price": 22,
-            "description": "Aged Parmesan, Ciabatta Crumbs"
-          },
-          {
-            "id": "bad_roman_1",
-            "name": "Spicy Gem Caesar",
-            "price": 22,
-            "description": "Aged Parmesan, Ciabatta Crumbs"
-          },
-          {
-            "id": "bad_roman_1",
-            "name": "Diavolo Caesar",
-            "price": 24,
-            "description": "Little Gems, Ciabatta Crumbs"
-          }
-        ],
-        "Mains": [
-          {
-            "id": "bad_roman_1",
             "name": "Crispy Calamari Casino",
             "price": 23,
             "description": ""
+          },
+          {
+            "id": "bad_roman_1",
+            "name": "U7 Shrimp Cocktail",
+            "price": 32,
+            "description": "Calabrian Aioli. Price varies $24/$32."
           },
           {
             "id": "bad_roman_1",
@@ -2410,7 +2416,9 @@
             "name": "Crispy Calamari Casino",
             "price": 23,
             "description": "Bacon, Pepperoncini"
-          },
+          }
+        ],
+        "Salads": [
           {
             "id": "bad_roman_1",
             "name": "Arugula & Pears",
@@ -2425,9 +2433,21 @@
           },
           {
             "id": "bad_roman_1",
+            "name": "Spicy Gem Caesar",
+            "price": 22,
+            "description": "Aged Parmesan, Ciabatta Crumbs"
+          },
+          {
+            "id": "bad_roman_1",
             "name": "Kale Mafaldine",
             "price": 29,
             "description": "Sun-Dried Tomatoes, Drunken Goat Cheese, Toasted Pignola"
+          },
+          {
+            "id": "bad_roman_1",
+            "name": "Spicy Gem Caesar",
+            "price": 22,
+            "description": "Aged Parmesan, Ciabatta Crumbs"
           },
           {
             "id": "bad_roman_1",
@@ -2449,10 +2469,18 @@
           },
           {
             "id": "bad_roman_1",
+            "name": "Diavolo Caesar",
+            "price": 24,
+            "description": "Little Gems, Ciabatta Crumbs"
+          },
+          {
+            "id": "bad_roman_1",
             "name": "Campari Tomato & Avocado",
             "price": 26,
             "description": "Arugula, Mango"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "bad_roman_1",
             "name": "Napoletana",
@@ -2488,6 +2516,12 @@
             "name": "Montauk Fluke",
             "price": 19,
             "description": "Market Giardinera, Toasted Sesame"
+          },
+          {
+            "id": "bad_roman_1",
+            "name": "Faroe Island Salmon Crudo",
+            "price": 24,
+            "description": "Honeydew, Pickled Serrano, Fresh Basil"
           },
           {
             "id": "bad_roman_1",
@@ -2671,6 +2705,12 @@
           },
           {
             "id": "bad_roman_1",
+            "name": "Faroe Island Salmon Crudo",
+            "price": 24,
+            "description": "Honeydew, Pickled Serrano, Fresh Basil"
+          },
+          {
+            "id": "bad_roman_1",
             "name": "Filet Mignon Meatballs",
             "price": 23,
             "description": "Grana Padano, Crispy Capellini"
@@ -2800,24 +2840,6 @@
             "name": "Parmesan Orzo",
             "price": 16,
             "description": "Side"
-          },
-          {
-            "id": "bad_roman_1",
-            "name": "Sautéed Baby Spinach",
-            "price": 16,
-            "description": "Side"
-          },
-          {
-            "id": "bad_roman_1",
-            "name": "Dressed Big Rock Oysters",
-            "price": 5,
-            "description": "Cherry Pepper Mignonette. Price per piece."
-          },
-          {
-            "id": "bad_roman_1",
-            "name": "Dressed Big Rock Oysters",
-            "price": 5,
-            "description": "Cherry Pepper Mignonette. Price per piece."
           }
         ],
         "Sides": [
@@ -2837,6 +2859,12 @@
             "id": "bad_roman_1",
             "name": "Spicy Brussels Sprouts",
             "price": 18,
+            "description": "Side"
+          },
+          {
+            "id": "bad_roman_1",
+            "name": "Sautéed Baby Spinach",
+            "price": 16,
             "description": "Side"
           },
           {
@@ -2879,9 +2907,33 @@
           },
           {
             "id": "bad_roman_1",
+            "name": "Dressed Big Rock Oysters",
+            "price": 5,
+            "description": "Cherry Pepper Mignonette. Price per piece."
+          },
+          {
+            "id": "bad_roman_1",
+            "name": "Yellowfin Tuna Tartare",
+            "price": 32,
+            "description": "Lemon Olive Oil, Marinated Tomatoes"
+          },
+          {
+            "id": "bad_roman_1",
             "name": "Sweet Potato Spiedini",
             "price": 19,
             "description": "Pistachio Pesto"
+          },
+          {
+            "id": "bad_roman_1",
+            "name": "Dressed Big Rock Oysters",
+            "price": 5,
+            "description": "Cherry Pepper Mignonette. Price per piece."
+          },
+          {
+            "id": "bad_roman_1",
+            "name": "Yellowfin Tuna Tartare",
+            "price": 32,
+            "description": "Lemon Olive Oil, Marinated Tomatoes"
           },
           {
             "id": "bad_roman_1",
@@ -2937,7 +2989,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Mains": [
+        "Tasting Menu": [
           {
             "id": "bangkok_l_1",
             "name": "5-Course Lunch Menu",
@@ -2947,7 +2999,7 @@
         ]
       },
       "dinner": {
-        "Mains": [
+        "Tasting Menu": [
           {
             "id": "bangkok_d_1",
             "name": "8-Course Tasting Menu",
@@ -2972,23 +3024,13 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Appetizers": [
-          {
-            "id": "carbone_2",
-            "name": "Prosciutto & Mozzarella",
-            "price": 35,
-            "description": ""
-          }
-        ],
-        "Salads": [
+        "ANTIPASTI": [
           {
             "id": "carbone_1",
             "name": "Caesar alla ZZ",
             "price": 34,
             "description": ""
-          }
-        ],
-        "Mains": [
+          },
           {
             "id": "carbone_2",
             "name": "Minestrone",
@@ -3009,6 +3051,18 @@
           },
           {
             "id": "carbone_2",
+            "name": "Carpaccio Piemontese",
+            "price": 34,
+            "description": ""
+          },
+          {
+            "id": "carbone_2",
+            "name": "Prosciutto & Mozzarella",
+            "price": 35,
+            "description": ""
+          },
+          {
+            "id": "carbone_2",
             "name": "Eggplant & Zucchini Scapece",
             "price": 32,
             "description": ""
@@ -3018,7 +3072,9 @@
             "name": "Assorted Baked Clams",
             "price": 39,
             "description": ""
-          },
+          }
+        ],
+        "MACARONI": [
           {
             "id": "carbone_2",
             "name": "Tortellini al Ragu",
@@ -3060,7 +3116,9 @@
             "name": "Mario’s Meatballs",
             "price": 27,
             "description": ""
-          },
+          }
+        ],
+        "SECONDI": [
           {
             "id": "carbone_3",
             "name": "Salmon Oreganata",
@@ -3108,7 +3166,9 @@
             "name": "Ribeye Diana",
             "price": 97,
             "description": ""
-          },
+          }
+        ],
+        "CONTORNI": [
           {
             "id": "carbone_4",
             "name": "Spicy Broccoli Rabe",
@@ -3139,38 +3199,20 @@
             "price": 19,
             "description": ""
           }
-        ],
-        "Desserts": [
-          {
-            "id": "carbone_2",
-            "name": "Carpaccio Piemontese",
-            "price": 34,
-            "description": ""
-          }
         ]
       },
       "dinner": {
         "Appetizers": [
           {
             "id": "carbone_1",
-            "name": "Prosciutto & Mozzarella",
-            "price": 35,
-            "description": ""
-          }
-        ],
-        "Salads": [
-          {
-            "id": "carbone_1",
-            "name": "Caesar alla ZZ",
-            "price": 34,
-            "description": ""
-          }
-        ],
-        "Mains": [
-          {
-            "id": "carbone_1",
             "name": "Calamari Marco",
             "price": 36,
+            "description": ""
+          },
+          {
+            "id": "carbone_1",
+            "name": "Prosciutto & Mozzarella",
+            "price": 35,
             "description": ""
           },
           {
@@ -3184,7 +3226,17 @@
             "name": "Assorted Baked Clams",
             "price": 39,
             "description": ""
-          },
+          }
+        ],
+        "Salads": [
+          {
+            "id": "carbone_1",
+            "name": "Caesar alla ZZ",
+            "price": 34,
+            "description": ""
+          }
+        ],
+        "Mains": [
           {
             "id": "carbone_1",
             "name": "Beets Siciliana",
@@ -3364,7 +3416,9 @@
             "name": "Squash Agrodolce",
             "price": 19,
             "description": ""
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "carbone_1",
             "name": "Potatoes Louie",
@@ -3418,9 +3472,9 @@
         "Appetizers": [
           {
             "id": "ci_siamo_1",
-            "name": "Scallop Tartare",
-            "price": 25,
-            "description": "lemon, almonds, green chilies"
+            "name": "Olive Oil Poached Cod",
+            "price": 38,
+            "description": "leeks, beans, clams"
           }
         ],
         "Salads": [
@@ -3438,12 +3492,6 @@
           }
         ],
         "Mains": [
-          {
-            "id": "ci_siamo_1",
-            "name": "Olive Oil Poached Cod",
-            "price": 38,
-            "description": "leeks, beans, clams"
-          },
           {
             "id": "ci_siamo_0",
             "name": "LEMON TORTA",
@@ -3575,7 +3623,9 @@
             "name": "Cavatelli allo Scoglio",
             "price": 35,
             "description": "crab, chili, vermouth"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "ci_siamo_1",
             "name": "Smashed Potatoes",
@@ -3613,11 +3663,23 @@
             "name": "SORBETTI",
             "price": 11,
             "description": "dark chocolate • limone panna"
+          },
+          {
+            "id": "ci_siamo_1",
+            "name": "Scallop Tartare",
+            "price": 25,
+            "description": "lemon, almonds, green chilies"
           }
         ]
       },
       "dinner": {
         "Appetizers": [
+          {
+            "id": "ci_siamo_1",
+            "name": "Olive Oil Poached Cod",
+            "price": 38,
+            "description": "leeks, beans, clams"
+          },
           {
             "id": "ci_siamo_1",
             "name": "PIZZETTE FORMAGGIO",
@@ -3626,15 +3688,9 @@
           },
           {
             "id": "ci_siamo_1",
-            "name": "Scallop Tartare",
-            "price": 25,
-            "description": "lemon, almonds, green chilies"
-          },
-          {
-            "id": "ci_siamo_1",
-            "name": "SCALLOP TARTARE",
-            "price": 24,
-            "description": "lemon, almond, chilies"
+            "name": "OLIVE OIL POACHED COD",
+            "price": 38,
+            "description": "leeks, beans, clams"
           }
         ],
         "Salads": [
@@ -3652,6 +3708,12 @@
           },
           {
             "id": "ci_siamo_1",
+            "name": "Roasted Half Chicken",
+            "price": 36,
+            "description": "greens, schmaltz"
+          },
+          {
+            "id": "ci_siamo_1",
             "name": "INSALATA VERDE",
             "price": 18,
             "description": "mustard, basil, garlic"
@@ -3661,33 +3723,15 @@
             "name": "WOOD-FIRED WHOLE TROUT",
             "price": 39,
             "description": "pine nuts, mustard greens"
-          }
-        ],
-        "Mains": [
-          {
-            "id": "ci_siamo_1",
-            "name": "Olive Oil Poached Cod",
-            "price": 38,
-            "description": "leeks, beans, clams"
-          },
-          {
-            "id": "ci_siamo_1",
-            "name": "OLIVE OIL POACHED COD",
-            "price": 38,
-            "description": "leeks, beans, clams"
-          },
-          {
-            "id": "ci_siamo_1",
-            "name": "Roasted Half Chicken",
-            "price": 36,
-            "description": "greens, schmaltz"
           },
           {
             "id": "ci_siamo_1",
             "name": "CHICKEN MILANESE",
             "price": 29,
             "description": "caraway, arugula, lemon"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "ci_siamo_0",
             "name": "LEMON TORTA",
@@ -3957,7 +4001,9 @@
             "name": "SKIRT STEAK",
             "price": 39,
             "description": "charred cabbage, salsa verde"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "ci_siamo_1",
             "name": "Smashed Potatoes",
@@ -4013,6 +4059,18 @@
             "name": "SORBETTI",
             "price": 11,
             "description": "dark chocolate • limone panna"
+          },
+          {
+            "id": "ci_siamo_1",
+            "name": "Scallop Tartare",
+            "price": 25,
+            "description": "lemon, almonds, green chilies"
+          },
+          {
+            "id": "ci_siamo_1",
+            "name": "SCALLOP TARTARE",
+            "price": 24,
+            "description": "lemon, almond, chilies"
           }
         ]
       }
@@ -4086,6 +4144,12 @@
             "name": "foie gras terrine with walnuts and honey vinegar",
             "price": 27,
             "description": ""
+          },
+          {
+            "id": "claud_1",
+            "name": "striped bass with chorizo and clams",
+            "price": 36,
+            "description": ""
           }
         ],
         "Salads": [
@@ -4097,12 +4161,6 @@
           }
         ],
         "Mains": [
-          {
-            "id": "claud_1",
-            "name": "striped bass with chorizo and clams",
-            "price": 36,
-            "description": ""
-          },
           {
             "id": "claud_1",
             "name": "veal sweetbreads with pepperoncini aioli",
@@ -4180,7 +4238,9 @@
             "name": "dover sole with chartreuse and lemon",
             "price": 88,
             "description": ""
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "claud_1",
             "name": "potato gratin",
@@ -4199,20 +4259,6 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Appetizers": [
-          {
-            "id": "coqodaq_1",
-            "name": "Bluefin Tuna Tartare (참다랑어 타르타)",
-            "price": 28,
-            "description": "Calabrian chili soy sauce."
-          },
-          {
-            "id": "coqodaq_1",
-            "name": "Tartare Trio (신선한 회 트리오)",
-            "price": 68,
-            "description": "All three prepared for the table (Ocean Trout, Bluefin Tuna, Amberjack), to share with sourdough toast."
-          }
-        ],
         "Salads": [
           {
             "id": "coqodaq_1",
@@ -4225,15 +4271,15 @@
             "name": "Caesar Salad (쑥갓향을 품은 아삭한 시저 샐러드)",
             "price": 19,
             "description": "Romaine hearts with crown daisy 'croutons', black pepper."
-          }
-        ],
-        "Mains": [
+          },
           {
             "id": "coqodaq_1",
             "name": "The Bucket List - Our Chef’s Signature Fried Chicken Feast",
             "price": 46,
             "description": "Per Person. Includes two fried chicken styles: Coqodaq Original (with signature sauces) + Soy Garlic Glaze OR Gochujang Glaze OR Split (have it all). Includes: Pasture-Raised Chicken Consommé (Korean red ginseng), Ban-Chan (Pickled seasonal vegetables and scallion salad), Signature Sauces (CQDQ Verde, Honey Mustard, Pepper Parm, and Gochujang BBQ), Cold Perilla Seed Noodle (Cold capellini with perilla soy sauce), Soft Serve Frozen Yogurt (Original flavor with seasonal fruit)."
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "coqodaq_1",
             "name": "COQONUT Shrimp (바삭한 코코넛 새우튀김)",
@@ -4250,9 +4296,21 @@
           },
           {
             "id": "coqodaq_1",
+            "name": "Bluefin Tuna Tartare (참다랑어 타르타)",
+            "price": 28,
+            "description": "Calabrian chili soy sauce."
+          },
+          {
+            "id": "coqodaq_1",
             "name": "Amberjack Tartare (잿방어 타르타)",
             "price": 26,
             "description": "Horseradish with yuja, trout roe."
+          },
+          {
+            "id": "coqodaq_1",
+            "name": "Tartare Trio (신선한 회 트리오)",
+            "price": 68,
+            "description": "All three prepared for the table (Ocean Trout, Bluefin Tuna, Amberjack), to share with sourdough toast."
           }
         ]
       },
@@ -4260,15 +4318,9 @@
         "Appetizers": [
           {
             "id": "coqodaq_1",
-            "name": "Bluefin Tuna Tartare (참다랑어 타르타)",
-            "price": 28,
-            "description": "Calabrian chili soy sauce."
-          },
-          {
-            "id": "coqodaq_1",
-            "name": "Tartare Trio (신선한 회 트리오)",
-            "price": 68,
-            "description": "All three prepared for the table (Ocean Trout, Bluefin Tuna, Amberjack), to share with sourdough toast."
+            "name": "Chicken Guksu (닭국수)",
+            "price": 22,
+            "description": "Piping hot Korean chicken noodle soup."
           }
         ],
         "Salads": [
@@ -4283,21 +4335,15 @@
             "name": "Caesar Salad (쑥갓향을 품은 아삭한 시저 샐러드)",
             "price": 19,
             "description": "Romaine hearts with crown daisy 'croutons', black pepper."
-          }
-        ],
-        "Mains": [
-          {
-            "id": "coqodaq_1",
-            "name": "Chicken Guksu (닭국수)",
-            "price": 22,
-            "description": "Piping hot Korean chicken noodle soup."
           },
           {
             "id": "coqodaq_1",
             "name": "The Bucket List - Our Chef’s Signature Fried Chicken Feast",
             "price": 46,
             "description": "Per Person. Includes two fried chicken styles: Coqodaq Original (with signature sauces) + Soy Garlic Glaze OR Gochujang Glaze OR Split (have it all). Includes: Pasture-Raised Chicken Consommé (Korean red ginseng), Ban-Chan (Pickled seasonal vegetables and scallion salad), Signature Sauces (CQDQ Verde, Honey Mustard, Pepper Parm, and Gochujang BBQ), Cold Perilla Seed Noodle (Cold capellini with perilla soy sauce), Soft Serve Frozen Yogurt (Original flavor with seasonal fruit)."
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "coqodaq_1",
             "name": "COQONUT Shrimp (바삭한 코코넛 새우튀김)",
@@ -4333,12 +4379,6 @@
             "name": "Seasonal Vegetable Fritto Misto (제철 야채 튀김)",
             "price": 28,
             "description": "Seasonal vegetables, yuja dipping sauce."
-          },
-          {
-            "id": "coqodaq_1",
-            "name": "Fish & Chips (바삭한 생선과 감자튀김)",
-            "price": 36,
-            "description": "Crispy fish of the day, tartar sauce, french fries."
           }
         ],
         "Sides": [
@@ -4358,15 +4398,33 @@
           },
           {
             "id": "coqodaq_1",
+            "name": "Bluefin Tuna Tartare (참다랑어 타르타)",
+            "price": 28,
+            "description": "Calabrian chili soy sauce."
+          },
+          {
+            "id": "coqodaq_1",
             "name": "Amberjack Tartare (잿방어 타르타)",
             "price": 26,
             "description": "Horseradish with yuja, trout roe."
           },
           {
             "id": "coqodaq_1",
+            "name": "Tartare Trio (신선한 회 트리오)",
+            "price": 68,
+            "description": "All three prepared for the table (Ocean Trout, Bluefin Tuna, Amberjack), to share with sourdough toast."
+          },
+          {
+            "id": "coqodaq_1",
             "name": "Spicy Tteokbokki (매콤한 떡볶이)",
             "price": 12,
             "description": "Rice cakes, Korean pepper."
+          },
+          {
+            "id": "coqodaq_1",
+            "name": "Fish & Chips (바삭한 생선과 감자튀김)",
+            "price": 36,
+            "description": "Crispy fish of the day, tartar sauce, french fries."
           }
         ]
       }
@@ -4380,29 +4438,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Appetizers": [
-          {
-            "id": "cote_1",
-            "name": "Shrimp Cocktail",
-            "price": 5,
-            "description": "Soft poached and chilled prawn, gochujang cocktail sauce. Price per piece."
-          }
-        ],
-        "Salads": [
-          {
-            "id": "cote_1",
-            "name": "Wedge Salad",
-            "price": 24,
-            "description": "Iceberg lettuce, bacon, tomato, sesame dressing"
-          },
-          {
-            "id": "cote_2",
-            "name": "COTE House Salad",
-            "price": 22,
-            "description": "Crispy gem lettuce, baby arugula, cotton candy grapes, Jersey tomato, Korean mustard vinaigrette"
-          }
-        ],
-        "Mains": [
+        "Jewels of the Sea": [
           {
             "id": "cote_0",
             "name": "Ice-chilled East/West Coast oysters",
@@ -4423,9 +4459,29 @@
           },
           {
             "id": "cote_1",
+            "name": "Shrimp Cocktail",
+            "price": 5,
+            "description": "Soft poached and chilled prawn, gochujang cocktail sauce. Price per piece."
+          },
+          {
+            "id": "cote_1",
             "name": "Regiis Ova Caviar",
             "price": 145,
             "description": "Caviar Service. Price per oz."
+          }
+        ],
+        "Shareable Appetizers": [
+          {
+            "id": "cote_1",
+            "name": "Wedge Salad",
+            "price": 24,
+            "description": "Iceberg lettuce, bacon, tomato, sesame dressing"
+          },
+          {
+            "id": "cote_2",
+            "name": "COTE House Salad",
+            "price": 22,
+            "description": "Crispy gem lettuce, baby arugula, cotton candy grapes, Jersey tomato, Korean mustard vinaigrette"
           },
           {
             "id": "cote_2",
@@ -4438,13 +4494,25 @@
             "name": "COTE Gimbap",
             "price": 225,
             "description": "Make your own Gimbap! Imperial Daurenki caviar, sea urchin, Bluefin tuna and Golden Queen rice served with gim and gamtae"
-          },
+          }
+        ],
+        "Butcher's Feast": [
+          {
+            "id": "cote_2",
+            "name": "Butcher's Feast",
+            "price": 78,
+            "description": "Price per person. Four selected cuts with Korean accompaniments (Gogi Cha, Ban-Chan, Scallion Salad, Red Leaf Lettuce with Ssam-jang, Savory Egg Soufflé, Two Stews w/ Saechungmu Rice, Vanilla Soft Serve)."
+          }
+        ],
+        "Steak Omakase": [
           {
             "id": "cote_3",
             "name": "Steak Omakase",
             "price": 225,
             "description": "The Grand Tour. Price per person."
-          },
+          }
+        ],
+        "American Wagyu": [
           {
             "id": "cote_4",
             "name": "Ribeye (American Wagyu)",
@@ -4456,7 +4524,9 @@
             "name": "NY Strip (American Wagyu)",
             "price": 52,
             "description": "Japanese Wagyu x American Black Angus. Price is 52/98 (based on size/cut)."
-          },
+          }
+        ],
+        "USDA Prime": [
           {
             "id": "cote_5",
             "name": "Dry Aged Ribeye",
@@ -4474,13 +4544,17 @@
             "name": "Filet Mignon",
             "price": 40,
             "description": "USDA Prime. Price is 40/76 (based on size/cut)."
-          },
+          }
+        ],
+        "Meat, Meat & More Meat": [
           {
             "id": "cote_6",
             "name": "Market Fish",
             "price": 48,
             "description": "Simply prepared with seasonal vegetables"
-          },
+          }
+        ],
+        "A5 Selection": [
           {
             "id": "cote_7",
             "name": "Miyazaki Prefecture Ribeye",
@@ -4492,7 +4566,9 @@
             "name": "Miyazaki Prefecture Tenderloin",
             "price": 45,
             "description": "A5 Selection. Price per oz."
-          },
+          }
+        ],
+        "Savory Accompaniments": [
           {
             "id": "cote_8",
             "name": "Savory Doenjang Stew",
@@ -4517,46 +4593,10 @@
             "price": 28,
             "description": "Mountain vegetables, soft-poached egg, and gochujang in sizzling earthenware"
           }
-        ],
-        "Desserts": [
-          {
-            "id": "cote_2",
-            "name": "Butcher's Feast",
-            "price": 78,
-            "description": "Price per person. Four selected cuts with Korean accompaniments (Gogi Cha, Ban-Chan, Scallion Salad, Red Leaf Lettuce with Ssam-jang, Savory Egg Soufflé, Two Stews w/ Saechungmu Rice, Vanilla Soft Serve)."
-          }
         ]
       },
       "dinner": {
-        "Appetizers": [
-          {
-            "id": "cote_1",
-            "name": "Shrimp Cocktail",
-            "price": 5,
-            "description": "Soft poached and chilled prawn, gochujang cocktail sauce. Price per piece."
-          },
-          {
-            "id": "cote_2",
-            "name": "Tuna Tartare",
-            "price": 29,
-            "description": "Pickled moo, crispy gim chips"
-          }
-        ],
-        "Salads": [
-          {
-            "id": "cote_1",
-            "name": "Wedge Salad",
-            "price": 24,
-            "description": "Iceberg lettuce, bacon, tomato, sesame dressing"
-          },
-          {
-            "id": "cote_2",
-            "name": "COTE House Salad",
-            "price": 22,
-            "description": "Crispy gem lettuce, baby arugula, cotton candy grapes, Jersey tomato, Korean mustard vinaigrette"
-          }
-        ],
-        "Mains": [
+        "Jewels of the Sea": [
           {
             "id": "cote_0",
             "name": "Ice-chilled East/West Coast oysters",
@@ -4574,6 +4614,12 @@
             "name": "Oysters with Kaluga Royal Hybrid caviar",
             "price": 17,
             "description": "Fisherman's Welcome add-on. Price per piece."
+          },
+          {
+            "id": "cote_1",
+            "name": "Shrimp Cocktail",
+            "price": 5,
+            "description": "Soft poached and chilled prawn, gochujang cocktail sauce. Price per piece."
           },
           {
             "id": "cote_1",
@@ -4610,6 +4656,20 @@
             "name": "Beluga Hybrid Caviar",
             "price": 870,
             "description": "Caviar Service. Price per tin (4.4oz)."
+          }
+        ],
+        "Shareable Appetizers": [
+          {
+            "id": "cote_1",
+            "name": "Wedge Salad",
+            "price": 24,
+            "description": "Iceberg lettuce, bacon, tomato, sesame dressing"
+          },
+          {
+            "id": "cote_2",
+            "name": "COTE House Salad",
+            "price": 22,
+            "description": "Crispy gem lettuce, baby arugula, cotton candy grapes, Jersey tomato, Korean mustard vinaigrette"
           },
           {
             "id": "cote_2",
@@ -4637,22 +4697,40 @@
           },
           {
             "id": "cote_2",
+            "name": "Tuna Tartare",
+            "price": 29,
+            "description": "Pickled moo, crispy gim chips"
+          },
+          {
+            "id": "cote_2",
             "name": "COTE \"Ceviche\" Moolhwe",
             "price": 36,
             "description": "Fluke, tuna, cuttlefish, sweet shrimp, chilled and refreshing radish vinaigrette consommé"
+          }
+        ],
+        "Butcher's Feast": [
+          {
+            "id": "cote_2",
+            "name": "Butcher's Feast",
+            "price": 78,
+            "description": "Price per person. Four selected cuts with Korean accompaniments (Gogi Cha, Ban-Chan, Scallion Salad, Red Leaf Lettuce with Ssam-jang, Savory Egg Soufflé, Two Stews w/ Saechungmu Rice, Vanilla Soft Serve)."
           },
           {
             "id": "cote_3",
             "name": "Japanese A5 Wagyu Supplement (Feast)",
             "price": 32,
             "description": "Add 1oz of Japanese A5 Wagyu to your feast. Price per person."
-          },
+          }
+        ],
+        "Steak Omakase": [
           {
             "id": "cote_3",
             "name": "Steak Omakase",
             "price": 225,
             "description": "The Grand Tour. Price per person."
-          },
+          }
+        ],
+        "American Wagyu": [
           {
             "id": "cote_4",
             "name": "Ribeye (American Wagyu)",
@@ -4676,7 +4754,9 @@
             "name": "\"The Flatiron\" (American Wagyu)",
             "price": 52,
             "description": "Japanese Wagyu x American Black Angus."
-          },
+          }
+        ],
+        "USDA Prime": [
           {
             "id": "cote_5",
             "name": "Dry Aged Ribeye",
@@ -4718,7 +4798,9 @@
             "name": "Grand Cru Galbi",
             "price": 78,
             "description": "USDA Prime. Of exceptional quality & limited quantity."
-          },
+          }
+        ],
+        "Meat, Meat & More Meat": [
           {
             "id": "cote_6",
             "name": "Market Fish",
@@ -4730,7 +4812,9 @@
             "name": "Scallop",
             "price": 18,
             "description": "U10 Diver scallop. Price per piece."
-          },
+          }
+        ],
+        "A5 Selection": [
           {
             "id": "cote_7",
             "name": "Miyazaki Prefecture Ribeye",
@@ -4760,7 +4844,9 @@
             "name": "Horizontal tasting of all three A5 Ribeye",
             "price": 85,
             "description": "A5 Selection. Price per person."
-          },
+          }
+        ],
+        "Savory Accompaniments": [
           {
             "id": "cote_8",
             "name": "Savory Doenjang Stew",
@@ -4809,14 +4895,6 @@
             "price": 65,
             "description": "Tongyeong oyster, burdock, Golden Queen rice, chive and perilla oil"
           }
-        ],
-        "Desserts": [
-          {
-            "id": "cote_2",
-            "name": "Butcher's Feast",
-            "price": 78,
-            "description": "Price per person. Four selected cuts with Korean accompaniments (Gogi Cha, Ban-Chan, Scallion Salad, Red Leaf Lettuce with Ssam-jang, Savory Egg Soufflé, Two Stews w/ Saechungmu Rice, Vanilla Soft Serve)."
-          }
         ]
       }
     }
@@ -4832,15 +4910,9 @@
         "Appetizers": [
           {
             "id": "don_angie_1",
-            "name": "SCALLOP CRUDO",
-            "price": 21,
-            "description": "Red Apple, Smoked Pine Nut Brodo"
-          },
-          {
-            "id": "don_angie_1",
-            "name": "TONNATO VITELLO",
-            "price": 20,
-            "description": "Spicy Veal Tartare, Tuna Carpaccio, Carta di Musica"
+            "name": "BBQ CALAMARI",
+            "price": 19,
+            "description": "Pepperoni Fried Rice, Herbed Labne"
           }
         ],
         "Salads": [
@@ -4853,12 +4925,6 @@
         ],
         "Mains": [
           {
-            "id": "don_angie_1",
-            "name": "BBQ CALAMARI",
-            "price": 19,
-            "description": "Pepperoni Fried Rice, Herbed Labne"
-          },
-          {
             "id": "don_angie_0",
             "name": "STUFFED GARLIC FLATBREAD",
             "price": 16,
@@ -4869,6 +4935,12 @@
             "name": "HOUSE SALAMI & CHEESE",
             "price": 15,
             "description": "Savory Pizzelles, Crescenza Cheese, Sicilian Honey"
+          },
+          {
+            "id": "don_angie_1",
+            "name": "SCALLOP CRUDO",
+            "price": 21,
+            "description": "Red Apple, Smoked Pine Nut Brodo"
           },
           {
             "id": "don_angie_1",
@@ -4900,21 +4972,23 @@
             "price": 29,
             "description": "Mezcal-Braised Chicken, Nduja, Sicilian Olives"
           }
+        ],
+        "Desserts": [
+          {
+            "id": "don_angie_1",
+            "name": "TONNATO VITELLO",
+            "price": 20,
+            "description": "Spicy Veal Tartare, Tuna Carpaccio, Carta di Musica"
+          }
         ]
       },
       "dinner": {
         "Appetizers": [
           {
             "id": "don_angie_1",
-            "name": "SCALLOP CRUDO",
-            "price": 21,
-            "description": "Red Apple, Smoked Pine Nut Brodo"
-          },
-          {
-            "id": "don_angie_1",
-            "name": "TONNATO VITELLO",
-            "price": 20,
-            "description": "Spicy Veal Tartare, Tuna Carpaccio, Carta di Musica"
+            "name": "BBQ CALAMARI",
+            "price": 19,
+            "description": "Pepperoni Fried Rice, Herbed Labne"
           }
         ],
         "Salads": [
@@ -4927,12 +5001,6 @@
         ],
         "Mains": [
           {
-            "id": "don_angie_1",
-            "name": "BBQ CALAMARI",
-            "price": 19,
-            "description": "Pepperoni Fried Rice, Herbed Labne"
-          },
-          {
             "id": "don_angie_0",
             "name": "STUFFED GARLIC FLATBREAD",
             "price": 16,
@@ -4943,6 +5011,12 @@
             "name": "HOUSE SALAMI & CHEESE",
             "price": 15,
             "description": "Savory Pizzelles, Crescenza Cheese, Sicilian Honey"
+          },
+          {
+            "id": "don_angie_1",
+            "name": "SCALLOP CRUDO",
+            "price": 21,
+            "description": "Red Apple, Smoked Pine Nut Brodo"
           },
           {
             "id": "don_angie_1",
@@ -5027,7 +5101,9 @@
             "name": "CHARRED BROCCOLINI",
             "price": 14,
             "description": "Black Garlic Aglio e Olio, Pecorino, Hazelnuts"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "don_angie_1",
             "name": "whole roasted lobster",
@@ -5039,6 +5115,14 @@
             "name": "JAPANESE SWEET POTATOES",
             "price": 14,
             "description": "Sumac, Creamy Italian"
+          }
+        ],
+        "Desserts": [
+          {
+            "id": "don_angie_1",
+            "name": "TONNATO VITELLO",
+            "price": 20,
+            "description": "Spicy Veal Tartare, Tuna Carpaccio, Carta di Musica"
           }
         ]
       }
@@ -5058,15 +5142,15 @@
             "name": "Foie Gras",
             "price": 28,
             "description": "medjool date / sea condiment / marco polo tea"
-          }
-        ],
-        "Mains": [
+          },
           {
             "id": "essential_by_christophe_1",
             "name": "Black Bass",
             "price": 39,
             "description": "braised / artichoke & razor clams / turmeric shoyu"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "essential_by_christophe_1",
             "name": "Tuna",
@@ -5126,7 +5210,9 @@
             "name": "Penne Millerighe",
             "price": 36,
             "description": "maine lobster / tarragon"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "essential_by_christophe_0",
             "name": "Vichyssoise",
@@ -5142,15 +5228,15 @@
             "name": "Foie Gras",
             "price": 28,
             "description": "medjool date / sea condiment / marco polo tea"
-          }
-        ],
-        "Mains": [
+          },
           {
             "id": "essential_by_christophe_1",
             "name": "Black Bass",
             "price": 39,
             "description": "braised / artichoke & razor clams / turmeric shoyu"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "essential_by_christophe_1",
             "name": "Tuna",
@@ -5246,7 +5332,9 @@
             "name": "Brebirousse D’Argental",
             "price": 19,
             "description": "caramelized walnuts / pineau des charentes"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "essential_by_christophe_0",
             "name": "Vichyssoise",
@@ -5264,9 +5352,7 @@
             "name": "Leo’s Favorite Burger",
             "price": 38,
             "description": "prime beef / vermont cheddar / Essential secret sauce / french fries"
-          }
-        ],
-        "Sides": [
+          },
           {
             "id": "essential_by_christophe_1",
             "name": "French Fries",
@@ -5317,7 +5403,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Mains": [
+        "Tasting Menu": [
           {
             "id": "frevo_l_1",
             "name": "Lunch Tasting Menu",
@@ -5327,7 +5413,7 @@
         ]
       },
       "dinner": {
-        "Mains": [
+        "Tasting Menu": [
           {
             "id": "frevo_d_1",
             "name": "Dinner Tasting Menu",
@@ -5352,7 +5438,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Mains": [
+        "Tasting Menu": [
           {
             "id": "gk_l_1",
             "name": "4-Course Lunch Menu",
@@ -5362,7 +5448,7 @@
         ]
       },
       "dinner": {
-        "Mains": [
+        "Tasting Menu": [
           {
             "id": "gk_d_1",
             "name": "8-Course Tasting Menu",
@@ -5387,6 +5473,20 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
+        "Appetizers": [
+          {
+            "id": "gramercy_tavern_1",
+            "name": "SEAFOOD PLATTER*",
+            "price": 54,
+            "description": "Oysters, Clams, Shrimp, Fluke"
+          },
+          {
+            "id": "gramercy_tavern_1",
+            "name": "BEEF CARPACCIO",
+            "price": 24,
+            "description": "Broccoli Rabe, Anchovy, Grana Padano"
+          }
+        ],
         "Salads": [
           {
             "id": "gramercy_tavern_1",
@@ -5402,18 +5502,6 @@
           }
         ],
         "Mains": [
-          {
-            "id": "gramercy_tavern_1",
-            "name": "SEAFOOD PLATTER*",
-            "price": 54,
-            "description": "Oysters, Clams, Shrimp, Fluke"
-          },
-          {
-            "id": "gramercy_tavern_1",
-            "name": "BEEF CARPACCIO",
-            "price": 24,
-            "description": "Broccoli Rabe, Anchovy, Grana Padano"
-          },
           {
             "id": "gramercy_tavern_0",
             "name": "ROASTED DELICATA",
@@ -5522,7 +5610,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Mains": [
+        "MAIN": [
           {
             "id": "joo_ok_0",
             "name": "White Truffle Add on",
@@ -5532,7 +5620,7 @@
         ]
       },
       "dinner": {
-        "Mains": [
+        "MAIN": [
           {
             "id": "joo_ok_0",
             "name": "White Truffle Add on",
@@ -5551,7 +5639,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Mains": [
+        "Supplement": [
           {
             "id": "jua_0",
             "name": "Uni Kim*",
@@ -5561,7 +5649,7 @@
         ]
       },
       "dinner": {
-        "Mains": [
+        "Supplement": [
           {
             "id": "jua_0",
             "name": "Uni Kim*",
@@ -5580,7 +5668,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Mains": [
+        "Appetizers": [
           {
             "id": "jungsik_1",
             "name": "OCTOPUS",
@@ -5592,7 +5680,9 @@
             "name": "BLACK COD",
             "price": 50,
             "description": "Doenjang, Shishito Pepper, Clam Foam"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "jungsik_1",
             "name": "STRIPED JACK",
@@ -5634,15 +5724,7 @@
         ]
       },
       "dinner": {
-        "Salads": [
-          {
-            "id": "jungsik_1",
-            "name": "GALBI",
-            "price": 80,
-            "description": "Mustard Salad, White Kimchi"
-          }
-        ],
-        "Mains": [
+        "Appetizers": [
           {
             "id": "jungsik_1",
             "name": "OCTOPUS",
@@ -5654,7 +5736,17 @@
             "name": "BLACK COD",
             "price": 50,
             "description": "Doenjang, Shishito Pepper, Clam Foam"
-          },
+          }
+        ],
+        "Salads": [
+          {
+            "id": "jungsik_1",
+            "name": "GALBI",
+            "price": 80,
+            "description": "Mustard Salad, White Kimchi"
+          }
+        ],
+        "Mains": [
           {
             "id": "jungsik_1",
             "name": "STRIPED JACK",
@@ -5753,19 +5845,23 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Mains": [
+        "Appetizers": [
           {
             "id": "le_coucou_1",
             "name": "Crépinettes aux cèpes",
             "price": 46,
             "description": "chicken and foie gras crépinettes, porcini mushroom jus, jamón"
-          },
+          }
+        ],
+        "Salads": [
           {
             "id": "le_coucou_1",
             "name": "Homard et rémoulade de céleri",
             "price": 46,
             "description": "chilled lobster, celery root salad, horseradish"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "le_coucou_1",
             "name": "Baba au rhum",
@@ -5807,6 +5903,26 @@
             "name": "Ris de veau à l’estragon",
             "price": 49,
             "description": "veal sweetbreads, cream, tarragon, maitake mushrooms"
+          }
+        ],
+        "Desserts": [
+          {
+            "id": "le_coucou_0",
+            "name": "Coupe Oberst",
+            "price": 16,
+            "description": "lemon sorbet, ginger eau-de-vie"
+          },
+          {
+            "id": "le_coucou_1",
+            "name": "Vacherin aux fruits exotiques",
+            "price": 18,
+            "description": "passion mango sorbet, coconut cream, meringue"
+          },
+          {
+            "id": "le_coucou_1",
+            "name": "Clafoutis aux poires",
+            "price": 22,
+            "description": "anjou pears, yogurt sorbet"
           },
           {
             "id": "le_coucou_1",
@@ -5832,44 +5948,10 @@
             "price": 35,
             "description": "pike mousse, lobster sauce"
           }
-        ],
-        "Desserts": [
-          {
-            "id": "le_coucou_0",
-            "name": "Coupe Oberst",
-            "price": 16,
-            "description": "lemon sorbet, ginger eau-de-vie"
-          },
-          {
-            "id": "le_coucou_1",
-            "name": "Vacherin aux fruits exotiques",
-            "price": 18,
-            "description": "passion mango sorbet, coconut cream, meringue"
-          },
-          {
-            "id": "le_coucou_1",
-            "name": "Clafoutis aux poires",
-            "price": 22,
-            "description": "anjou pears, yogurt sorbet"
-          }
         ]
       },
       "dinner": {
         "Appetizers": [
-          {
-            "id": "le_coucou_1",
-            "name": "Foie gras grillé, souvenir de Bretagne",
-            "price": 49,
-            "description": "grilled foie gras, cider vinegar, sunchokes, buckwheat"
-          },
-          {
-            "id": "le_coucou_1",
-            "name": "Avocat homard",
-            "price": 19,
-            "description": "lobster, organic avocado, French cocktail sauce"
-          }
-        ],
-        "Mains": [
           {
             "id": "le_coucou_1",
             "name": "Crépinettes aux cèpes",
@@ -5878,16 +5960,26 @@
           },
           {
             "id": "le_coucou_1",
+            "name": "Foie gras grillé, souvenir de Bretagne",
+            "price": 49,
+            "description": "grilled foie gras, cider vinegar, sunchokes, buckwheat"
+          },
+          {
+            "id": "le_coucou_1",
             "name": "Filet de sole meunière “Tradition” ou “aux huitres”",
             "price": 80,
             "description": "dover sole, golden butter, spinach, with or without oysters"
-          },
+          }
+        ],
+        "Salads": [
           {
             "id": "le_coucou_1",
             "name": "Homard et rémoulade de céleri",
             "price": 46,
             "description": "chilled lobster, celery root salad, horseradish"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "le_coucou_1",
             "name": "Baba au rhum",
@@ -5980,6 +6072,12 @@
           },
           {
             "id": "le_coucou_1",
+            "name": "Avocat homard",
+            "price": 19,
+            "description": "lobster, organic avocado, French cocktail sauce"
+          },
+          {
+            "id": "le_coucou_1",
             "name": "Halibut beurre blanc",
             "price": 18,
             "description": "fermented daikon"
@@ -6001,6 +6099,26 @@
             "name": "Filet de bœuf, sauce au poivre*",
             "price": 23,
             "description": "prime filet, sarawak green peppercorn sauce"
+          }
+        ],
+        "Desserts": [
+          {
+            "id": "le_coucou_0",
+            "name": "Coupe Oberst",
+            "price": 16,
+            "description": "lemon sorbet, ginger eau-de-vie"
+          },
+          {
+            "id": "le_coucou_1",
+            "name": "Vacherin aux fruits exotiques",
+            "price": 18,
+            "description": "passion mango sorbet, coconut cream, meringue"
+          },
+          {
+            "id": "le_coucou_1",
+            "name": "Clafoutis aux poires",
+            "price": 22,
+            "description": "anjou pears, yogurt sorbet"
           },
           {
             "id": "le_coucou_1",
@@ -6031,26 +6149,6 @@
             "name": "Tartare de bœuf*",
             "price": 68,
             "description": "hand chopped prime filet, traditional condiments, caviar"
-          }
-        ],
-        "Desserts": [
-          {
-            "id": "le_coucou_0",
-            "name": "Coupe Oberst",
-            "price": 16,
-            "description": "lemon sorbet, ginger eau-de-vie"
-          },
-          {
-            "id": "le_coucou_1",
-            "name": "Vacherin aux fruits exotiques",
-            "price": 18,
-            "description": "passion mango sorbet, coconut cream, meringue"
-          },
-          {
-            "id": "le_coucou_1",
-            "name": "Clafoutis aux poires",
-            "price": 22,
-            "description": "anjou pears, yogurt sorbet"
           }
         ]
       }
@@ -6144,22 +6242,6 @@
           },
           {
             "id": "marea_1",
-            "name": "Tonno Acqua Pazza",
-            "price": 48,
-            "description": "tuna tartare, tomato, cucumber, olive, calabrian chile, basil"
-          }
-        ],
-        "Salads": [
-          {
-            "id": "marea_1",
-            "name": "Insalata",
-            "price": 29,
-            "description": "little gem, white anchovy, pecorino, barolo vinaigrette, mollica"
-          }
-        ],
-        "Mains": [
-          {
-            "id": "marea_1",
             "name": "Tonno",
             "price": 47,
             "description": "yellowfin tuna, oyster crema, sunchoke"
@@ -6199,6 +6281,14 @@
             "name": "Spada",
             "price": 66,
             "description": "grilled swordfish, fennel, clam, chorizo vinaigrette"
+          }
+        ],
+        "Salads": [
+          {
+            "id": "marea_1",
+            "name": "Insalata",
+            "price": 29,
+            "description": "little gem, white anchovy, pecorino, barolo vinaigrette, mollica"
           },
           {
             "id": "marea_1",
@@ -6211,7 +6301,9 @@
             "name": "Rucola",
             "price": 22,
             "description": "wild arugula, radish, limone"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "marea_1",
             "name": "Assaggio Di Crudi",
@@ -6343,7 +6435,9 @@
             "name": "Scarola",
             "price": 22,
             "description": "sauteed escarole, white anchovy, garlic"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "marea_1",
             "name": "Pollo",
@@ -6355,7 +6449,9 @@
             "name": "Patate",
             "price": 22,
             "description": "potatoes, parmigiano, caper"
-          },
+          }
+        ],
+        "Desserts": [
           {
             "id": "marea_0",
             "name": "Black Diamond \"Russian Ossetra\"",
@@ -6406,6 +6502,24 @@
           },
           {
             "id": "marea_1",
+            "name": "Gambero Rosso",
+            "price": 46,
+            "description": "red prawn tartare, fennel, tarragon, lemon, sugo"
+          },
+          {
+            "id": "marea_1",
+            "name": "Tonno Acqua Pazza",
+            "price": 48,
+            "description": "tuna tartare, tomato, cucumber, olive, calabrian chile, basil"
+          },
+          {
+            "id": "marea_1",
+            "name": "Branzino (Antipasti)",
+            "price": 48,
+            "description": "sea bass tartare, pistachio, calabrian chile, radish, chive"
+          },
+          {
+            "id": "marea_1",
             "name": "Marea Volzhenka \"Siberian\"",
             "price": 275,
             "description": "caviar served with gougères, chips, brioche, chives, crème fraîche"
@@ -6427,20 +6541,6 @@
             "name": "The Only \"Oscietra\"",
             "price": 305,
             "description": "caviar served with gougères, chips, brioche, chives, crème fraîche"
-          }
-        ],
-        "Desserts": [
-          {
-            "id": "marea_1",
-            "name": "Gambero Rosso",
-            "price": 46,
-            "description": "red prawn tartare, fennel, tarragon, lemon, sugo"
-          },
-          {
-            "id": "marea_1",
-            "name": "Branzino (Antipasti)",
-            "price": 48,
-            "description": "sea bass tartare, pistachio, calabrian chile, radish, chive"
           }
         ]
       },
@@ -6482,70 +6582,6 @@
             "price": 34,
             "description": "oysters served with red wine mignonette, marea cocktail sauce, lemon"
           },
-          {
-            "id": "marea_1",
-            "name": "Bruschetta",
-            "price": 56,
-            "description": "garlic bread, kaluga caviar, burrata"
-          },
-          {
-            "id": "marea_1",
-            "name": "Kusshi | British Columbia",
-            "price": 34,
-            "description": "oysters served with red wine mignonette, marea cocktail sauce, lemon"
-          },
-          {
-            "id": "marea_1",
-            "name": "Merasheen Bay | Newfoundland",
-            "price": 34,
-            "description": "oysters served with red wine mignonette, marea cocktail sauce, lemon"
-          },
-          {
-            "id": "marea_1",
-            "name": "Arcadia Point | Washington",
-            "price": 34,
-            "description": "oysters served with red wine mignonette, marea cocktail sauce, lemon"
-          },
-          {
-            "id": "marea_1",
-            "name": "Peconic Gold | New York",
-            "price": 34,
-            "description": "oysters served with red wine mignonette, marea cocktail sauce, lemon"
-          },
-          {
-            "id": "marea_1",
-            "name": "Ricci",
-            "price": 26,
-            "description": "sea urchin, lardo, crostini"
-          },
-          {
-            "id": "marea_1",
-            "name": "Capesante (Antipasti)",
-            "price": 46,
-            "description": "sea scallop crudo, tomato, cucumber, red onion, basil"
-          },
-          {
-            "id": "marea_1",
-            "name": "Tonno Acqua Pazza",
-            "price": 48,
-            "description": "tuna tartare, tomato, cucumber, olive, calabrian chile, basil"
-          }
-        ],
-        "Salads": [
-          {
-            "id": "marea_1",
-            "name": "Insalata",
-            "price": 29,
-            "description": "little gem, white anchovy, pecorino, barolo vinaigrette, mollica"
-          },
-          {
-            "id": "marea_1",
-            "name": "Insalata",
-            "price": 29,
-            "description": "little gem, white anchovy, pecorino, barolo vinaigrette, mollica"
-          }
-        ],
-        "Mains": [
           {
             "id": "marea_1",
             "name": "Tonno",
@@ -6590,6 +6626,42 @@
           },
           {
             "id": "marea_1",
+            "name": "Bruschetta",
+            "price": 56,
+            "description": "garlic bread, kaluga caviar, burrata"
+          },
+          {
+            "id": "marea_1",
+            "name": "Kusshi | British Columbia",
+            "price": 34,
+            "description": "oysters served with red wine mignonette, marea cocktail sauce, lemon"
+          },
+          {
+            "id": "marea_1",
+            "name": "Merasheen Bay | Newfoundland",
+            "price": 34,
+            "description": "oysters served with red wine mignonette, marea cocktail sauce, lemon"
+          },
+          {
+            "id": "marea_1",
+            "name": "Arcadia Point | Washington",
+            "price": 34,
+            "description": "oysters served with red wine mignonette, marea cocktail sauce, lemon"
+          },
+          {
+            "id": "marea_1",
+            "name": "Peconic Gold | New York",
+            "price": 34,
+            "description": "oysters served with red wine mignonette, marea cocktail sauce, lemon"
+          },
+          {
+            "id": "marea_1",
+            "name": "Ricci",
+            "price": 26,
+            "description": "sea urchin, lardo, crostini"
+          },
+          {
+            "id": "marea_1",
             "name": "Tonno",
             "price": 47,
             "description": "yellowfin tuna, oyster crema, sunchoke"
@@ -6599,6 +6671,12 @@
             "name": "Astice",
             "price": 48,
             "description": "nova scotia lobster, burrata, basil, eggplant al funghetto"
+          },
+          {
+            "id": "marea_1",
+            "name": "Capesante (Antipasti)",
+            "price": 46,
+            "description": "sea scallop crudo, tomato, cucumber, red onion, basil"
           },
           {
             "id": "marea_1",
@@ -6623,6 +6701,14 @@
             "name": "Spada",
             "price": 66,
             "description": "grilled swordfish, fennel, clam, chorizo vinaigrette"
+          }
+        ],
+        "Salads": [
+          {
+            "id": "marea_1",
+            "name": "Insalata",
+            "price": 29,
+            "description": "little gem, white anchovy, pecorino, barolo vinaigrette, mollica"
           },
           {
             "id": "marea_1",
@@ -6638,6 +6724,12 @@
           },
           {
             "id": "marea_1",
+            "name": "Insalata",
+            "price": 29,
+            "description": "little gem, white anchovy, pecorino, barolo vinaigrette, mollica"
+          },
+          {
+            "id": "marea_1",
             "name": "Whole Scampi",
             "price": 28,
             "description": "seared new zealand langoustine, garlic butter, arugula, limone"
@@ -6647,7 +6739,9 @@
             "name": "Rucola",
             "price": 22,
             "description": "wild arugula, radish, limone"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "marea_1",
             "name": "Assaggio Di Crudi",
@@ -6959,7 +7053,9 @@
             "name": "Quadrello Di Bufala",
             "price": 25,
             "description": "lombardia - italy - buffalo"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "marea_1",
             "name": "Pollo",
@@ -6971,7 +7067,9 @@
             "name": "Patate",
             "price": 22,
             "description": "potatoes, parmigiano, caper"
-          },
+          }
+        ],
+        "Desserts": [
           {
             "id": "marea_0",
             "name": "Black Diamond \"Russian Ossetra\"",
@@ -7022,6 +7120,24 @@
           },
           {
             "id": "marea_1",
+            "name": "Gambero Rosso",
+            "price": 46,
+            "description": "red prawn tartare, fennel, tarragon, lemon, sugo"
+          },
+          {
+            "id": "marea_1",
+            "name": "Tonno Acqua Pazza",
+            "price": 48,
+            "description": "tuna tartare, tomato, cucumber, olive, calabrian chile, basil"
+          },
+          {
+            "id": "marea_1",
+            "name": "Branzino (Antipasti)",
+            "price": 48,
+            "description": "sea bass tartare, pistachio, calabrian chile, radish, chive"
+          },
+          {
+            "id": "marea_1",
             "name": "Marea Volzhenka \"Siberian\"",
             "price": 275,
             "description": "caviar served with gougères, chips, brioche, chives, crème fraîche"
@@ -7043,20 +7159,6 @@
             "name": "The Only \"Oscietra\"",
             "price": 305,
             "description": "caviar served with gougères, chips, brioche, chives, crème fraîche"
-          }
-        ],
-        "Desserts": [
-          {
-            "id": "marea_1",
-            "name": "Gambero Rosso",
-            "price": 46,
-            "description": "red prawn tartare, fennel, tarragon, lemon, sugo"
-          },
-          {
-            "id": "marea_1",
-            "name": "Branzino (Antipasti)",
-            "price": 48,
-            "description": "sea bass tartare, pistachio, calabrian chile, radish, chive"
           },
           {
             "id": "marea_1",
@@ -7130,7 +7232,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Mains": [
+        "Appetizers": [
           {
             "id": "milos_1",
             "name": "MILOS FRIED SEAFOOD PLATTER",
@@ -7142,7 +7244,9 @@
             "name": "MILOS GRILLED SEAFOOD PLATTER",
             "price": 65,
             "description": "Octopus from lemnos, fresh bay scallops, calamari, shrimp"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "milos_0",
             "name": "ASTAKOMAKARONADA",
@@ -7152,21 +7256,7 @@
         ]
       },
       "dinner": {
-        "Salads": [
-          {
-            "id": "milos_d_2",
-            "name": "Santorini Tomato Salad",
-            "price": 24,
-            "description": "Heirloom tomatoes, barrel aged feta"
-          },
-          {
-            "id": "milos_d_9",
-            "name": "Horta",
-            "price": 14,
-            "description": "Steamed wild greens"
-          }
-        ],
-        "Mains": [
+        "Appetizers": [
           {
             "id": "milos_d_1",
             "name": "Grilled Octopus",
@@ -7174,11 +7264,19 @@
             "description": "Charcoal grilled, extra virgin olive oil"
           },
           {
+            "id": "milos_d_2",
+            "name": "Santorini Tomato Salad",
+            "price": 24,
+            "description": "Heirloom tomatoes, barrel aged feta"
+          },
+          {
             "id": "milos_d_3",
             "name": "Taramosalata",
             "price": 18,
             "description": "Fish roe, lemon, olive oil"
-          },
+          }
+        ],
+        "Seafood": [
           {
             "id": "milos_d_4",
             "name": "Mediterranean Sea Bass",
@@ -7202,15 +7300,21 @@
             "name": "Lobster Pasta",
             "price": 64,
             "description": "Fresh lobster, tomato, basil"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "milos_d_8",
             "name": "Grilled Vegetables",
             "price": 16,
             "description": "Seasonal vegetables"
-          }
-        ],
-        "Sides": [
+          },
+          {
+            "id": "milos_d_9",
+            "name": "Horta",
+            "price": 14,
+            "description": "Steamed wild greens"
+          },
           {
             "id": "milos_d_10",
             "name": "Greek Fries",
@@ -7276,6 +7380,12 @@
             "name": "Ice Box",
             "price": 42,
             "description": "Oysters / Countnecks / Shrimp / Mussels / Crudo"
+          },
+          {
+            "id": "penny_1",
+            "name": "Ice Box +",
+            "price": 105,
+            "description": "Razor Clams / Live Scallop"
           }
         ],
         "Salads": [
@@ -7287,12 +7397,6 @@
           }
         ],
         "Mains": [
-          {
-            "id": "penny_1",
-            "name": "Ice Box +",
-            "price": 105,
-            "description": "Razor Clams / Live Scallop"
-          },
           {
             "id": "penny_1",
             "name": "Ice Box ++",
@@ -7310,15 +7414,15 @@
             "name": "Beets + Boquerones",
             "price": 19,
             "description": ""
-          },
+          }
+        ],
+        "Desserts": [
           {
             "id": "penny_0",
             "name": "Oysters",
             "price": 4,
             "description": "per piece"
-          }
-        ],
-        "Desserts": [
+          },
           {
             "id": "penny_1",
             "name": "Countneck Clams",
@@ -7343,8 +7447,20 @@
           },
           {
             "id": "penny_1",
+            "name": "Ice Box +",
+            "price": 105,
+            "description": "Razor Clams / Live Scallop"
+          },
+          {
+            "id": "penny_1",
             "name": "Tuna Carpaccio",
             "price": 29,
+            "description": ""
+          },
+          {
+            "id": "penny_1",
+            "name": "Confit Oysters",
+            "price": 21,
             "description": ""
           }
         ],
@@ -7357,18 +7473,6 @@
           }
         ],
         "Mains": [
-          {
-            "id": "penny_1",
-            "name": "Ice Box +",
-            "price": 105,
-            "description": "Razor Clams / Live Scallop"
-          },
-          {
-            "id": "penny_1",
-            "name": "Confit Oysters",
-            "price": 21,
-            "description": ""
-          },
           {
             "id": "penny_1",
             "name": "Ice Box ++",
@@ -7428,15 +7532,15 @@
             "name": "Trout + Beurre Rouge",
             "price": 46,
             "description": ""
-          },
+          }
+        ],
+        "Desserts": [
           {
             "id": "penny_0",
             "name": "Oysters",
             "price": 4,
             "description": "per piece"
-          }
-        ],
-        "Desserts": [
+          },
           {
             "id": "penny_1",
             "name": "Countneck Clams",
@@ -7458,9 +7562,21 @@
         "Salads": [
           {
             "id": "rezdora_2",
+            "name": "CLASSICO",
+            "price": 18,
+            "description": "prosciutto di parma, squacquerone & arugula"
+          },
+          {
+            "id": "rezdora_2",
             "name": "INSALATA DI RADICCHIO",
             "price": 19,
             "description": "radicchio pomegranate, squash & pumpkin seeds"
+          },
+          {
+            "id": "rezdora_2",
+            "name": "COW GRAZING IN EMILIA ROMAGNA",
+            "price": 36,
+            "description": "Sirloin steak, sauces from emilia romagna & herb salad"
           },
           {
             "id": "rezdora_2",
@@ -7470,18 +7586,6 @@
           }
         ],
         "Mains": [
-          {
-            "id": "rezdora_2",
-            "name": "CLASSICO",
-            "price": 18,
-            "description": "prosciutto di parma, squacquerone & arugula"
-          },
-          {
-            "id": "rezdora_2",
-            "name": "COW GRAZING IN EMILIA ROMAGNA",
-            "price": 36,
-            "description": "Sirloin steak, sauces from emilia romagna & herb salad"
-          },
           {
             "id": "rezdora_1",
             "name": "FETT' UNTA",
@@ -7619,20 +7723,26 @@
             "name": "BURRATA REALE",
             "price": 32,
             "description": "miatake mushroom, black truffle & parsely"
-          },
-          {
-            "id": "rezdora_1",
-            "name": "GELATI",
-            "price": 16,
-            "description": "Please select 2: \"pistacchio di bronte\" - pistachio nougat, cioccolato - chocolate pearls, zuppa inglese - vanilla & alchermes, \"olio d'oliva\" - extra virgin olive oil"
           }
         ],
         "Salads": [
           {
             "id": "rezdora_1",
+            "name": "BRUNCH ON MODENA HILLSIDE",
+            "price": 22,
+            "description": "\"Pesto modenese\", prosciutto di parma & arugula"
+          },
+          {
+            "id": "rezdora_1",
             "name": "INSALATA DI RADICCHIO",
             "price": 19,
             "description": "radicchio pomegranate, squash & pumpkin seeds"
+          },
+          {
+            "id": "rezdora_1",
+            "name": "CARNE E UOVA",
+            "price": 30,
+            "description": "Steak and eggs, modenese style with \"insalata di rucola\""
           },
           {
             "id": "rezdora_1",
@@ -7648,26 +7758,6 @@
           },
           {
             "id": "rezdora_1",
-            "name": "WARM SEASONAL GREENS",
-            "price": 12,
-            "description": "With garlic & olive oil"
-          }
-        ],
-        "Mains": [
-          {
-            "id": "rezdora_1",
-            "name": "BRUNCH ON MODENA HILLSIDE",
-            "price": 22,
-            "description": "\"Pesto modenese\", prosciutto di parma & arugula"
-          },
-          {
-            "id": "rezdora_1",
-            "name": "CARNE E UOVA",
-            "price": 30,
-            "description": "Steak and eggs, modenese style with \"insalata di rucola\""
-          },
-          {
-            "id": "rezdora_1",
             "name": "COW GRAZING IN EMILIA ROMAGNA",
             "price": 36,
             "description": "Sirloin steak, sauces from emilia romagna & herb salad"
@@ -7678,6 +7768,14 @@
             "price": 52,
             "description": "pork chop, prosciutto, parmigiano & arugula. Served with 2 verdure."
           },
+          {
+            "id": "rezdora_1",
+            "name": "WARM SEASONAL GREENS",
+            "price": 12,
+            "description": "With garlic & olive oil"
+          }
+        ],
+        "Mains": [
           {
             "id": "rezdora_0",
             "name": "FETT’UNTA",
@@ -7875,24 +7973,14 @@
             "name": "ZUCCA CARMELLATO",
             "price": 15,
             "description": "zerbinati squash, parmigiano & hazelnut"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "rezdora_1",
             "name": "VERDE ON VERDE ON VERDE",
             "price": 25,
             "description": "“mezze maniche verde”, “pesto genovese”, green beans & potato"
-          },
-          {
-            "id": "rezdora_1",
-            "name": "TORTA DI ZUCCA IN TRE MODI",
-            "price": 18,
-            "description": "squash, chocolate & vanilla"
-          },
-          {
-            "id": "rezdora_1",
-            "name": "CAPPELLETTI AL BRASATO DI MANZO E TARTUFO NERO",
-            "price": 38,
-            "description": "braised beef cheek, porcini & black truffle"
           }
         ],
         "Desserts": [
@@ -7907,6 +7995,18 @@
             "name": "TIRAMISU",
             "price": 18,
             "description": "Enough for two, better for one"
+          },
+          {
+            "id": "rezdora_1",
+            "name": "TORTA DI ZUCCA IN TRE MODI",
+            "price": 18,
+            "description": "squash, chocolate & vanilla"
+          },
+          {
+            "id": "rezdora_1",
+            "name": "GELATI",
+            "price": 16,
+            "description": "Please select 2: \"pistacchio di bronte\" - pistachio nougat, cioccolato - chocolate pearls, zuppa inglese - vanilla & alchermes, \"olio d'oliva\" - extra virgin olive oil"
           },
           {
             "id": "rezdora_1",
@@ -7925,6 +8025,12 @@
             "name": "TORTELLI AL GRANO ARSO ALLA MANTOVANA",
             "price": 26,
             "description": "honeynut squash, parmigiano, amaretti cookies, brown butter & sage"
+          },
+          {
+            "id": "rezdora_1",
+            "name": "CAPPELLETTI AL BRASATO DI MANZO E TARTUFO NERO",
+            "price": 38,
+            "description": "braised beef cheek, porcini & black truffle"
           }
         ]
       }
@@ -7947,24 +8053,20 @@
           },
           {
             "id": "san_sabino_1",
-            "name": "Kingfish Crudo",
-            "price": 22,
-            "description": "Green Apple, Buttermilk, Spiced Almond"
-          }
-        ],
-        "Mains": [
-          {
-            "id": "san_sabino_1",
             "name": "Pasta Alle Vongole",
             "price": 29,
             "description": "Manila Clams, Aji Amarillo"
-          },
+          }
+        ],
+        "Salads": [
           {
             "id": "san_sabino_1",
             "name": "Insalata Louie",
             "price": 23,
             "description": "House Wedge, Shrimp Remoulade, Avocado, Crispy Coppa"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "san_sabino_0",
             "name": "Crab & Mortadella Dip",
@@ -7976,6 +8078,12 @@
             "name": "Spicy Tuna",
             "price": 24,
             "description": "Broken Arancini, Rabe Furikake, Charred Scallion Crema"
+          },
+          {
+            "id": "san_sabino_1",
+            "name": "Kingfish Crudo",
+            "price": 22,
+            "description": "Green Apple, Buttermilk, Spiced Almond"
           },
           {
             "id": "san_sabino_1",
@@ -8060,7 +8168,9 @@
             "name": "Charred Broccolini",
             "price": 12,
             "description": "Toasted Sesame Vinaigrette"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "san_sabino_1",
             "name": "Potato Crocchette",
@@ -8079,23 +8189,15 @@
           },
           {
             "id": "san_sabino_1",
-            "name": "East Coast Oysters",
-            "price": 16,
-            "description": "4pc, Golden Pomodorini Cocktail, Fresh Horseradish"
-          },
-          {
-            "id": "san_sabino_1",
-            "name": "Kingfish Crudo",
-            "price": 22,
-            "description": "Green Apple, Buttermilk, Spiced Almond"
-          }
-        ],
-        "Mains": [
-          {
-            "id": "san_sabino_1",
             "name": "Pasta Alle Vongole",
             "price": 29,
             "description": "Manila Clams, Aji Amarillo"
+          },
+          {
+            "id": "san_sabino_1",
+            "name": "East Coast Oysters",
+            "price": 16,
+            "description": "4pc, Golden Pomodorini Cocktail, Fresh Horseradish"
           },
           {
             "id": "san_sabino_1",
@@ -8108,7 +8210,9 @@
             "name": "Pasta Alle Vongole",
             "price": 29,
             "description": "Manila Clams, Aji Amarillo"
-          },
+          }
+        ],
+        "Salads": [
           {
             "id": "san_sabino_1",
             "name": "Insalata Louie",
@@ -8120,7 +8224,9 @@
             "name": "Insalata Louie",
             "price": 23,
             "description": "House Wedge, Shrimp Remoulade, Avocado, Crispy Coppa"
-          },
+          }
+        ],
+        "Mains": [
           {
             "id": "san_sabino_0",
             "name": "Crab & Mortadella Dip",
@@ -8132,6 +8238,12 @@
             "name": "Spicy Tuna",
             "price": 24,
             "description": "Broken Arancini, Rabe Furikake, Charred Scallion Crema"
+          },
+          {
+            "id": "san_sabino_1",
+            "name": "Kingfish Crudo",
+            "price": 22,
+            "description": "Green Apple, Buttermilk, Spiced Almond"
           },
           {
             "id": "san_sabino_1",
@@ -8306,7 +8418,9 @@
             "name": "Charred Broccolini",
             "price": 12,
             "description": "Toasted Sesame Vinaigrette"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "san_sabino_1",
             "name": "Potato Crocchette",
@@ -8345,7 +8459,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Mains": [
+        "SMALL": [
           {
             "id": "semma_0",
             "name": "MULAIKATTIYA THANIYAM (V)",
@@ -8357,7 +8471,9 @@
             "name": "PANIYARAM",
             "price": 16,
             "description": "rice & lentil dumpling, asafoetida, paatti’s chutney"
-          },
+          }
+        ],
+        "MEDIUM": [
           {
             "id": "semma_1",
             "name": "ANNASI PAZHAM SCALLOP",
@@ -8369,7 +8485,9 @@
             "name": "GUNPOWDER DOSA (VO)",
             "price": 21,
             "description": "rice & lentil crepe, potato masala, sambar"
-          },
+          }
+        ],
+        "LARGE": [
           {
             "id": "semma_2",
             "name": "VAZHAKKAI VARUVAL",
@@ -8399,7 +8517,9 @@
             "name": "MEEN POLLICHATHU",
             "price": 49,
             "description": "banana leaf wrapped branzino, ginger, shallots"
-          },
+          }
+        ],
+        "SIDES": [
           {
             "id": "semma_3",
             "name": "KAL DOSA",
@@ -8415,15 +8535,7 @@
         ]
       },
       "dinner": {
-        "Salads": [
-          {
-            "id": "semma_1",
-            "name": "UZHAVAR SANTHAI PORIYAL (V)",
-            "price": 18,
-            "description": "beets, squash, mustard greens, coconut"
-          }
-        ],
-        "Mains": [
+        "SMALL": [
           {
             "id": "semma_0",
             "name": "MULAIKATTIYA THANIYAM (V)",
@@ -8438,6 +8550,12 @@
           },
           {
             "id": "semma_1",
+            "name": "UZHAVAR SANTHAI PORIYAL (V)",
+            "price": 18,
+            "description": "beets, squash, mustard greens, coconut"
+          },
+          {
+            "id": "semma_1",
             "name": "ERAL THOKKU",
             "price": 25,
             "description": "tiger prawn, green chili, fenugreek, curry leaves"
@@ -8447,7 +8565,9 @@
             "name": "ODIYAL KOOL",
             "price": 25,
             "description": "scallop, squid, and prawn soup, tamarind (limited)"
-          },
+          }
+        ],
+        "MEDIUM": [
           {
             "id": "semma_1",
             "name": "ANNASI PAZHAM SCALLOP",
@@ -8477,7 +8597,9 @@
             "name": "MUYAL PIRATTAL",
             "price": 27,
             "description": "wild rabbit leg, fennel, mace, kalpasi, marathi moggu (limited)"
-          },
+          }
+        ],
+        "LARGE": [
           {
             "id": "semma_2",
             "name": "VAZHAKKAI VARUVAL",
@@ -8537,7 +8659,9 @@
             "name": "KANYAKUMARI NANDU MASALA (FOR TWO)",
             "price": 145,
             "description": "Dungeness crab, parotta, coconut rice ~Limited availability~Pre-Order Requested*"
-          },
+          }
+        ],
+        "SIDES": [
           {
             "id": "semma_3",
             "name": "KAL DOSA",
@@ -8574,71 +8698,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Appetizers": [
-          {
-            "id": "smith_wollensky_2",
-            "name": "Our Shrimp Cocktail 3/4",
-            "price": 24,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_2",
-            "name": "Fresh Colossal Lump Crabmeat Cocktail",
-            "price": 26,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_2",
-            "name": "The S&W Lobster Cocktail",
-            "price": 28,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_2",
-            "name": "Our Famous Split Pea Soup",
-            "price": 16,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_3",
-            "name": "Line-Caught Tuna Tartare",
-            "price": 28,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_4",
-            "name": "Vine Ripe Tomatoes & Brooklyn Burrata",
-            "price": 21,
-            "description": ""
-          }
-        ],
-        "Salads": [
-          {
-            "id": "smith_wollensky_3",
-            "name": "Mixed Green Salad",
-            "price": 16,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_4",
-            "name": "Traditional Caesar",
-            "price": 19,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_4",
-            "name": "Wollensky’s Salad",
-            "price": 19,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_5",
-            "name": "Cobb Salad",
-            "price": 25,
-            "description": ""
-          }
-        ],
-        "Mains": [
+        "RAW BAR": [
           {
             "id": "smith_wollensky_1",
             "name": "Smith’s Bouquet (For Two)",
@@ -8664,6 +8724,32 @@
             "description": ""
           },
           {
+            "id": "smith_wollensky_2",
+            "name": "Our Shrimp Cocktail 3/4",
+            "price": 24,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_2",
+            "name": "Fresh Colossal Lump Crabmeat Cocktail",
+            "price": 26,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_2",
+            "name": "The S&W Lobster Cocktail",
+            "price": 28,
+            "description": ""
+          }
+        ],
+        "APPETIZERS": [
+          {
+            "id": "smith_wollensky_2",
+            "name": "Our Famous Split Pea Soup",
+            "price": 16,
+            "description": ""
+          },
+          {
             "id": "smith_wollensky_3",
             "name": "New England Clam Chowder",
             "price": 18,
@@ -8683,6 +8769,12 @@
           },
           {
             "id": "smith_wollensky_3",
+            "name": "Line-Caught Tuna Tartare",
+            "price": 28,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_3",
             "name": "Maryland Crab Cake",
             "price": 32,
             "description": ""
@@ -8691,6 +8783,20 @@
             "id": "smith_wollensky_3",
             "name": "Fried Calamari",
             "price": 23,
+            "description": ""
+          }
+        ],
+        "SALADS": [
+          {
+            "id": "smith_wollensky_3",
+            "name": "Mixed Green Salad",
+            "price": 16,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_4",
+            "name": "Traditional Caesar",
+            "price": 19,
             "description": ""
           },
           {
@@ -8701,10 +8807,24 @@
           },
           {
             "id": "smith_wollensky_4",
+            "name": "Wollensky’s Salad",
+            "price": 19,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_4",
+            "name": "Vine Ripe Tomatoes & Brooklyn Burrata",
+            "price": 21,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_4",
             "name": "Vine Ripe Tomatoes & Vidalia Onion",
             "price": 17,
             "description": ""
-          },
+          }
+        ],
+        "ENTRÉE SALADS": [
           {
             "id": "smith_wollensky_4",
             "name": "Maine Lobster Salad",
@@ -8713,10 +8833,18 @@
           },
           {
             "id": "smith_wollensky_5",
+            "name": "Cobb Salad",
+            "price": 25,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_5",
             "name": "Grilled Chicken Caesar Salad",
             "price": 24,
             "description": ""
-          },
+          }
+        ],
+        "SELECTION OF FILET MIGNON": [
           {
             "id": "smith_wollensky_5",
             "name": "Filet Mignon",
@@ -8746,7 +8874,9 @@
             "name": "Lobster Tail",
             "price": 15,
             "description": "Add-on"
-          },
+          }
+        ],
+        "PRIME STEAKS": [
           {
             "id": "smith_wollensky_6",
             "name": "NY Cut Sirloin",
@@ -8776,7 +8906,9 @@
             "name": "Our Classic Prime Rib",
             "price": 82,
             "description": "Dry-aged for up to 28 days, then hand-cut by our master butchers on premises."
-          },
+          }
+        ],
+        "OTHER CLASSICS": [
           {
             "id": "smith_wollensky_7",
             "name": "Roasted Branzino",
@@ -8830,7 +8962,9 @@
             "name": "Grilled Pork Chop",
             "price": 35,
             "description": ""
-          },
+          }
+        ],
+        "POTATOES": [
           {
             "id": "smith_wollensky_8",
             "name": "Whipped Potatoes",
@@ -8854,7 +8988,9 @@
             "name": "Baked Potato",
             "price": 10,
             "description": ""
-          },
+          }
+        ],
+        "VEGETABLES": [
           {
             "id": "smith_wollensky_9",
             "name": "Jumbo Asparagus",
@@ -8878,7 +9014,9 @@
             "name": "Roasted Oyster Mushrooms",
             "price": 18,
             "description": ""
-          },
+          }
+        ],
+        "CLASSICS": [
           {
             "id": "smith_wollensky_10",
             "name": "Mac & Cheese",
@@ -8903,6 +9041,18 @@
         "Appetizers": [
           {
             "id": "smith_wollensky_1",
+            "name": "Fresh Shucked Oysters",
+            "price": 4,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_1",
+            "name": "Littleneck Clams",
+            "price": 3,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_1",
             "name": "Our Shrimp Cocktail 3/4",
             "price": 24,
             "description": ""
@@ -8915,26 +9065,32 @@
           },
           {
             "id": "smith_wollensky_1",
+            "name": "New England Clam Chowder",
+            "price": 18,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_1",
+            "name": "Clams Casino",
+            "price": 19,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_1",
+            "name": "Fried Calamari",
+            "price": 23,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_1",
             "name": "Vine Ripe Tomatoes & Brooklyn Burrata",
             "price": 21,
             "description": ""
           },
           {
             "id": "smith_wollensky_1",
-            "name": "Fresh Colossal Lump Crabmeat Cocktail",
-            "price": 26,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_1",
-            "name": "The S&W Lobster Cocktail",
-            "price": 28,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_1",
-            "name": "Line-Caught Tuna Tartare",
-            "price": 28,
+            "name": "Roasted Oyster Mushrooms",
+            "price": 18,
             "description": ""
           }
         ],
@@ -8960,42 +9116,6 @@
         ],
         "Mains": [
           {
-            "id": "smith_wollensky_1",
-            "name": "Fresh Shucked Oysters",
-            "price": 4,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_1",
-            "name": "Littleneck Clams",
-            "price": 3,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_1",
-            "name": "New England Clam Chowder",
-            "price": 18,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_1",
-            "name": "Clams Casino",
-            "price": 19,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_1",
-            "name": "Fried Calamari",
-            "price": 23,
-            "description": ""
-          },
-          {
-            "id": "smith_wollensky_1",
-            "name": "Roasted Oyster Mushrooms",
-            "price": 18,
-            "description": ""
-          },
-          {
             "id": "smith_wollensky_0",
             "name": "Smith’s Bouquet (For Two)",
             "price": 89,
@@ -9005,6 +9125,18 @@
             "id": "smith_wollensky_1",
             "name": "Wollensky’s Grand Bouquet (For Four)",
             "price": 148,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_1",
+            "name": "Fresh Colossal Lump Crabmeat Cocktail",
+            "price": 26,
+            "description": ""
+          },
+          {
+            "id": "smith_wollensky_1",
+            "name": "The S&W Lobster Cocktail",
+            "price": 28,
             "description": ""
           },
           {
@@ -9180,7 +9312,9 @@
             "name": "Onion Rings",
             "price": 17,
             "description": ""
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "smith_wollensky_1",
             "name": "Whipped Potatoes",
@@ -9204,6 +9338,14 @@
             "name": "Jumbo Asparagus",
             "price": 17,
             "description": ""
+          }
+        ],
+        "Desserts": [
+          {
+            "id": "smith_wollensky_1",
+            "name": "Line-Caught Tuna Tartare",
+            "price": 28,
+            "description": ""
           },
           {
             "id": "smith_wollensky_1",
@@ -9223,23 +9365,7 @@
     "price_range": "$$$$",
     "menus": {
       "lunch": {
-        "Appetizers": [
-          {
-            "id": "torrisi_8",
-            "name": "Black and White Foie Gras",
-            "price": 55,
-            "description": null
-          }
-        ],
-        "Salads": [
-          {
-            "id": "torrisi_8",
-            "name": "House Endive Salad",
-            "price": 28,
-            "description": null
-          }
-        ],
-        "Mains": [
+        "SPECIALTIES": [
           {
             "id": "torrisi_7",
             "name": "Our Giardiniera",
@@ -9260,6 +9386,12 @@
           },
           {
             "id": "torrisi_8",
+            "name": "House Endive Salad",
+            "price": 28,
+            "description": null
+          },
+          {
+            "id": "torrisi_8",
             "name": "Octopus Nha Trang",
             "price": 36,
             "description": null
@@ -9270,6 +9402,14 @@
             "price": 29,
             "description": null
           },
+          {
+            "id": "torrisi_8",
+            "name": "Black and White Foie Gras",
+            "price": 55,
+            "description": null
+          }
+        ],
+        "PASTA": [
           {
             "id": "torrisi_8",
             "name": "Cavatelli with Jamaican Beef Ragu",
@@ -9293,7 +9433,9 @@
             "name": "Raviolini with Blue Prawns and Saffron",
             "price": 39,
             "description": null
-          },
+          }
+        ],
+        "MAIN": [
           {
             "id": "torrisi_9",
             "name": "Dover Sole Francese",
@@ -9321,23 +9463,19 @@
         ]
       },
       "dinner": {
-        "Appetizers": [
+        "DESSERTS": [
           {
-            "id": "torrisi_5",
-            "name": "Black and White Foie Gras",
-            "price": 55,
+            "id": "torrisi_0",
+            "name": "Almond Cheesecake",
+            "price": 22,
             "description": null
-          }
-        ],
-        "Salads": [
+          },
           {
-            "id": "torrisi_5",
-            "name": "House Endive Salad",
-            "price": 28,
+            "id": "torrisi_1",
+            "name": "Sicilian Date Cake",
+            "price": 20,
             "description": null
-          }
-        ],
-        "Mains": [
+          },
           {
             "id": "torrisi_1",
             "name": "Frozen Yogurt",
@@ -9349,7 +9487,9 @@
             "name": "Affogato",
             "price": 22,
             "description": null
-          },
+          }
+        ],
+        "DESSERT WINES": [
           {
             "id": "torrisi_1",
             "name": "La Spinetta Moscato D’asti ‘Bricco Quaglia’ 2023",
@@ -9379,7 +9519,9 @@
             "name": "Chateau Suduiraut Sauternes 2016",
             "price": 26,
             "description": null
-          },
+          }
+        ],
+        "GRAPPA": [
           {
             "id": "torrisi_2",
             "name": "Capovilla Grappa Di Bassano",
@@ -9475,7 +9617,9 @@
             "name": "Vecchia Grappa Cafo",
             "price": 19,
             "description": null
-          },
+          }
+        ],
+        "ITALIAN AMARI": [
           {
             "id": "torrisi_3",
             "name": "Averna Amaro",
@@ -9559,7 +9703,9 @@
             "name": "Vecchio Amaro Del Capo",
             "price": 18,
             "description": null
-          },
+          }
+        ],
+        "SPECIALTIES": [
           {
             "id": "torrisi_4",
             "name": "Our Giardiniera",
@@ -9586,9 +9732,21 @@
           },
           {
             "id": "torrisi_5",
+            "name": "House Endive Salad",
+            "price": 28,
+            "description": null
+          },
+          {
+            "id": "torrisi_5",
             "name": "Octopus Nha Trang",
             "price": 36,
             "description": null
+          },
+          {
+            "id": "torrisi_5",
+            "name": "Don's Scungilli Toast",
+            "price": 21,
+            "description": "per piece"
           },
           {
             "id": "torrisi_5",
@@ -9602,6 +9760,14 @@
             "price": 20,
             "description": null
           },
+          {
+            "id": "torrisi_5",
+            "name": "Black and White Foie Gras",
+            "price": 55,
+            "description": null
+          }
+        ],
+        "PASTA": [
           {
             "id": "torrisi_5",
             "name": "Cavatelli with Jamaican Beef Ragu",
@@ -9637,7 +9803,9 @@
             "name": "Agnolotti Angelino",
             "price": 40,
             "description": "For my son"
-          },
+          }
+        ],
+        "MAIN": [
           {
             "id": "torrisi_6",
             "name": "Dover Sole Francese",
@@ -9668,26 +9836,6 @@
             "price": 72,
             "description": null
           }
-        ],
-        "Desserts": [
-          {
-            "id": "torrisi_0",
-            "name": "Almond Cheesecake",
-            "price": 22,
-            "description": null
-          },
-          {
-            "id": "torrisi_1",
-            "name": "Sicilian Date Cake",
-            "price": 20,
-            "description": null
-          },
-          {
-            "id": "torrisi_5",
-            "name": "Don's Scungilli Toast",
-            "price": 21,
-            "description": "per piece"
-          }
         ]
       }
     }
@@ -9717,6 +9865,12 @@
           },
           {
             "id": "via_carota_1",
+            "name": "Cavolo Nero",
+            "price": 23,
+            "description": "braised Tuscan kale & garlic"
+          },
+          {
+            "id": "via_carota_1",
             "name": "Insalata Verde",
             "price": 24,
             "description": "leafy greens in sherry vinaigrette"
@@ -9735,12 +9889,6 @@
           }
         ],
         "Mains": [
-          {
-            "id": "via_carota_1",
-            "name": "Cavolo Nero",
-            "price": 23,
-            "description": "braised Tuscan kale & garlic"
-          },
           {
             "id": "via_carota_0",
             "name": "Olive All'Ascolana",
@@ -9834,6 +9982,12 @@
             "name": "Ribollita",
             "price": 22,
             "description": "traditional vegetable bread soup"
+          },
+          {
+            "id": "via_carota_1",
+            "name": "Polipo",
+            "price": 29,
+            "description": "grilled octopus & green olive pesto"
           }
         ],
         "Salads": [
@@ -9842,6 +9996,12 @@
             "name": "Burrata",
             "price": 25,
             "description": "wilted bitter greens"
+          },
+          {
+            "id": "via_carota_1",
+            "name": "Cavolo Nero",
+            "price": 23,
+            "description": "braised Tuscan kale & garlic"
           },
           {
             "id": "via_carota_1",
@@ -9869,18 +10029,6 @@
           }
         ],
         "Mains": [
-          {
-            "id": "via_carota_1",
-            "name": "Polipo",
-            "price": 29,
-            "description": "grilled octopus & green olive pesto"
-          },
-          {
-            "id": "via_carota_1",
-            "name": "Cavolo Nero",
-            "price": 23,
-            "description": "braised Tuscan kale & garlic"
-          },
           {
             "id": "via_carota_0",
             "name": "Olive All'Ascolana",
@@ -10072,7 +10220,9 @@
             "name": "Via Carota Svizzerina",
             "price": 32,
             "description": "hand-chopped grassfed steak"
-          },
+          }
+        ],
+        "Sides": [
           {
             "id": "via_carota_1",
             "name": "Cavoletti",
