@@ -120,27 +120,27 @@ def load_wines() -> List[Dict]:
     return []
 
 # =================================================================
-# PRESTIGE SCORING (V3.7 Luxury Preferences)
+# PRESTIGE SCORING (Reduced bonuses - pairing quality matters more)
 # =================================================================
 
 LEGENDARY_PRODUCERS = {
-    'romanée-conti': 50, 'romanee-conti': 50, 'drc': 50,
-    'pétrus': 45, 'petrus': 45,
-    'château margaux': 40, 'chateau margaux': 40,
-    'château latour': 40, 'chateau latour': 40,
-    'screaming eagle': 40,
-    'harlan estate': 38,
-    'opus one': 35,
-    'sassicaia': 35,
-    'ornellaia': 32
+    'romanée-conti': 25, 'romanee-conti': 25, 'drc': 25,
+    'pétrus': 20, 'petrus': 20,
+    'château margaux': 15, 'chateau margaux': 15,
+    'château latour': 15, 'chateau latour': 15,
+    'screaming eagle': 15,
+    'harlan estate': 12,
+    'opus one': 10,
+    'sassicaia': 10,
+    'ornellaia': 8
 }
 
 PRESTIGIOUS_VINEYARDS = {
-    'la tâche': 30, 'la tache': 30,
-    'richebourg': 28,
-    'romanée-st-vivant': 28,
-    'montrachet': 35,
-    'corton-charlemagne': 30
+    'la tâche': 15, 'la tache': 15,
+    'richebourg': 12,
+    'romanée-st-vivant': 12,
+    'montrachet': 18,
+    'corton-charlemagne': 15
 }
 
 # =================================================================
@@ -307,8 +307,18 @@ def generate_progression(dishes, bottle_count: int, budget: int):
     if not wines:
         return {"success": False, "error": "Wine database not available"}
     
-    if not dishes or budget <= 0 or bottle_count <= 0:
-        return {"success": False, "error": "Invalid parameters"}
+    # Input validation
+    if not dishes:
+        return {"success": False, "error": "No dishes provided"}
+    
+    if not isinstance(bottle_count, int) or bottle_count <= 0:
+        return {"success": False, "error": "Bottle count must be a positive integer"}
+    
+    if not isinstance(budget, (int, float)) or budget <= 0:
+        return {"success": False, "error": "Budget must be greater than 0"}
+    
+    if bottle_count > len(dishes):
+        return {"success": False, "error": f"Cannot recommend {bottle_count} bottles for {len(dishes)} dishes. Try fewer bottles."}
     
     # Normalize dishes to dict format
     normalized_dishes = []
@@ -372,9 +382,9 @@ def generate_progression(dishes, bottle_count: int, budget: int):
                 
                 if prestige_bonus == 0:
                     if 'grand cru' in wine_name_lower:
-                        prestige_bonus += 15
+                        prestige_bonus += 8  # Reduced from 15
                     elif 'premier cru' in wine_name_lower:
-                        prestige_bonus += 8
+                        prestige_bonus += 4  # Reduced from 8
                 
                 # Value bonus
                 value_bonus = (500 / (wine['price'] + 1)) * 0.1
@@ -396,9 +406,11 @@ def generate_progression(dishes, bottle_count: int, budget: int):
         # BUILD OPTIONS LIST (v5.0 structure)
         # Take top 3: primary + 2 alternatives
         options_list = []
+        course_wine_ids = []  # Track IDs as we build (more reliable than string matching)
         
         for idx, cand in enumerate(candidates[:3]):
             wine = cand['wine']
+            course_wine_ids.append(wine['id'])  # ← Track ID immediately
             
             # Generate AI content
             pairing_note = ""
@@ -444,6 +456,11 @@ def generate_progression(dishes, bottle_count: int, budget: int):
                     pass
             
             # Build option object (ALL fields frontend needs)
+            # Defensive: ensure score is valid
+            match_score = cand['score']
+            if not isinstance(match_score, (int, float)) or match_score != match_score:  # NaN check
+                match_score = 0
+            
             option = {
                 "wine_name": wine['name'],
                 "producer": wine['producer'],
@@ -458,13 +475,14 @@ def generate_progression(dishes, bottle_count: int, budget: int):
                 "rarity_level": rarity_level,
                 "is_primary_recommendation": (idx == 0),
                 "recommendation_rank": idx + 1,
-                "match_score": int(cand['score'])
+                "match_score": int(match_score)
             }
             
             options_list.append(option)
         
         if options_list:
-            used_ids.add(options_list[0]['wine_name'])
+            # Add all wine IDs from this course (prevents duplicates across courses)
+            used_ids.update(course_wine_ids)  # ← Direct ID tracking - much cleaner!
             
             progression.append({
                 "course_number": i + 1,
@@ -472,6 +490,16 @@ def generate_progression(dishes, bottle_count: int, budget: int):
                 "dishes": dish_names,
                 "options": options_list  # ← FRONTEND EXPECTS THIS
             })
+    
+    # Check if we found any wines
+    if not progression:
+        logger.warning("No wines found within budget constraints")
+        return {
+            "success": False,
+            "error": "No wines found within budget. Try increasing your budget or selecting fewer bottles.",
+            "total_cost": 0,
+            "budget_utilization": 0
+        }
     
     total_cost = sum(c['options'][0]['price'] for c in progression if c.get('options')) if progression else 0
     budget_utilization = round((total_cost / budget * 100), 1) if budget > 0 else 0
@@ -482,7 +510,9 @@ def generate_progression(dishes, bottle_count: int, budget: int):
         "success": True,
         "progression": progression,
         "total_bottles": len(progression),
+        "bottle_count": bottle_count,
         "total_cost": total_cost,
+        "total_budget": budget,  # ← Was missing!
         "budget_utilization": budget_utilization
     }
 
